@@ -1,0 +1,338 @@
+{{!
+    ChronoLMS Student Progress & Learning Analytics Template
+    @template theme_chronolms/progress/page
+}}
+{{#is_staff}}
+<div class="analytics-view-switcher" style="display:flex; gap:12px; margin-bottom:20px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+    <div style="display:flex; gap:12px; align-items:center;">
+        <a href="{{{executive_analytics_url}}}" class="view-switch-btn" style="display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px; background:#fff; border:1.5px solid #dde5f0; color:#2d3f60; text-decoration:none; font-size:13px; font-weight:600;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span>Executive Cohort Analytics</span>
+        </a>
+        <a href="{{{student_progress_url}}}" class="view-switch-btn active" style="display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px; background:#1565c0; color:#fff; text-decoration:none; font-size:13px; font-weight:600; box-shadow:0 1px 2px rgba(0,0,0,0.05);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Student Learning Journey</span>
+        </a>
+    </div>
+
+    {{#has_student_options}}
+    <div class="student-search-container" id="student-search-container" style="position:relative; width:340px;">
+        <form action="{{{student_progress_url}}}" method="get" id="student-search-form" style="margin:0; position:relative; display:flex; align-items:center;">
+            <svg style="position:absolute; left:12px; color:#6b7fa3; pointer-events:none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="student-search-input" name="search" class="student-search-input" placeholder="Search student by name or email..." value="{{search_query_value}}" autocomplete="off" style="width:100%; padding:9px 36px 9px 36px; border-radius:12px; border:1.5px solid #dde5f0; font-size:13px; font-weight:500; color:#0f1c35; background:#fff; outline:none; transition:all 0.2s; box-shadow:0 1px 2px rgba(0,0,0,0.03);">
+            <button type="button" id="student-search-clear" style="position:absolute; right:10px; background:none; border:none; color:#94a3b8; cursor:pointer; font-size:14px; {{^search_query_value}}display:none;{{/search_query_value}} padding:4px;" title="Clear search">✕</button>
+        </form>
+        <div id="student-search-results" class="student-search-results" style="display:none; position:absolute; top:calc(100% + 6px); left:0; right:0; background:#fff; border:1px solid #dde5f0; border-radius:12px; box-shadow:0 12px 28px rgba(15,28,53,0.12); max-height:280px; overflow-y:auto; z-index:1050;"></div>
+    </div>
+    {{/has_student_options}}
+</div>
+{{/is_staff}}
+
+<div class="progress-page-header">
+    <div class="header-text-block">
+        <h1>Learning Journey & Progress: {{userfullname}}</h1>
+        <p>Your completion, coding practice and badges, from your own activity.</p>
+    </div>
+</div>
+
+{{! Top Stat Cards Grid }}
+<div class="analytics-grid">
+    {{! Stat 1: Overall Completion }}
+    <div class="stat-card">
+        <div class="stat-icon-wrap blue">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="stat-data">
+            <div class="stat-value">{{overall_completion_pct}}%</div>
+            <div class="stat-label">Curriculum Completion</div>
+            <div class="stat-change up">{{overall_completed}} of {{overall_total}} activities across {{total_courses}} courses</div>
+        </div>
+    </div>
+
+    {{! Stat 2: Coding Challenges }}
+    <div class="stat-card">
+        <div class="stat-icon-wrap green">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div class="stat-data">
+            <div class="stat-value">{{challenges_done}} / {{challenges_total}}</div>
+            <div class="stat-label">Coding Challenges Completed</div>
+            <div class="stat-change up">{{challenges_tried}} tried so far</div>
+        </div>
+    </div>
+
+    {{! Stat: average coding score, from graded submissions }}
+    <div class="stat-card">
+        <div class="stat-icon-wrap indigo">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2.2"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>
+        </div>
+        <div class="stat-data">
+            {{#has_average}}
+            <div class="stat-value">{{average_score}}%</div>
+            <div class="stat-label">Average Coding Score</div>
+            <div class="stat-change up">From {{graded_text}}</div>
+            {{/has_average}}
+            {{^has_average}}
+            <div class="stat-value">None yet</div>
+            <div class="stat-label">Average Coding Score</div>
+            <div class="stat-change up">Appears once a challenge is graded</div>
+            {{/has_average}}
+        </div>
+    </div>
+
+    {{! Stat 3: Practice Streak }}
+    <div class="stat-card">
+        <div class="stat-icon-wrap orange">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+        </div>
+        <div class="stat-data">
+            <div class="stat-value">{{streak_days}} Days</div>
+            <div class="stat-label">Active Learning Streak</div>
+            <div class="stat-change up">
+                {{#streak_active}}Active today. Keep the momentum going.{{/streak_active}}
+                {{^streak_active}}Solve a challenge today to keep your streak.{{/streak_active}}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{! Dual-Column Layout: Course Mastery + Competencies }}
+<div class="progress-details-grid">
+    {{! Left Column: Course Mastery Breakdown }}
+    <div class="progress-section courses-section">
+        <div class="section-header">
+            <h2 class="section-title">Course Mastery Breakdown</h2>
+            <span class="section-tag">{{total_courses}} Enrolled</span>
+        </div>
+
+        {{#has_courses}}
+        <div class="course-progress-list">
+            {{#courses}}
+            <div class="course-progress-card">
+                <div class="card-top-row">
+                    <div class="course-name-block">
+                        <span class="course-tag {{grad_class}}">Active Course</span>
+                        <h3 class="course-fullname">{{fullname}}</h3>
+                    </div>
+                    <div class="course-pct-badge">{{pct}}%</div>
+                </div>
+
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar-fill {{grad_class}}" style="width: {{pct}}%;"></div>
+                </div>
+
+                <div class="card-meta-row">
+                    {{#is_pure_lab_course}}
+                    <div class="meta-item">
+                        <span class="meta-label">Coding Labs:</span>
+                        <span class="meta-value">{{challenges_done}} / {{challenges_total}} Completed</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Track Progress:</span>
+                        <span class="meta-value">{{pct}}%</span>
+                    </div>
+                    {{/is_pure_lab_course}}
+                    {{^is_pure_lab_course}}
+                    <div class="meta-item">
+                        <span class="meta-label">Coding Labs:</span>
+                        <span class="meta-value">{{challenges_done}} / {{challenges_total}}</span>
+                    </div>
+                    {{#has_theory}}
+                    <div class="meta-item">
+                        <span class="meta-label">Theory & Quizzes:</span>
+                        <span class="meta-value">{{non_code_done}} / {{non_code_total}}</span>
+                    </div>
+                    {{/has_theory}}
+                    {{^has_theory}}
+                    <div class="meta-item">
+                        <span class="meta-label">Track Progress:</span>
+                        <span class="meta-value">{{pct}}%</span>
+                    </div>
+                    {{/has_theory}}
+                    {{/is_pure_lab_course}}
+                </div>
+
+                <div class="card-actions-row">
+                    <a href="{{{resume_url}}}" class="btn-progress-resume">
+                        <span>Continue Course</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    </a>
+                    <a href="{{{lab_url}}}" class="btn-progress-lab">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        <span>Open Lab</span>
+                    </a>
+                </div>
+            </div>
+            {{/courses}}
+        </div>
+        {{/has_courses}}
+
+        {{^has_courses}}
+        <div class="empty-progress-state">
+            <p>You are not currently enrolled in any courses. Explore the curriculum to start learning!</p>
+            <a href="{{{learningpath_url}}}" class="btn-progress-resume">View Learning Path</a>
+        </div>
+        {{/has_courses}}
+    </div>
+
+    {{! Right Column: Competencies & Badges }}
+    <div class="progress-section sidebar-section">
+        {{! Competencies Card }}
+        <div class="competencies-card">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px;">
+                <h2 class="section-title" style="margin:0;">Topic Mastery</h2>
+            </div>
+            <p style="font-size:11px; color:#64748b; margin:0 0 16px 0; line-height:1.4;">{{#has_topics}}Your progress in each topic of {{topic_course}}.{{/has_topics}}{{^has_topics}}Topics appear once a course has activities that track completion.{{/has_topics}}</p>
+            <div class="score-list">
+                {{#competencies}}
+                <div class="score-item" style="display:flex; flex-direction:column; gap:6px; margin-bottom:14px;">
+                    <div class="score-meta" style="display:flex; justify-content:space-between; align-items:center;">
+                        <span class="score-subject" style="font-size:12px; font-weight:600; color:#1e293b;">{{name}}</span>
+                        <span class="score-tag" style="font-size:10px; color:#64748b; background:#f1f5f9; padding:2px 8px; border-radius:6px; font-weight:500;">{{tag}}</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px; width:100%;">
+                        <div class="score-bar-wrap" style="flex:1; height:8px; background:#e2e8f0; border-radius:99px; overflow:hidden;">
+                            <div class="score-bar-fill {{color}}" style="width: {{pct}}%; height:100%; border-radius:99px; background:{{{color_grad}}};"></div>
+                        </div>
+                        <div class="score-pct" style="font-size:11px; font-weight:700; color:#0f172a; min-width:32px; text-align:right;">{{pct}}%</div>
+                    </div>
+                </div>
+                {{/competencies}}
+            </div>
+        </div>
+
+        {{! Achievements widget }}
+        <div class="badges-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                <h2 class="section-title" style="margin:0; font-size:1.05rem; font-weight:700; color:#0f1c35;">Achievements</h2>
+                <span class="widget-badge-count">{{unlockedcount}} / {{totalbadgescount}} Unlocked</span>
+            </div>
+            <div class="achievements-showcase">
+                {{! Badge Icon Strip }}
+                <div class="badge-icon-strip">
+                    {{#milestonebadges}}
+                    <div class="milestone-badge-item {{#unlocked}}badge-unlocked{{/unlocked}} {{^unlocked}}badge-locked{{/unlocked}}" title="{{name}}: {{desc}} ({{pct}}%)">
+                        <div class="badge-avatar-wrap">
+                            <span class="badge-emoji">{{{icon}}}</span>
+                            {{^unlocked}}
+                            <span class="badge-lock-tiny"><svg class="clms-icon clms-icon-lock" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+                            {{/unlocked}}
+                        </div>
+                        <span class="badge-mini-name">{{name}}</span>
+                    </div>
+                    {{/milestonebadges}}
+                </div>
+
+                {{! Next Milestone Motivation Banner }}
+                {{#nextbadge}}
+                <div class="next-milestone-box">
+                    <div class="next-icon">{{{nextbadge.icon}}}</div>
+                    <div class="next-details">
+                        <div class="next-title-row">
+                            <span class="next-label">Next to unlock:</span>
+                            <span class="next-name">{{nextbadge.name}}</span>
+                            <span class="next-pct">{{nextbadge.pct}}%</span>
+                        </div>
+                        <div class="next-progress-bar">
+                            <div class="next-progress-fill" style="width:{{nextbadge.pct}}%;"></div>
+                        </div>
+                        <span class="next-hint">{{nextbadge.desc}}</span>
+                    </div>
+                </div>
+                {{/nextbadge}}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#has_student_options}}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var searchInput = document.getElementById('student-search-input');
+    var resultsBox = document.getElementById('student-search-results');
+    var clearBtn = document.getElementById('student-search-clear');
+    var students = {{{students_json}}};
+
+    if (!searchInput || !resultsBox || !students) return;
+
+    function renderResults(list) {
+        if (!list || list.length === 0) {
+            resultsBox.innerHTML = '<div style="padding:12px 16px; font-size:13px; color:#6b7fa3; text-align:center;">No students found matching your search.</div>';
+            resultsBox.style.display = 'block';
+            return;
+        }
+
+        var html = '';
+        list.slice(0, 15).forEach(function(s) {
+            var activeClass = s.selected ? 'background:#f0f7ff; font-weight:600;' : '';
+            html += '<a href="' + s.url + '" class="student-search-item" style="display:flex; align-items:center; gap:10px; padding:10px 14px; text-decoration:none; color:#0f1c35; border-bottom:1px solid #f1f5f9; transition:background 0.15s; ' + activeClass + '">' +
+                '<div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, #1565c0, #0d47a1); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">' + s.initials + '</div>' +
+                '<div style="flex:1; min-width:0; overflow:hidden;">' +
+                    '<div style="font-size:13px; font-weight:600; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">' + s.name + (s.selected ? ' <span style="font-size:10px; color:#1565c0; background:#e0edff; padding:2px 7px; border-radius:10px; margin-left:4px;">Viewing</span>' : '') + '</div>' +
+                    '<div style="font-size:11px; color:#6b7fa3; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">' + s.email + '</div>' +
+                '</div>' +
+                '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>' +
+            '</a>';
+        });
+
+        resultsBox.innerHTML = html;
+        resultsBox.style.display = 'block';
+
+        var items = resultsBox.querySelectorAll('.student-search-item');
+        items.forEach(function(item) {
+            item.addEventListener('mouseenter', function() { this.style.background = '#f8fafc'; });
+            item.addEventListener('mouseleave', function() {
+                if (this.innerHTML.indexOf('Viewing') === -1) {
+                    this.style.background = 'transparent';
+                } else {
+                    this.style.background = '#f0f7ff';
+                }
+            });
+        });
+    }
+
+    searchInput.addEventListener('input', function() {
+        var q = this.value.trim().toLowerCase();
+        if (clearBtn) {
+            clearBtn.style.display = q.length > 0 ? 'block' : 'none';
+        }
+        if (q.length === 0) {
+            renderResults(students);
+            return;
+        }
+        var filtered = students.filter(function(s) {
+            return s.name.toLowerCase().includes(q) || s.email.toLowerCase().includes(q);
+        });
+        renderResults(filtered);
+    });
+
+    searchInput.addEventListener('focus', function() {
+        var q = this.value.trim().toLowerCase();
+        if (q.length === 0) {
+            renderResults(students);
+        } else {
+            var filtered = students.filter(function(s) {
+                return s.name.toLowerCase().includes(q) || s.email.toLowerCase().includes(q);
+            });
+            renderResults(filtered);
+        }
+    });
+
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function() {
+            searchInput.value = '';
+            clearBtn.style.display = 'none';
+            searchInput.focus();
+            renderResults(students);
+        });
+    }
+
+    document.addEventListener('click', function(e) {
+        var container = document.getElementById('student-search-container');
+        if (container && !container.contains(e.target)) {
+            resultsBox.style.display = 'none';
+        }
+    });
+});
+</script>
+{{/has_student_options}}

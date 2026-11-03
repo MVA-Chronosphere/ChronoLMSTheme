@@ -1,0 +1,121 @@
+{{!
+    ChronoLMS Learning Path: pick a track, see where you are, follow the stages.
+
+    @template theme_chronolms/learningpath/page
+    @copyright 2026 Chronosphere Academy
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+<div class="lp">
+
+    <nav class="lp-tracks" aria-label="Learning tracks">
+        {{#tracktabs}}
+        <a href="{{url}}" class="lp-track{{#is_active}} is-active{{/is_active}}"{{#is_active}} aria-current="page"{{/is_active}}>
+            <span class="lp-track-ico">{{{icon}}}</span>
+            <span class="lp-track-txt">
+                <span class="lp-track-name">{{shorttitle}}</span>
+                <span class="lp-track-grade">{{grade_tag}}</span>
+            </span>
+        </a>
+        {{/tracktabs}}
+    </nav>
+
+    <section class="lp-hero" aria-labelledby="lp-title">
+        <div class="lp-hero-main">
+            <div class="lp-hero-tags">
+                <span class="lp-tag">{{{activetrack.icon}}} {{trackbadge}}</span>
+                <span class="lp-tag">{{tracktargetgrade}}</span>
+            </div>
+            <h1 class="lp-title" id="lp-title">{{tracktitle}}</h1>
+            <p class="lp-desc">{{trackdesc}}</p>
+
+            <div class="lp-stats">
+                <div class="lp-ring" style="--pct: {{overalltrackpct}}" role="img" aria-label="{{overalltrackpct}} percent of the track complete">
+                    <span>{{overalltrackpct}}%</span>
+                </div>
+                <dl class="lp-stat-list">
+                    <div><dt>Stages done</dt><dd>{{completedcount}} of {{totalstages}}</dd></div>
+                    <div><dt>Activities left</dt><dd>{{activitiesleft}} of {{activitiestotal}}</dd></div>
+                    <div><dt>Badges</dt><dd>{{badgesearned}} of {{totalstages}}</dd></div>
+                </dl>
+            </div>
+        </div>
+
+        <aside class="lp-next" aria-label="Up next">
+            {{#upnext}}
+            <span class="lp-next-label">Up next &middot; Stage {{stagenum}}</span>
+            <h2 class="lp-next-title">{{title}}</h2>
+            <p class="lp-next-meta"><span>{{{tool_icon}}} {{tool_badge}}</span><span>{{activities}}</span></p>
+            <div class="lp-next-bar" role="img" aria-label="{{pct}} percent of this stage complete"><i style="width: {{pct}}%"></i></div>
+            {{#hascourse}}<a class="lp-btn lp-btn-light" href="{{courseurl}}">{{btnlabel}} {{{iconarrow}}}</a>{{/hascourse}}
+            {{/upnext}}
+            {{#trackdone}}
+            <span class="lp-next-label">Track complete</span>
+            <h2 class="lp-next-title">You finished every stage</h2>
+            <p class="lp-next-meta"><span>All {{totalstages}} badges collected</span></p>
+            <a class="lp-btn lp-btn-light" href="{{mycoursesurl}}">Browse my courses {{{iconarrow}}}</a>
+            {{/trackdone}}
+        </aside>
+    </section>
+
+    <div class="lp-body">
+        <section class="lp-roadmap" aria-labelledby="lp-road-title">
+            <h2 class="lp-section-title" id="lp-road-title">Your stages</h2>
+            <ol class="lp-stages">
+                {{#stages}}
+                <li class="lp-stage{{#is_completed}} is-done{{/is_completed}}{{#is_in_progress}} is-current{{/is_in_progress}}{{#is_upcoming}} is-upcoming{{/is_upcoming}}">
+                    <div class="lp-node" aria-hidden="true">
+                        {{#is_completed}}{{{iconcheck}}}{{/is_completed}}{{^is_completed}}{{stagenum}}{{/is_completed}}
+                    </div>
+                    <article class="lp-card">
+                        <header class="lp-card-head">
+                            <span class="lp-stage-tag">Stage {{stagenum}} &middot; {{stagetag}}</span>
+                            <span class="lp-status">
+                                {{#is_completed}}Completed{{/is_completed}}
+                                {{#is_in_progress}}In progress{{/is_in_progress}}
+                                {{#is_upcoming}}Not started{{/is_upcoming}}
+                            </span>
+                        </header>
+                        <h3 class="lp-stage-title">{{title}}</h3>
+                        <p class="lp-stage-desc">{{subtitle}}</p>
+
+                        <ul class="lp-skills" aria-label="Skills you will practise">
+                            {{#skillchips}}<li>{{skill}}</li>{{/skillchips}}
+                        </ul>
+
+                        <footer class="lp-card-foot">
+                            <div class="lp-facts">
+                                <span>{{{tool_icon}}} {{tool_badge}}</span>
+                                <span>{{activities}}</span>
+                                <span class="lp-reward{{#badge_earned}} is-earned{{/badge_earned}}">{{{badge_icon}}} {{badge_name}} badge</span>
+                            </div>
+                            <div class="lp-action">
+                                <div class="lp-pct">
+                                    <span>{{pct}}%</span>
+                                    <div class="lp-pct-bar" role="img" aria-label="{{pct}} percent complete"><i style="width: {{pct}}%"></i></div>
+                                </div>
+                                {{#hascourse}}<a href="{{courseurl}}" class="lp-btn {{#is_in_progress}}lp-btn-primary{{/is_in_progress}}{{#is_completed}}lp-btn-done{{/is_completed}}{{#is_upcoming}}lp-btn-ghost{{/is_upcoming}}">{{btnlabel}} {{{iconarrow}}}</a>{{/hascourse}}
+                            </div>
+                        </footer>
+                    </article>
+                </li>
+                {{/stages}}
+            </ol>
+        </section>
+
+        <aside class="lp-rewards" aria-labelledby="lp-rew-title">
+            <h2 class="lp-section-title" id="lp-rew-title">Track badges</h2>
+            <p class="lp-rew-sub">Finish a stage to unlock its badge.</p>
+            <ul class="lp-badges">
+                {{#badges}}
+                <li class="lp-badge{{#earned}} is-earned{{/earned}}">
+                    <span class="lp-badge-ico">{{#earned}}{{{icon}}}{{/earned}}{{^earned}}{{{iconlock}}}{{/earned}}</span>
+                    <span class="lp-badge-txt">
+                        <b>{{name}}</b>
+                        <small>{{#earned}}Earned{{/earned}}{{^earned}}Stage {{stagenum}}{{/earned}}</small>
+                    </span>
+                </li>
+                {{/badges}}
+            </ul>
+        </aside>
+    </div>
+</div>

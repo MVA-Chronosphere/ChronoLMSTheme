@@ -1,0 +1,693 @@
+// =============================================================================
+// ChronoLMS — Coding Lab SCSS (matches Mockup Panel 4)
+// Light shell with deep dark IDE card and right-hand instruction/test cards.
+// =============================================================================
+
+.chrono-codinglab-wrapper {
+    padding: $sp-4 $sp-6;
+    max-width: 1600px;
+    margin: 0 auto;
+
+    @media (max-width: 991px) {
+        padding: $sp-3;
+    }
+}
+
+// ── Top Header Row ───────────────────────────────────────────────────────────
+.chrono-lab-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $sp-4;
+    flex-wrap: wrap;
+    gap: $sp-3;
+
+    .chrono-lab-main-heading {
+        font-size: 24px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 4px 0;
+        letter-spacing: -0.02em;
+    }
+
+    .chrono-lab-subheading {
+        font-size: 13px;
+        color: #64748b;
+        margin: 0;
+    }
+
+    .chrono-lab-step-status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        padding: 6px 14px;
+        border-radius: 20px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+
+        .chrono-step-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .chrono-step-indicator {
+            font-size: 13px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+    }
+}
+
+// ── Responsive Tab Switcher (Mobile/Tablet) ──────────────────────────────────
+.chrono-lab-responsive-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: $sp-3;
+    background: #e2e8f0;
+    padding: 4px;
+    border-radius: 8px;
+
+    .chrono-tab-btn {
+        flex: 1;
+        border: none;
+        background: transparent;
+        padding: 8px 12px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #475569;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &.active {
+            background: #ffffff;
+            color: #0f172a;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+    }
+}
+
+// ── Grid Layout (Desktop 70/30 split) ─────────────────────────────────────────
+.chrono-codinglab-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(320px, 3fr);
+    gap: 24px;
+    align-items: start;
+
+    @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// ── Dark IDE Card (Panel 4) ──────────────────────────────────────────────────
+.chrono-ide-card-container {
+    min-width: 0;
+}
+
+.chrono-dark-ide-card {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 640px;
+
+    .chrono-ide-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #1e293b;
+        padding: 10px 16px;
+        border-bottom: 1px solid #334155;
+
+        .chrono-lang-badge {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e2e8f0;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.06);
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .chrono-ide-btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #cbd5e1;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background: rgba(255,255,255,0.16);
+                color: #ffffff;
+            }
+        }
+    }
+
+    .chrono-ide-workspace-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: #090d16;
+        min-height: 580px;
+
+        // Reset any inner padding that breaks full bleeding editor
+        > div {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+
+// ── Right Side Column: Instructions & Test Cases ─────────────────────────────
+.chrono-instructions-card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .chrono-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .chrono-box-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 14px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .chrono-instruction-text {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #334155;
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    // Need Help Box
+    .chrono-help-box {
+        background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+        border: 1px solid #bfdbfe;
+
+        .chrono-help-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+
+            .chrono-help-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: 8px;
+                background: #dbeafe;
+                color: #2563eb;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+                flex-shrink: 0;
+            }
+
+            .chrono-help-title {
+                font-size: 14px;
+                font-weight: 700;
+                color: #1e3a8a;
+                margin: 0 0 4px 0;
+            }
+
+            .chrono-help-desc {
+                font-size: 12px;
+                color: #64748b;
+                margin: 0;
+                line-height: 1.4;
+            }
+        }
+    }
+}
+
+// =============================================================================
+// Coding Lab activity header and page polish (VPL and NextBlocks)
+// Markup: templates/coding_lab/header.mustache. Theme only: the plugins' own
+// markup is styled from outside and never changed.
+// =============================================================================
+.lab-hero {
+  margin: 0 0 $sp-4;
+  padding: $sp-5 $sp-6;
+  background: $grad-banner;
+  color: #fff;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-sm;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: -60px;
+    top: -80px;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .07);
+    pointer-events: none;
+  }
+}
+.lab-crumbs {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: $sp-2;
+  font-size: $text-sm;
+  color: rgba(255, 255, 255, .8);
+
+  a { color: rgba(255, 255, 255, .92); text-decoration: none; &:hover { color: #fff; text-decoration: underline; } &:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 4px; } }
+}
+.lab-hero-row { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: $sp-5; }
+.lab-hero-text { min-width: 0; }
+.lab-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 12px;
+  border-radius: $radius-full;
+  background: rgba(255, 255, 255, .16);
+  font-size: $text-sm;
+  font-weight: $fw-semi;
+}
+.lab-hero-title { margin: $sp-2 0 0; font-size: $text-2xl; font-weight: $fw-bold; letter-spacing: -.01em; color: #fff; }
+
+.lab-pn { display: flex; gap: $sp-2; flex-shrink: 0; }
+.lab-pn-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-3;
+  min-height: 48px;
+  max-width: 230px;
+  padding: 0 $sp-4;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .15);
+  border: 1px solid rgba(255, 255, 255, .25);
+  color: #fff;
+  font-size: $text-sm;
+  font-weight: $fw-semi;
+  line-height: 1.25;
+  text-decoration: none;
+  transition: background .15s ease;
+
+  small { display: block; font-size: $text-xs; font-weight: $fw-medium; color: rgba(255, 255, 255, .8); }
+  > span:not(.lab-pn-flip) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  &:hover { background: rgba(255, 255, 255, .26); color: #fff; text-decoration: none; }
+  &:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+  &.is-off { opacity: .45; cursor: default; &:hover { background: rgba(255, 255, 255, .15); } }
+}
+.lab-pn-flip { display: inline-flex; transform: scaleX(-1); }
+
+// The activity's own tab bar (Description, Submission, Edit, Submission view)
+body.path-mod-vpl .secondary-navigation { display: block !important; }
+body.path-mod-vpl .chronolms-main .nav.nav-tabs:not(.more-nav) { margin-bottom: $sp-4; }
+
+// Description page: the task reads like a worksheet
+body.path-mod-vpl #page-mod-vpl-view,
+body.path-mod-vpl.path-mod-vpl-view {
+  .box.generalbox { font-size: $text-md; line-height: 1.65; color: $clr-text-700; }
+  h2 { margin: $sp-5 0 $sp-3; font-size: $text-lg; font-weight: $fw-bold; color: $clr-text-900; }
+  h4 { margin: $sp-4 0 $sp-2; font-size: $text-base; font-weight: $fw-semi; color: $clr-text-700; font-family: $font-code; }
+}
+
+// Plugin credit ("VPL") under every page: the plugin gives it a white box with inline styles,
+// so it is quietened from outside with !important rather than removed.
+body.path-mod-vpl div:has(> a[href*="vpl.dis.ulpgc.es"]) {
+  float: none !important;
+  padding: $sp-2 0 0 !important;
+  background: transparent !important;
+  text-align: right !important;
+
+  a { font-size: $text-xs; color: $clr-text-400; opacity: .75; text-decoration: none; &:hover { opacity: 1; text-decoration: underline; } }
+}
+
+// On the editor screen the header gives room back to the code
+body#page-mod-vpl-edit .lab-hero {
+  padding: $sp-3 $sp-5;
+  margin-bottom: $sp-3;
+  .lab-hero-title { font-size: $text-xl; margin-top: 4px; }
+  .lab-crumbs { margin-bottom: 4px; }
+  .lab-pn-btn { min-height: 40px; }
+}
+
+// Problem list: grade cells become status pills instead of full-width colour blocks
+body#page-mod-vpl-index .vpl_nm {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: $radius-full;
+  background: #fff4e5 !important;
+  color: #b45309 !important;
+  font-size: $text-xs;
+  font-weight: $fw-bold;
+}
+
+// =============================================================================
+// Editor side panel ("Description") and the terminal window.
+// The VPL editor builds these with jQuery UI; we only restyle them from outside.
+// =============================================================================
+$lab-term-bg:     #0b1220;
+$lab-term-bar:    #131d33;
+$lab-term-border: #24324f;
+
+body.path-mod-vpl #vplide #vpl_results {
+  padding: $sp-4 !important;
+
+  #vpl_results_accordion#vpl_results_accordion {
+    gap: 0 !important;
+
+    // The accordion keeps one empty panel per result type; they must not take up room.
+    .ui-accordion-content:empty { display: none !important; }
+    .ui-accordion-content:not(.vpl_ide_accordion_c_description):empty + .ui-accordion-header { margin-top: 0 !important; }
+
+    .vpl_ide_accordion_t_description {
+      justify-content: flex-start !important;
+      gap: $sp-3 !important;
+      padding: 14px $sp-5 !important;
+      background: #fff !important;
+      color: $clr-text-900 !important;
+      border: 1px solid $clr-border !important;
+      border-bottom: 1px solid $clr-border-light !important;
+      border-radius: $radius-lg $radius-lg 0 0 !important;
+      font-size: $text-sm !important;
+      font-weight: $fw-bold !important;
+      letter-spacing: .08em !important;
+      text-transform: uppercase;
+      text-align: left !important;
+      box-shadow: none !important;
+
+      &::before {
+        content: "";
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background-color: $clr-blue-600;
+        // book icon, white
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z'/%3E%3Cpath d='M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z'/%3E%3C/svg%3E");
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      &:hover { background: $clr-surface !important; }
+    }
+
+    .vpl_ide_accordion_c_description {
+      height: auto !important;
+      flex: 0 0 auto !important;
+      min-height: 0 !important;
+      padding: $sp-5 !important;
+      border: 1px solid $clr-border !important;
+      border-top: none !important;
+      border-radius: 0 0 $radius-lg $radius-lg !important;
+      box-shadow: $shadow-xs !important;
+      font-size: $text-md !important;
+      line-height: 1.7 !important;
+      color: $clr-text-700 !important;
+
+      > :first-child { margin-top: 0 !important; }
+      > :last-child { margin-bottom: 0 !important; }
+      p { font-size: $text-md !important; line-height: 1.7 !important; color: $clr-text-700 !important; margin: 0 0 $sp-3 !important; }
+      h1, h2, h3, h4 { margin: $sp-4 0 $sp-2; font-size: $text-lg; font-weight: $fw-bold; color: $clr-text-900; }
+      ul, ol { padding-left: $sp-5; margin: 0 0 $sp-3; }
+      li { margin-bottom: 4px; }
+      pre {
+        margin: $sp-3 0;
+        padding: $sp-3 $sp-4;
+        border-radius: $radius-md;
+        background: $lab-term-bg !important;
+        color: #e2e8f0 !important;
+        font-family: $font-code;
+        font-size: $text-sm;
+        line-height: 1.6;
+      }
+    }
+  }
+}
+
+// Terminal window (xterm.js) and the other VPL tool windows
+body.path-mod-vpl .ui-dialog.vpl_ide.vpl_vnc {
+  background: $lab-term-bg !important;
+  border: 1px solid $lab-term-border !important;
+  border-radius: $radius-lg !important;
+  box-shadow: 0 24px 60px rgba(2, 8, 23, .5) !important;
+
+  .ui-dialog-titlebar {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 46px;
+    padding: 0 $sp-3 0 $sp-4 !important;
+    background: $lab-term-bar !important;
+    border: 0 !important;
+    border-bottom: 1px solid $lab-term-border !important;
+    border-radius: $radius-lg $radius-lg 0 0 !important;
+    color: #e2e8f0 !important;
+    cursor: move;
+  }
+  .ui-dialog-title {
+    display: flex !important;
+    align-items: center;
+    flex: 1;
+    gap: $sp-3;
+    width: auto !important;
+    margin: 0 !important;
+    font-size: $text-sm !important;
+    font-weight: $fw-semi !important;
+    color: #e2e8f0;
+
+    > .fa { color: #7dd3fc; font-size: 16px; }
+    // Name the window when the plugin has not put a title in it
+    &:has(.console-title-text:empty)::after { content: "Terminal"; order: -1; margin-left: -4px; }
+    &:has(.console-title-text:empty) > .fa { order: -2; }
+  }
+  .console-title-buttons { display: inline-flex; gap: 6px; margin-left: auto; order: 5; }
+  .console-title-buttons a {
+    display: inline-grid !important;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0 !important;
+    border: 1px solid $lab-term-border !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, .06) !important;
+    color: #cbd5e1 !important;
+    transition: background .15s ease, color .15s ease;
+    &:hover { background: rgba(255, 255, 255, .15) !important; color: #fff !important; }
+    &:focus-visible { outline: 2px solid $clr-blue-400; outline-offset: 1px; }
+  }
+  .ui-dialog-titlebar-close { position: static !important; transform: none !important; margin: 0 0 0 $sp-3 !important; width: 30px !important; height: 30px !important; flex-shrink: 0; }
+
+  #vpl_dialog_terminal { padding: 0 !important; background: $lab-term-bg !important; }
+  #vpl_terminal { margin: 0; padding: $sp-3 $sp-4; background: $lab-term-bg !important; border: 0; border-radius: 0 0 $radius-lg $radius-lg; }
+  .xterm .xterm-viewport { background-color: $lab-term-bg !important; }
+  .xterm .xterm-viewport::-webkit-scrollbar { width: 10px; }
+  .xterm .xterm-viewport::-webkit-scrollbar-thumb { background: #2b3a5c; border-radius: 6px; }
+}
+
+// =============================================================================
+// Editor loading panel (see initEditorLoading in javascript/app.js) and the
+// plugin's small dialogs (new file, rename, sort, preferences ...)
+// =============================================================================
+// The editor keeps laying itself out underneath; the panel just covers it until it is ready.
+body#page-mod-vpl-edit.lab-booting #vplide {
+  position: relative;
+  min-height: 460px;
+
+  &::after {
+    content: "Opening the editor...";
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 90px;
+    border-radius: inherit;
+    background-color: $clr-surface;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='18' fill='none' stroke='%23dde5f0' stroke-width='5'/%3E%3Cpath d='M22 4a18 18 0 0 1 18 18' fill='none' stroke='%231565c0' stroke-width='5' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 22 22' to='360 22 22' dur='0.9s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center calc(50% - 20px);
+    background-size: 44px 44px;
+    font-size: $text-md;
+    font-weight: $fw-semi;
+    color: $clr-text-700;
+  }
+}
+
+// The plugin's small dialogs match the terminal window family
+body.path-mod-vpl .ui-dialog.vpl_ide:not(.vpl_vnc) {
+  .ui-dialog-titlebar-close { position: static !important; transform: none !important; width: 30px !important; height: 30px !important; margin: 0 !important; }
+  .ui-dialog-titlebar { display: flex !important; align-items: center; justify-content: space-between; min-height: 46px; padding: 0 $sp-3 0 $sp-4 !important; }
+  .ui-dialog-content { padding: $sp-4 $sp-5 !important; font-size: $text-base; color: $clr-text-700; }
+  input[type="text"], input:not([type]), select, textarea {
+    min-height: 40px;
+    padding: 0 $sp-3;
+    border: 1.5px solid $clr-border;
+    border-radius: $radius-md;
+    font-size: $text-base;
+    &:focus { outline: 3px solid rgba(66, 165, 245, .45); border-color: $clr-blue-600; }
+  }
+  .ui-dialog-buttonpane {
+    margin: 0 !important;
+    padding: $sp-3 $sp-4 !important;
+    border-top: 1px solid $clr-border-light !important;
+    background: $clr-surface;
+    button {
+      min-height: 40px;
+      padding: 0 $sp-5;
+      border: 1.5px solid $clr-border;
+      border-radius: 10px;
+      background: #fff;
+      font-size: $text-base;
+      font-weight: $fw-semi;
+      color: $clr-text-700;
+      cursor: pointer;
+      &:hover { border-color: $clr-blue-400; color: $clr-blue-600; }
+      &:first-child { background: $clr-blue-600; border-color: $clr-blue-600; color: #fff; &:hover { background: $clr-blue-500; color: #fff; } }
+    }
+  }
+}
+
+// =============================================================================
+// NextBlocks (block coding) activity page
+// The plugin draws the page; this lays it out like the rest of the Coding Lab:
+// one header, a task card, one workspace card, one action bar, a tidy chat box.
+// Theme only. Plugin markup, ids and scripts are untouched.
+// =============================================================================
+body.path-mod-nextblocks {
+  // The header above already shows course, problem and title, so the repeats go.
+  .course-header-bar,
+  #region-main > h2,
+  #region-main > div > h2,
+  #region-main > div > hr { display: none !important; }
+
+  // ── Task card ──────────────────────────────────────────────────────────────
+  .activity-header { margin: 0 0 $sp-4 !important; }
+  .activity-header .activity-information:empty { display: none; }
+  #intro.activity-description {
+    position: relative;
+    margin: 0 !important;
+    padding: $sp-5 $sp-6 !important;
+    background: #fff !important;
+    border: 1px solid $clr-border !important;
+    border-left: 5px solid $clr-blue-600 !important;
+    border-radius: $radius-lg !important;
+    box-shadow: $shadow-xs;
+    font-size: $text-md;
+    line-height: 1.75;
+    color: $clr-text-700;
+
+    &::before {
+      content: "Your task";
+      display: block;
+      margin-bottom: $sp-2;
+      font-size: $text-xs;
+      font-weight: $fw-bold;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: $clr-blue-600;
+    }
+    .no-overflow { overflow: visible; }
+    .no-overflow > :last-child { margin-bottom: 0; }
+    strong, b { color: $clr-text-900; }
+    a { color: $clr-blue-600; font-weight: $fw-semi; }
+  }
+
+  // ── Workspace card ─────────────────────────────────────────────────────────
+  #nextblocks-container#nextblocks-container {
+    margin: 0 0 $sp-4 !important;
+    padding: $sp-5 !important;
+    border-radius: $radius-xl;
+
+    // toolbar row: toggles left and right, reactions in the middle
+    > .row:first-child { margin: 0 0 $sp-3 !important; align-items: center !important; }
+    > .row:first-child > .col-md-3 { margin-top: 0 !important; }
+    #showCodeButton, #showBlockLimits {
+      min-height: 40px;
+      margin: 0 !important;
+      padding: 0 $sp-4 !important;
+      border-radius: 10px !important;
+      font-size: $text-sm !important;
+    }
+    #showBlockLimits { float: none !important; margin-left: auto !important; display: block; }
+
+    .reactions-heading.reactions-heading {
+      min-width: 0 !important;
+      max-width: none !important;
+      width: auto;
+      padding: 10px $sp-5 !important;
+      border-radius: $radius-lg !important;
+      box-shadow: $shadow-xs !important;
+      background: $clr-surface !important;
+      border: 1px solid $clr-border !important;
+      h4 { margin-bottom: 6px !important; font-size: $text-xs !important; color: $clr-text-400 !important; }
+      .emoji-img { width: 40px !important; height: 40px !important; min-width: 40px !important; min-height: 40px !important; padding: 5px !important; border-radius: 12px !important; }
+      [id^="percentage-"] { margin-top: 4px !important; font-size: $text-sm !important; color: $clr-text-700 !important; }
+    }
+
+    > .row.h-100 { margin: 0 !important; }
+    #blocklyDiv { border-radius: $radius-lg !important; }
+
+    #terminal-container#terminal-container {
+      margin-top: $sp-4 !important;
+      background: $lab-term-bg !important;
+      border: 1px solid $lab-term-border !important;
+      border-radius: $radius-lg !important;
+      box-shadow: none !important;
+    }
+
+    // action bar: Submit is the main action
+    > .row.mt-3:last-child {
+      margin: $sp-4 0 0 !important;
+      padding-top: $sp-4;
+      border-top: 1px solid $clr-border-light;
+      > .col-md-12 { display: flex; justify-content: flex-end; gap: $sp-3; text-align: right !important; }
+    }
+    #saveButton, #submitButton, #cancelButton {
+      min-height: 44px;
+      margin: 0 !important;
+      padding: 0 $sp-6;
+      border-radius: 12px;
+      font-size: $text-base;
+      font-weight: $fw-semi;
+      cursor: pointer;
+      transition: background .15s ease, border-color .15s ease;
+      &:focus-visible { outline: 3px solid $clr-blue-400; outline-offset: 2px; }
+    }
+    #submitButton { order: 3; background: $clr-blue-600 !important; border: 1.5px solid $clr-blue-600 !important; color: #fff !important; &:hover { background: $clr-blue-500 !important; } }
+    #saveButton   { order: 2; background: #fff !important; border: 1.5px solid $clr-border !important; color: $clr-text-700 !important; &:hover { border-color: $clr-blue-400 !important; color: $clr-blue-600 !important; } }
+    #cancelButton { order: 1; background: transparent !important; border: 1.5px solid transparent !important; color: $clr-text-400 !important; &:hover { color: $clr-text-900 !important; background: $clr-surface !important; } }
+  }
+
+  // ── Chat ───────────────────────────────────────────────────────────────────
+  // Removed from the page. The plugin still prints it, so it is hidden from the theme side.
+  .container:has(> .chat-box),
+  .chat-box,
+  #codeDiv:empty { display: none !important; }
+}

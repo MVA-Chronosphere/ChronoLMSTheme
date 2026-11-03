@@ -1,0 +1,993 @@
+// Shared compatibility layer for Moodle activities and local/report plugins.
+
+.chronolms-main {
+  .activity-header,
+  .secondary-navigation,
+  .tertiary-navigation,
+  .generaltable,
+  .mform,
+  .reportbuilder-table,
+  [data-region="report-table"] {
+    max-width: 100%;
+  }
+
+  .table-responsive,
+  .no-overflow {
+    overflow-x: auto;
+  }
+
+  .generaltable {
+    background: $clr-card;
+    border: 1px solid $clr-border;
+    border-radius: $radius-lg;
+    overflow: hidden;
+  }
+
+  .mform,
+  .activity-header,
+  .course-content,
+  [role="main"] > .card {
+    background: $clr-card;
+    border-radius: $radius-lg;
+  }
+}
+
+// Course editor action menus and Bootstrap 5 dropdown compatibility
+.dropdown-menu.show {
+  display: block !important;
+  z-index: 1055 !important;
+}
+
+.format-topics,
+.format-weeks,
+.course-content {
+  .section,
+  .activity-item,
+  .course-section-header,
+  .section-summary-activities {
+    overflow: visible !important;
+  }
+
+  .action-menu,
+  .dropdown {
+    position: relative;
+
+    .dropdown-menu {
+      z-index: 1060 !important;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12), 0 4px 10px rgba(0, 0, 0, 0.05) !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 10px !important;
+    }
+  }
+}
+
+body.path-mod-vpl {
+  .chronolms-main {
+    padding: $sp-4;
+  }
+}
+
+body.path-mod-nextblocks {
+  .chronolms-main {
+    padding: $sp-4;
+    min-height: calc(100vh - 80px);
+  }
+
+  // Heading & Breadcrumbs
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+
+  hr {
+    border-color: #e2e8f0;
+    margin: 16px 0 24px 0;
+  }
+
+  // Main Card Container
+  #nextblocks-container,
+  .nextblocks-container {
+    width: 100%;
+    max-width: 100%;
+    height: auto !important;
+    min-height: auto !important;
+    display: block !important;
+    border-radius: 16px;
+    background: #ffffff;
+    padding: 24px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+
+    // Fix inline 100px margin-top on top header buttons
+    div[style*="margin-top: 100px"],
+    .col-md-3[style*="margin-top: 100px"] {
+      margin-top: 0 !important;
+      display: flex;
+      align-items: center;
+    }
+
+    // Toggle Buttons (Text Code / Block Limits)
+    #showCodeButton,
+    #showBlockLimits {
+      background: #f8fafc !important;
+      border: 1px solid #cbd5e1 !important;
+      color: #334155 !important;
+      font-weight: 600 !important;
+      font-size: 13px !important;
+      border-radius: 8px !important;
+      padding: 8px 18px !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease !important;
+
+      &:hover {
+        background: #f1f5f9 !important;
+        border-color: #94a3b8 !important;
+        color: #0f172a !important;
+      }
+    }
+
+    // Reactions Heading Card (Enlarged and Modernized)
+    .reactions-heading {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 18px !important;
+      padding: 16px 28px !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+      min-width: 320px !important;
+      max-width: 440px !important;
+      margin: 0 auto !important;
+
+      h4 {
+        font-size: 13.5px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.1em !important;
+        font-weight: 800 !important;
+        color: #334155 !important;
+        margin-bottom: 12px !important;
+        text-align: center !important;
+      }
+
+      .emoji-img {
+        width: 54px !important;
+        height: 54px !important;
+        min-width: 54px !important;
+        min-height: 54px !important;
+        padding: 7px !important;
+        background: #f8fafc !important;
+        border: 2px solid #e2e8f0 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+        cursor: pointer !important;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+        &:hover {
+          transform: translateY(-3px) scale(1.15) !important;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12) !important;
+          border-color: #38bdf8 !important;
+          background: #ffffff !important;
+        }
+      }
+
+      [id^="percentage-"] {
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        color: #1e293b !important;
+        margin-top: 8px !important;
+        text-align: center !important;
+      }
+    }
+
+    // Blockly Workspace Canvas
+    > .row.h-100 {
+      width: 100% !important;
+      height: 520px !important;
+      min-height: 520px !important;
+      display: flex !important;
+      flex-wrap: wrap !important;
+      margin: 16px 0 !important;
+    }
+
+    #blocklyArea {
+      width: 100% !important;
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+      height: 520px !important;
+      min-height: 520px !important;
+      position: static !important;
+      overflow: visible !important;
+    }
+
+    #blocklyDiv {
+      height: 520px !important;
+      min-height: 520px !important;
+      border-radius: 12px !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+
+      // Modern Blockly Category Toolbox
+      .blocklyToolboxDiv {
+        background: #f8fafc !important;
+        border-right: 1px solid #e2e8f0 !important;
+        padding: 12px 8px !important;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.03) !important;
+        border-top-left-radius: 12px !important;
+        border-bottom-left-radius: 12px !important;
+
+        label {
+          display: block !important;
+          font-size: 11px !important;
+          font-weight: 700 !important;
+          text-transform: uppercase !important;
+          letter-spacing: 0.08em !important;
+          color: #64748b !important;
+          margin-bottom: 12px !important;
+          padding-left: 4px !important;
+          font-family: inherit !important;
+          text-align: center !important;
+        }
+
+        .blocklyToolboxContents {
+          padding: 0 !important;
+        }
+
+        .blocklyToolboxCategory {
+          margin: 0 !important;
+        }
+
+        .blocklyTreeRow {
+          border-radius: 10px !important;
+          margin: 0 0 8px 0 !important;
+          padding: 8px 10px !important;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+          cursor: pointer !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          border: 1px solid rgba(255, 255, 255, 0.2) !important;
+
+          &:hover {
+            transform: translateY(-1px) scale(1.03) !important;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
+            filter: brightness(1.08) !important;
+          }
+
+          &.blocklyTreeSelected {
+            box-shadow: 0 0 0 2.5px #38bdf8, 0 4px 16px rgba(56, 189, 248, 0.4) !important;
+          }
+
+          .blocklyTreeRowContentContainer {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 4px !important;
+            width: 100% !important;
+
+            .customIcon {
+              font-size: 16px !important;
+              color: #ffffff !important;
+              filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3)) !important;
+              display: inline-block !important;
+              margin: 0 !important;
+            }
+
+            .blocklyTreeLabel {
+              font-size: 11.5px !important;
+              font-weight: 700 !important;
+              color: #ffffff !important;
+              letter-spacing: 0.02em !important;
+              font-family: inherit !important;
+              text-align: center !important;
+              text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) !important;
+              padding: 0 !important;
+              margin: 0 !important;
+            }
+          }
+        }
+      }
+
+      // Modern Flyout Palette (when category is selected)
+      .blocklyFlyoutBackground {
+        fill: #ffffff !important;
+        fill-opacity: 0.98 !important;
+        stroke: #e2e8f0 !important;
+        stroke-width: 1px !important;
+      }
+
+      .blocklyFlyout {
+        filter: drop-shadow(4px 0 16px rgba(0, 0, 0, 0.08)) !important;
+      }
+
+      // Trash can styling
+      .blocklyTrash {
+        opacity: 0.75 !important;
+        transition: opacity 0.2s ease !important;
+
+        &:hover {
+          opacity: 1 !important;
+        }
+      }
+    }
+
+    // Modern Studio Terminal & Output Section
+    #terminal-container {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100% !important;
+      height: auto !important;
+      min-height: 280px !important;
+      max-height: 550px !important;
+      background: #0f172a !important;
+      color: #f1f5f9 !important;
+      border-radius: 12px !important;
+      overflow: hidden !important;
+      margin: 24px 0 0 0 !important;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15) !important;
+      border: 1px solid #1e293b !important;
+
+      > .col-md-12 {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 280px !important;
+        padding: 0 !important;
+        flex: 1 1 auto !important;
+      }
+
+      // Terminal Header Toolbar
+      .row.h-15 {
+        width: 100% !important;
+        height: 52px !important;
+        min-height: 52px !important;
+        flex-shrink: 0 !important;
+        background: #1e293b !important;
+        border-bottom: 1px solid #334155 !important;
+        padding: 8px 18px !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+
+        .col-md-12 {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: flex-end !important;
+          gap: 10px !important;
+          padding: 0 !important;
+          width: 100% !important;
+
+          &::before {
+            content: ">_ TERMINAL & TEST RUNNER";
+            color: #94a3b8;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            margin-right: auto;
+          }
+        }
+      }
+
+      .row.h-75 {
+        width: 100% !important;
+        flex: 1 1 auto !important;
+        height: auto !important;
+        min-height: 220px !important;
+        margin: 0 !important;
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+
+        > .col-md-12 {
+          width: 100% !important;
+          height: auto !important;
+          min-height: 220px !important;
+          padding: 0 !important;
+          flex: 1 1 auto !important;
+        }
+      }
+
+      // Action Buttons inside Terminal Header
+      #runButton {
+        background: #059669 !important;
+        border: 1px solid #047857 !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        padding: 6px 20px !important;
+        font-size: 13px !important;
+        box-shadow: 0 2px 8px rgba(5, 150, 105, 0.35) !important;
+        cursor: pointer !important;
+        transition: all 0.15s ease !important;
+        margin: 0 !important;
+
+        &:hover {
+          background: #10b981 !important;
+        }
+      }
+
+      #runTestsButton {
+        background: #2563eb !important;
+        border: 1px solid #1d4ed8 !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        padding: 6px 20px !important;
+        font-size: 13px !important;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35) !important;
+        cursor: pointer !important;
+        transition: all 0.15s ease !important;
+        margin: 0 !important;
+
+        &:hover {
+          background: #3b82f6 !important;
+        }
+      }
+
+      // Output & Console Window
+      #output-div {
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 220px !important;
+        max-height: 380px !important;
+        background: #090d16 !important;
+        color: #f1f5f9 !important;
+        font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace !important;
+        font-size: 13.5px !important;
+        line-height: 1.6 !important;
+        padding: 16px 20px !important;
+        overflow-y: auto !important;
+
+        &:empty::before {
+          content: "Run your code or tests to view terminal output and test results here...";
+          color: #64748b;
+          font-style: italic;
+        }
+
+        pre {
+          background: transparent !important;
+          color: inherit !important;
+          font-family: inherit !important;
+          font-size: inherit !important;
+          line-height: inherit !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        // Test results cards (<div class="card"><details class="card-body"><summary class="card-header">)
+        .card {
+          background: #1e293b !important;
+          border: 1px solid #334155 !important;
+          border-radius: 10px !important;
+          overflow: hidden !important;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+          margin-bottom: 12px !important;
+          color: #f8fafc !important;
+
+          details.card-body {
+            padding: 0 !important;
+            background: transparent !important;
+            color: #f8fafc !important;
+
+            summary.card-header {
+              background: #1e293b !important;
+              color: #ffffff !important;
+              font-family: 'JetBrains Mono', Consolas, monospace !important;
+              font-size: 14px !important;
+              font-weight: 700 !important;
+              padding: 12px 18px !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: space-between !important;
+              cursor: pointer !important;
+              border-bottom: 1px solid #334155 !important;
+              outline: none !important;
+              user-select: none !important;
+              transition: background 0.15s ease !important;
+
+              &:hover {
+                background: #273549 !important;
+              }
+
+              &::-webkit-details-marker,
+              &::marker {
+                color: #38bdf8 !important;
+              }
+
+              .badge,
+              span.badge {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+                font-size: 12px !important;
+                font-weight: 700 !important;
+                padding: 4px 12px !important;
+                border-radius: 6px !important;
+                letter-spacing: 0.04em !important;
+
+                &.badge-danger,
+                &[style*="color: red"] {
+                  background: rgba(239, 68, 68, 0.2) !important;
+                  color: #ef4444 !important;
+                  border: 1px solid rgba(239, 68, 68, 0.5) !important;
+                }
+
+                &.badge-success {
+                  background: rgba(16, 185, 129, 0.2) !important;
+                  color: #10b981 !important;
+                  border: 1px solid rgba(16, 185, 129, 0.5) !important;
+                }
+              }
+            }
+
+            // Inner test details (Input, Expected, Your output)
+            div.pt-2,
+            div[style*="background-color: white"] {
+              background-color: #0f172a !important;
+              background: #0f172a !important;
+              color: #cbd5e1 !important;
+              padding: 16px 18px !important;
+              border-top: 1px solid #334155 !important;
+
+              p {
+                color: #94a3b8 !important;
+                font-size: 11.5px !important;
+                font-weight: 700 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.06em !important;
+                margin-top: 10px !important;
+                margin-bottom: 4px !important;
+
+                &:first-child {
+                  margin-top: 0 !important;
+                }
+              }
+
+              pre.test-input,
+              pre.test-output {
+                background: #090d16 !important;
+                color: #38bdf8 !important;
+                border: 1px solid #1e293b !important;
+                border-radius: 6px !important;
+                padding: 9px 14px !important;
+                font-size: 13px !important;
+                font-family: 'JetBrains Mono', Consolas, monospace !important;
+                white-space: pre-wrap !important;
+                word-break: break-all !important;
+                margin: 4px 0 10px 0 !important;
+              }
+            }
+          }
+        }
+      }
+
+      // Interactive Answer Input Prompt
+      #input-box {
+        background: #1e293b !important;
+        color: #f8fafc !important;
+        border: 2px solid #38bdf8 !important;
+        border-radius: 8px !important;
+        padding: 10px 16px !important;
+        font-family: 'JetBrains Mono', Consolas, monospace !important;
+        font-size: 14px !important;
+        box-shadow: 0 4px 16px rgba(56, 189, 248, 0.25) !important;
+        outline: none !important;
+      }
+    }
+
+    // Action Buttons Row (Save, Submit, Cancel)
+    .row.mt-3 {
+      margin-top: 24px !important;
+
+      .col-md-12 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+      }
+
+      #saveButton {
+        background: #f1f5f9 !important;
+        border: 1px solid #cbd5e1 !important;
+        color: #1e293b !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        border-radius: 8px !important;
+        padding: 9px 24px !important;
+        cursor: pointer !important;
+        transition: all 0.15s ease !important;
+        margin: 0 !important;
+
+        &:hover {
+          background: #e2e8f0 !important;
+          color: #0f172a !important;
+        }
+      }
+
+      #submitButton {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+        border: none !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 14px !important;
+        border-radius: 8px !important;
+        padding: 9px 32px !important;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+        cursor: pointer !important;
+        transition: all 0.15s ease !important;
+        margin: 0 !important;
+
+        &:hover {
+          box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45) !important;
+          transform: translateY(-1px);
+        }
+      }
+
+      #cancelButton {
+        background: transparent !important;
+        border: 1px solid #e2e8f0 !important;
+        color: #64748b !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        border-radius: 8px !important;
+        padding: 9px 22px !important;
+        cursor: pointer !important;
+        transition: all 0.15s ease !important;
+        margin: 0 !important;
+
+        &:hover {
+          background: #fee2e2 !important;
+          color: #dc2626 !important;
+          border-color: #fca5a5 !important;
+        }
+      }
+    }
+  }
+
+  // Discussion & Chat Box Container (eliminate legacy 700px margin gap)
+  div.container[style*="margin-top: 700px"] {
+    margin-top: 32px !important;
+
+    .chat-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+
+      .message {
+        border-bottom: 1px solid #f1f5f9;
+        padding: 14px 0;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .message-header {
+          font-weight: 600;
+          color: #1e293b;
+          font-size: 13.5px;
+          margin-bottom: 4px;
+        }
+
+        .message-content {
+          color: #475569;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}
+
+body.path-local-codeanalytics,
+body.path-local-code_analytics,
+body.path-report-codeanalytics,
+body.path-report-code_analytics {
+  .chart-area,
+  .chart-image,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+
+  .local-code-analytics {
+    background: transparent !important;
+    padding: $sp-2 0;
+
+    // Filter controls
+    form {
+      background: $clr-card;
+      border: 1px solid $clr-border-light;
+      border-radius: $radius-xl;
+      padding: $sp-5;
+      box-shadow: $shadow-sm;
+      margin-bottom: $sp-5;
+
+      select, input[type="date"], input[type="text"] {
+        border: 1.5px solid $clr-border !important;
+        border-radius: $radius-lg !important;
+        padding: 8px 12px !important;
+        font-size: $text-xs !important;
+        color: $clr-text-700 !important;
+        background-color: #fff !important;
+        transition: $transition-fast;
+
+        &:focus {
+          border-color: $clr-blue-600 !important;
+          outline: none;
+          box-shadow: 0 0 0 3px rgba($clr-blue-600, 0.15);
+        }
+      }
+
+      button, .lca-filter-actions button {
+        border-radius: $radius-lg !important;
+        font-size: $text-xs !important;
+        font-weight: $fw-semi !important;
+        padding: 8px $sp-4 !important;
+        transition: $transition-fast;
+
+        &.bg-blue-600 {
+          background-color: $clr-blue-600 !important;
+          &:hover {
+            background-color: #0d47a1 !important;
+          }
+        }
+      }
+    }
+
+    // Analytics table container
+    .overflow-x-auto, .lca-table-wrap {
+      background: $clr-card;
+      border: 1px solid $clr-border-light;
+      border-radius: $radius-xl;
+      box-shadow: $shadow-sm;
+      overflow: hidden;
+    }
+
+    .lca-student-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+
+      thead th {
+        background: #f8fafc;
+        color: #475569;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 12px 16px;
+        border-bottom: 1.5px solid #e2e8f0;
+      }
+
+      tbody tr {
+        transition: background-color 0.15s ease;
+
+        &:hover {
+          background-color: rgba($clr-blue-600, 0.03);
+        }
+
+        td {
+          padding: 14px 16px;
+          border-bottom: 1px solid #f1f5f9;
+          font-size: $text-xs;
+          vertical-align: middle;
+        }
+
+        &:last-child td {
+          border-bottom: none;
+        }
+      }
+
+      .lca-student-name {
+        font-weight: 600;
+        color: #0f172a;
+      }
+
+      .lca-course-name {
+        color: #334155;
+      }
+
+      // Trajectory and progress badges
+      span.bg-rose-50 {
+        background-color: #ffe4e6 !important;
+        color: #be123c !important;
+        border: 1px solid #fecdd3;
+      }
+    }
+  }
+}
+
+body.path-mod-quiz,
+body.path-mod-assign,
+body.path-mod-forum,
+body.path-mod-customcert,
+body.path-badges,
+body.path-local-codejourney {
+  .chronolms-main > * {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .chronolms-main {
+    .mform .fitem,
+    .mform .form-group {
+      min-width: 0;
+    }
+  }
+}
+
+// ── Enhanced Activity & Quiz Styling ──────────────────────────────────────────
+.path-mod-quiz .que,
+.que {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  padding: 24px;
+  margin-bottom: 24px;
+  overflow: hidden;
+
+  .info {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+
+    .no {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .status,
+    .grade {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #64748b;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+  }
+
+  .content {
+    margin-left: 0 !important;
+  }
+
+  .formulation {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: #1e293b;
+  }
+
+  .qtext {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: #0f172a;
+    margin-bottom: 20px;
+  }
+
+  .answer {
+    div.r0, div.r1 {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        background: #eff6ff;
+        border-color: #3b82f6;
+        transform: translateY(-1px);
+      }
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #2563eb;
+      margin-right: 12px;
+      cursor: pointer;
+    }
+
+    label {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: #334155;
+      cursor: pointer;
+      margin-bottom: 0;
+      width: 100%;
+    }
+  }
+}
+
+// Quiz navigation block
+.qnbutton {
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  transition: all 0.15s ease !important;
+
+  &.notyetanswered {
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    color: #475569 !important;
+  }
+
+  &.answersaved {
+    background: #2563eb !important;
+    border: 1.5px solid #2563eb !important;
+    color: #ffffff !important;
+  }
+
+  &.flagged {
+    border-color: #f59e0b !important;
+  }
+}
+
+// Submit buttons in Quiz attempt
+.submitbtns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+
+  input[type="submit"],
+  button {
+    border-radius: 12px !important;
+    padding: 10px 24px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+  }
+}
+
+// Assignment & Feedback
+.path-mod-assign {
+  .submissionstatustable,
+  .feedbacktable {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  }
+}
+
+// Book & Page Resources
+.path-mod-book {
+  .book_toc {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  }
+
+  .navtop,
+  .navbottom {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0;
+  }
+}
+

@@ -1,0 +1,24 @@
+{{!
+    ChronoLMS Login Page Template.
+    Wraps Moodle's login form in our custom glassmorphism login design.
+
+    @template theme_chronolms/login/page
+    @copyright 2026 Chronosphere Academy
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+<div class="login-bg-glow glow-1"></div>
+<div class="login-bg-glow glow-2"></div>
+<div class="chronolms-login-page">
+    <div class="login-card-wrap">
+        <div class="login-card">
+            {{! Moodle renders the actual login form and official site logo here }}
+            {{{formcontent}}}
+
+            <div class="login-card-footer">
+                <a href="{{wwwroot}}" class="back-home-link">
+                    <i class="fa fa-arrow-left me-1"></i> Back to Homepage
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

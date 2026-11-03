@@ -1,0 +1,131 @@
+// =============================================================================
+// ChronoLMS App Layout
+// The main sidebar + content area grid for authenticated pages.
+// =============================================================================
+
+// ── Authenticated App Shell ───────────────────────────────────────────────────
+.chronolms-app {
+  display: flex;
+  min-height: 100vh;
+  background-color: $clr-surface;
+
+  // Content area sits to the right of the sidebar
+  .chronolms-content-wrapper {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    margin-left: $sidebar-width;
+    transition: margin-left 0.3s ease;
+
+    &.sidebar-collapsed {
+      margin-left: $sidebar-collapsed-width !important;
+    }
+  }
+
+  // Sibling selector: guarantees content wrapper shifts whenever sidebar is collapsed
+  .chronolms-sidebar.collapsed ~ .chronolms-content-wrapper {
+    margin-left: $sidebar-collapsed-width !important;
+  }
+
+  // Topbar sits at top of content area
+  .chronolms-topbar {
+    position: sticky;
+    top: 0;
+    z-index: $z-topbar;
+    height: $topbar-height;
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid $clr-border-light;
+    display: flex;
+    align-items: center;
+    padding: 0 $sp-6;
+    gap: $sp-4;
+  }
+
+  // Main content region
+  .chronolms-main {
+    flex: 1;
+    padding: $sp-6;
+    max-width: $content-max-width;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+// ── Page header overrides ─────────────────────────────────────────────────────
+.page-header-headings h1 {
+  font-size: $text-2xl;
+  font-weight: $fw-bold;
+  color: $clr-text-900;
+  margin: 0;
+}
+
+// ── Grid helpers ─────────────────────────────────────────────────────────────
+.clms-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: $sp-5; }
+.clms-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: $sp-5; }
+.clms-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: $sp-5; }
+.clms-grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: $sp-5; }
+
+// ── Responsive breakpoints ────────────────────────────────────────────────────
+@media (max-width: 1200px) {
+  .clms-grid-4 { grid-template-columns: repeat(3, 1fr); }
+  .clms-grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 1024px) {
+  .chronolms-app .chronolms-content-wrapper,
+  .chronolms-app .chronolms-sidebar.collapsed ~ .chronolms-content-wrapper { margin-left: 0 !important; }
+}
+
+@media (max-width: 900px) {
+  .clms-grid-4,
+  .clms-grid-3,
+  .clms-grid-2 { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .chronolms-app .chronolms-content-wrapper { margin-left: 0; }
+  .clms-grid-4,
+  .clms-grid-3,
+  .clms-grid-2,
+  .clms-grid-auto { grid-template-columns: 1fr; }
+  .chronolms-main { padding: $sp-4; }
+}
+
+// ── Navigation feedback (desktop) ────────────────────────────────────────────
+// app.js adds .clms-navigating the moment a link is clicked, so the page reacts before the
+// server answers: a progress bar across the top and the content dimmed a touch.
+html.clms-navigating {
+  cursor: progress;
+  a { cursor: progress; }
+
+  &::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 10002;
+    background: linear-gradient(90deg, #26c6da, #1565c0);
+    transform-origin: 0 50%;
+    animation: clms-nav-progress 10s cubic-bezier(.1, .6, .2, 1) forwards;
+  }
+
+  .chronolms-main {
+    opacity: .6;
+    transition: opacity .2s ease .15s;   // short waits do not flicker
+  }
+}
+
+@keyframes clms-nav-progress {
+  from { transform: scaleX(.03); }
+  to   { transform: scaleX(.92); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.clms-navigating::after { animation: none; transform: scaleX(.4); }
+  html.clms-navigating .chronolms-main { transition: none; }
+}

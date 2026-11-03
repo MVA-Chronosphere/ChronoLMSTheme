@@ -1,0 +1,118 @@
+// =============================================================================
+// ChronoLMS Design Tokens
+// The single source of truth for all visual values in the theme.
+// =============================================================================
+
+// ── Brand / Navigation Palette ───────────────────────────────────────────────
+$clr-navy-900: #07132e !default;   // Sidebar bg — deepest
+$clr-navy-800: #0a1a3e !default;   // Sidebar bg main
+$clr-navy-700: #0f2258 !default;   // Sidebar hover bg
+$clr-navy-600: #1a3569 !default;   // Sidebar active bg
+$clr-navy-500: #1e3f7e !default;   // Sidebar icon inactive
+
+$clr-blue-600: #1565c0 !default;   // Primary action
+$clr-blue-500: #1976d2 !default;   // Button hover
+$clr-blue-400: #42a5f5 !default;   // Active icon / accent
+$clr-cyan-400: #26c6da !default;   // Highlight, progress fill secondary
+$clr-violet-500:#7c4dff !default;  // Badge accent / premium
+
+// ── Gradient Presets ─────────────────────────────────────────────────────────
+$grad-blue:    linear-gradient(135deg, #1565c0, #1e88e5);
+$grad-green:   linear-gradient(135deg, #00897b, #43a047);
+$grad-orange:  linear-gradient(135deg, #f57c00, #ffa726);
+$grad-purple:  linear-gradient(135deg, #6a1b9a, #9c27b0);
+$grad-cyan:    linear-gradient(135deg, #00838f, #26c6da);
+$grad-sidebar: linear-gradient(180deg, #07132e 0%, #0a1a3e 100%);
+$grad-banner:  linear-gradient(135deg, #0d47a1 0%, #1565c0 50%, #0288d1 100%);
+
+// ── Semantic Colours ─────────────────────────────────────────────────────────
+$clr-success:  #00c853;
+$clr-warning:  #ff9800;
+$clr-danger:   #f44336;
+$clr-info:     #29b6f6;
+
+// ── Content Area ─────────────────────────────────────────────────────────────
+$clr-surface:    #f0f4f9;   // Page bg
+$clr-surface-2:  #e8eef5;   // Sidebar-less bg
+$clr-card:       #ffffff;   // Card bg
+$clr-card-hover: #f8faff;   // Card hover bg
+$clr-border:     #dde5f0;   // Card / input borders
+$clr-border-light: #eef1f7; // Light dividers
+
+// ── Text ─────────────────────────────────────────────────────────────────────
+$clr-text-900: #0f1c35;   // Headings
+$clr-text-700: #2d3f60;   // Body
+$clr-text-400: #6b7fa3;   // Muted / meta labels
+$clr-text-200: #a8b8d4;   // Placeholder
+$clr-text-inv: #ffffff;   // Text on dark bg
+
+// ── Code Editor ──────────────────────────────────────────────────────────────
+$clr-code-bg:     #1e1e2e;
+$clr-code-gutter: #252536;
+$clr-code-text:   #cdd6f4;
+$clr-code-accent: #89b4fa;
+$clr-code-string: #a6e3a1;
+$clr-code-kw:     #cba6f7;
+$clr-code-pass:   #a6e3a1;
+$clr-code-fail:   #f38ba8;
+
+// ── Typography ───────────────────────────────────────────────────────────────
+$font-ui:   'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font-code: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+
+$text-xs:   0.6875rem;  // 11px
+$text-sm:   0.8125rem;  // 13px
+$text-base: 0.9375rem;  // 15px
+$text-md:   1rem;       // 16px
+$text-lg:   1.125rem;   // 18px
+$text-xl:   1.3125rem;  // 21px
+$text-2xl:  1.625rem;   // 26px
+$text-3xl:  2rem;       // 32px
+
+$fw-normal:  400;
+$fw-medium:  500;
+$fw-semi:    600;
+$fw-bold:    700;
+
+// ── Spacing ──────────────────────────────────────────────────────────────────
+$sp-1:  0.25rem;   //  4px
+$sp-2:  0.5rem;    //  8px
+$sp-3:  0.75rem;   // 12px
+$sp-4:  1rem;      // 16px
+$sp-5:  1.25rem;   // 20px
+$sp-6:  1.5rem;    // 24px
+$sp-8:  2rem;      // 32px
+$sp-10: 2.5rem;    // 40px
+$sp-12: 3rem;      // 48px
+
+// ── Radius ───────────────────────────────────────────────────────────────────
+$radius-sm:   6px;
+$radius-md:   10px;
+$radius-lg:   14px;
+$radius-xl:   20px;
+$radius-full: 9999px;
+
+// ── Shadows ──────────────────────────────────────────────────────────────────
+$shadow-xs:  0 1px 3px rgba(10,26,62,.06);
+$shadow-sm:  0 2px 8px rgba(10,26,62,.09);
+$shadow-md:  0 4px 16px rgba(10,26,62,.12);
+$shadow-lg:  0 8px 32px rgba(10,26,62,.16);
+$shadow-xl:  0 16px 48px rgba(10,26,62,.20);
+
+// ── Layout ───────────────────────────────────────────────────────────────────
+$sidebar-width:          var(--chronolms-sidebar-width, 260px);
+$sidebar-collapsed-width: 68px;
+$topbar-height:           64px;
+$content-max-width:       1400px;
+
+// ── Z-Index ──────────────────────────────────────────────────────────────────
+$z-sidebar:  100;
+$z-topbar:   90;
+$z-modal:    200;
+$z-chatbot:  150;
+$z-toast:    300;
+
+// ── Transitions ──────────────────────────────────────────────────────────────
+$transition-fast:   all 0.15s ease;
+$transition-normal: all 0.25s ease;
+$transition-slow:   all 0.4s ease;

@@ -1,0 +1,21 @@
+// =============================================================================
+// ChronoLMS — Page content padding
+//
+// The ChronoLMS layouts render #region-main as a white panel but, unlike
+// Boost's .main-inner, give it no padding — so on every standard page (settings,
+// profile, grades, calendar, activities, admin…) headings, forms and tables sit
+// flush against the panel edge. Pad the panel. The dashboard and My courses draw
+// their own cards on a transparent panel, so they are left alone.
+// =============================================================================
+
+body:not(.pagelayout-mydashboard):not(.pagelayout-mycourses) .chronolms-main #region-main {
+  padding: 1.5rem 1.75rem 1.75rem;
+  border-radius: 16px;
+}
+
+@media (max-width: 640px) {
+  body:not(.pagelayout-mydashboard):not(.pagelayout-mycourses) .chronolms-main #region-main {
+    padding: 1rem;
+    border-radius: 14px;
+  }
+}

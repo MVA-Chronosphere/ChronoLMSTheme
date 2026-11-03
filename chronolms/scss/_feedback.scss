@@ -1,0 +1,529 @@
+// =============================================================================
+// ChronoLMS — Feedback activity (mod_feedback) student form
+//
+// Design goals: calm, one question per card, big equal-width answer buttons,
+// and WCAG 2.2 AA accessibility:
+//   - text contrast >= 4.5:1, control borders >= 3:1
+//   - 48px touch targets, 16px+ body text
+//   - a visible keyboard focus ring (double ring, works on any background)
+//   - state is never colour-only: answered questions and chosen answers get a
+//     tick mark, so it also works in high-contrast / forced-colours mode
+//   - respects prefers-reduced-motion
+// =============================================================================
+
+$fb-ink:        #14233f;   // text           (15:1 on white)
+$fb-ink-soft:   #44546f;   // secondary text (7.9:1 on white)
+$fb-line:       #8190ae;   // control border (3.3:1 on white)
+$fb-line-soft:  #d6deeb;   // card border (decorative)
+$fb-brand:      #0b57b0;   // primary        (7.0:1 on white)
+$fb-brand-dark: #08407f;
+$fb-tint:       #eaf2fc;
+$fb-ok:         #0b6b3a;   // success        (6.6:1 on white)
+$fb-ok-tint:    #e4f4ea;
+
+body.path-mod-feedback {
+
+  // Centre the whole form page in a comfortable reading column
+  // The form sits in a tinted panel with a real side gutter, so cards never
+  // touch the edge of the page. Width = 52rem of content + 1.5rem gutter each side.
+  &#page-mod-feedback-complete #region-main,
+  &#page-mod-feedback-edit #region-main {
+    max-width: 55rem;
+    margin-inline: auto;
+    padding: 1.5rem 1.5rem 0;
+    background: #f4f7fb;
+    border-radius: 20px;
+
+    form.feedback_form { background: transparent; }
+  }
+
+  #region-main form.feedback_form {
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    padding: 0 0 6rem;
+    counter-reset: fbq;
+    color: $fb-ink;
+
+    // ── Anonymous reassurance ───────────────────────────────────────────────
+    .fitem.feedback_mode {
+      margin-bottom: 1.25rem;
+      .col-md-3 { display: none; }
+      .col-md-9 { padding: 0; max-width: 100%; flex: 0 0 100%; }
+      .form-control-static.feedback_mode {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .5rem 1rem;
+        border-radius: 9999px;
+        background: $fb-ok-tint;
+        color: $fb-ok;
+        font-size: .875rem;
+        font-weight: 600;
+        // lock line icon (same as \theme_chronolms\icons 'lock'), tinted by currentColor
+        &::before {
+          content: "";
+          width: 1em;
+          height: 1em;
+          flex-shrink: 0;
+          background: currentColor;
+          -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='11' x='3' y='11' rx='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='11' x='3' y='11' rx='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E") center / contain no-repeat;
+        }
+      }
+    }
+
+    // ── Question card ───────────────────────────────────────────────────────
+    .fitem.feedback_itemlist {
+      display: block;
+      min-width: 0;
+      margin: 0 0 .875rem;
+      overflow-wrap: anywhere;
+      padding: 1.5rem;
+      background: #fff;
+      border: 1px solid $fb-line-soft;
+      border-radius: 16px;
+      box-shadow: 0 1px 2px rgba(20, 35, 63, .05);
+
+      > .col-md-3,
+      > .col-md-9 {
+        width: 100%;
+        max-width: 100%;
+        flex: 0 0 100%;
+        padding: 0;
+      }
+
+      .form-control-static,
+      .felement {
+        padding-top: 0;
+        padding-bottom: 0;
+        min-height: 0;
+      }
+
+      .invalid-feedback:empty { display: none; }
+
+      // Question text + number badge
+      > .col-md-3 {
+        margin-bottom: 1rem;
+        p.mb-0,
+        label {
+          display: flex;
+          align-items: flex-start;
+          gap: .75rem;
+          margin: 0;
+          font-size: 1.0625rem;
+          font-weight: 600;
+          line-height: 1.5;
+          color: $fb-ink;
+        }
+      }
+    }
+
+    .fitem.feedback_hasvalue > .col-md-3 {
+      p.mb-0::before,
+      label::before {
+        counter-increment: fbq;
+        content: counter(fbq);
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.75rem;
+        height: 1.75rem;
+        margin-top: .0625rem;
+        border-radius: 9999px;
+        background: $fb-tint;
+        color: $fb-brand;
+        font-size: .8125rem;
+        font-weight: 700;
+      }
+    }
+
+    // Answered: badge becomes a green tick (shape + colour, not colour alone)
+    .fitem.feedback_hasvalue:has(input:checked:not([value="0"])) > .col-md-3 {
+      p.mb-0::before,
+      label::before {
+        content: "\2713";
+        background: $fb-ok;
+        color: #fff;
+        font-size: .9rem;
+      }
+    }
+
+    // ── Section header ──────────────────────────────────────────────────────
+    .fitem.feedback-item-label {
+      margin: 2.25rem 0 1rem;
+      padding: 0;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+
+      > .col-md-3,
+      .invalid-feedback { display: none; }
+
+      > .col-md-9 { padding: 0; }
+
+      .form-control-static,
+      .no-overflow,
+      #{'[id^="feedback_item_"]'} { display: block; width: 100%; padding: 0; margin: 0; }
+
+      h4 {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 3.5rem;
+        margin: 0;
+        padding: 0 1.5rem;
+        background: #0a2a66;
+        border-radius: 16px;
+        color: #fff;
+        font-size: 1.1875rem;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+    }
+
+    .felement fieldset { min-width: 0; }
+
+    // ── Answer buttons (radios & checkboxes) ────────────────────────────────
+    .felement fieldset > .d-flex {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(6.25rem, 1fr));
+      gap: .625rem;
+      align-items: stretch !important;
+      min-width: 0;
+
+      > label { min-width: 0; }
+
+      > .w-100,
+      > .invalid-feedback { display: none; }
+
+      // 0–10 scale: 11 narrow buttons
+      &:has(> label:nth-of-type(11)) {
+        grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
+      }
+    }
+
+    .multichoice-c .felement fieldset > .d-flex {
+      grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    }
+
+    label.form-check-inline {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      min-height: 3rem;
+      margin: 0;
+      padding: .5rem;
+      background: #fff;
+      border: 2px solid $fb-line;
+      border-radius: 12px;
+      color: $fb-ink;
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 1.3;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color .12s ease, border-color .12s ease, color .12s ease;
+
+      // the real input stays in the DOM, covering the button, so mouse, touch,
+      // keyboard and screen readers all keep working natively
+      .form-check-input {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      &:hover {
+        background: $fb-tint;
+        border-color: $fb-brand;
+      }
+
+      &:has(input:checked) {
+        background: $fb-brand;
+        border-color: $fb-brand;
+        color: #fff;
+        font-weight: 600;
+        &::before { content: "\2713"; font-weight: 700; }
+        &:hover { background: $fb-brand-dark; border-color: $fb-brand-dark; }
+      }
+
+      &:has(input:focus-visible) {
+        outline: 0;
+        box-shadow: 0 0 0 3px #fff, 0 0 0 6px $fb-brand;
+      }
+
+      // The default "Not selected" option is just noise
+      &:has(input[value="0"][id$="_0"]) { display: none; }
+    }
+
+    // ── Text answers ────────────────────────────────────────────────────────
+    textarea.form-control,
+    input.form-control[type="text"] {
+      width: 100%;
+      padding: .875rem 1rem;
+      background: #fff;
+      border: 2px solid $fb-line;
+      border-radius: 12px;
+      color: $fb-ink;
+      font-size: 1rem;
+      line-height: 1.5;
+
+      &::placeholder { color: #5f6f8c; }
+      &:hover { border-color: $fb-brand; }
+      &:focus {
+        border-color: $fb-brand;
+        box-shadow: 0 0 0 3px #fff, 0 0 0 6px $fb-brand;
+        outline: 0;
+      }
+    }
+    textarea.form-control { min-height: 8rem; resize: vertical; }
+    input.form-control[type="text"] { min-height: 3rem; }
+
+    // ── Validation ──────────────────────────────────────────────────────────
+    .fitem.feedback_itemlist:has(.is-invalid) {
+      border-color: #b3261e;
+      box-shadow: 0 0 0 1px #b3261e;
+    }
+    .invalid-feedback {
+      color: #b3261e;
+      font-size: .875rem;
+      font-weight: 600;
+    }
+
+    // ── Sticky submit bar ───────────────────────────────────────────────────
+    // The container that holds the Save and Cancel fitems is the bar itself
+    .d-flex:has(> .fitem.form-submit) {
+      position: sticky;
+      bottom: .75rem;
+      z-index: 20;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row-reverse;      // Save first visually on the right
+      justify-content: flex-start;
+      align-items: center;
+      gap: .5rem;
+      width: 100%;
+      margin: 1.5rem 0 0;
+      padding: .75rem 1rem;
+      background: #fff;
+      border: 1px solid $fb-line-soft;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(20, 35, 63, .14);
+
+      > .fitem {
+        flex: 0 0 auto;
+        width: auto;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        > div, .felement { width: auto; max-width: none; padding: 0; margin: 0; }
+      }
+    }
+
+    #id_savevalues {
+      min-height: 3rem;
+      padding: .625rem 2rem;
+      background: $fb-brand;
+      border: 2px solid $fb-brand;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      &:hover { background: $fb-brand-dark; border-color: $fb-brand-dark; }
+      &:focus-visible { outline: 0; box-shadow: 0 0 0 3px #fff, 0 0 0 6px $fb-brand; }
+    }
+    #id_cancel {
+      min-height: 3rem;
+      padding: .625rem 1.25rem;
+      background: transparent;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      color: $fb-ink-soft;
+      font-weight: 600;
+      text-decoration: underline;
+      &:hover { color: $fb-ink; background: #f1f4f9; }
+      &:focus-visible { outline: 0; box-shadow: 0 0 0 3px #fff, 0 0 0 6px $fb-brand; }
+    }
+  }
+
+  // Thin reading-progress bar along the top (progressive enhancement)
+  @supports (animation-timeline: scroll()) {
+    #page-content::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      z-index: 300;
+      background: $fb-brand;
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+      animation: fb-progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+
+@keyframes fb-progress { to { transform: scaleX(1); } }
+
+// =============================================================================
+// Question editor (Edit questions page)
+// Same cards as the student form, plus a handle / ⋮ menu row. The answers are a
+// preview only, so they look calmer and ignore the mouse; the menu is the
+// interactive part.
+// =============================================================================
+body.path-mod-feedback#page-mod-feedback-edit #region-main form.feedback_form {
+  .fitem.feedback_itemlist { padding: 1rem 1.25rem 1.25rem; }
+
+  .fitem.feedback_itemlist > .col-md-3 { margin-bottom: 0; }
+
+  .itemtitle {
+    display: flex;
+    align-items: flex-start;
+    gap: .5rem;
+    margin-bottom: .875rem !important;
+    width: 100%;
+  }
+
+  .itemhandle {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 8px;
+    color: $fb-ink-soft;
+    cursor: grab;
+    &:hover { background: $fb-tint; color: $fb-brand; }
+    &:active { cursor: grabbing; }
+  }
+
+  .itemname { flex: 1 1 auto; min-width: 0; padding-top: .3rem; }
+
+  .itemactions {
+    // Moodle positions this absolutely; make it a normal flex item
+    position: static;
+    right: auto;
+    top: auto;
+    flex: 0 0 auto;
+    margin-left: auto;
+
+    .btn-icon,
+    .dropdown-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0;
+      border: 1.5px solid $fb-line-soft;
+      border-radius: 10px;
+      background: #fff;
+      color: $fb-ink;
+      &:hover { background: $fb-tint; border-color: $fb-brand; color: $fb-brand; }
+      &:focus-visible { outline: 0; box-shadow: 0 0 0 3px #fff, 0 0 0 6px $fb-brand; }
+    }
+
+    .dropdown-menu {
+      min-width: 12rem;
+      padding: .375rem;
+      border: 1px solid $fb-line-soft;
+      border-radius: 12px;
+      box-shadow: 0 12px 28px rgba(20, 35, 63, .18);
+      .dropdown-item { padding: .6rem .75rem; border-radius: 8px; font-size: .9375rem; }
+    }
+  }
+
+  // Answers are a preview here
+  .felement { pointer-events: none; }
+  label.form-check-inline {
+    background: #f6f8fc;
+    border-color: #c3cde0;
+    color: $fb-ink-soft;
+    min-height: 2.5rem;
+    font-size: .9375rem;
+  }
+
+  // Section banner: heading on the left, handle + menu on the right of the bar
+  .fitem.feedback-item-label {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 0;
+    background: #0a2a66;
+    border-radius: 16px;
+
+    > .col-md-3 {
+      order: 2;
+      display: flex !important;
+      flex: 0 0 auto;
+      width: auto;
+      margin: 0;
+      padding: 0 .75rem 0 0;
+
+      .itemtitle { margin: 0 !important; width: auto; align-items: center; }
+      .itemname { display: none; }
+      .itemactions { margin-right: .75rem; }
+      .itemhandle { color: #fff; &:hover { background: rgba(255, 255, 255, .15); color: #fff; } }
+      .itemactions .btn-icon,
+      .itemactions .dropdown-toggle {
+        background: transparent;
+        border-color: rgba(255, 255, 255, .55);
+        color: #fff;
+        &:hover { background: rgba(255, 255, 255, .15); border-color: #fff; color: #fff; }
+        &:focus-visible { box-shadow: 0 0 0 3px #0a2a66, 0 0 0 6px #fff; }
+      }
+    }
+
+    > .col-md-9 { order: 1; flex: 1 1 auto; width: auto; max-width: none; }
+    h4 { background: transparent; }
+  }
+}
+
+// ── Small screens ───────────────────────────────────────────────────────────
+@media (max-width: 575.98px) {
+  body.path-mod-feedback#page-mod-feedback-complete #region-main,
+  body.path-mod-feedback#page-mod-feedback-edit #region-main {
+    padding: 1rem 1rem 0;
+    border-radius: 16px;
+  }
+
+  body.path-mod-feedback #region-main form.feedback_form {
+    // only real question cards get the tighter padding, never the banners
+    .fitem.feedback_itemlist:not(.feedback-item-label) { padding: 1.125rem; border-radius: 14px; }
+    .felement fieldset > .d-flex { grid-template-columns: repeat(2, 1fr); }
+    .felement fieldset > .d-flex:has(> label:nth-of-type(5):last-of-type),
+    .felement fieldset > .d-flex:has(> label:nth-of-type(11)) {
+      grid-template-columns: repeat(5, 1fr);
+    }
+    .d-flex:has(> .fitem.form-submit) {
+      // keep clear of the floating chat button (bottom-right)
+      padding: .75rem 3.75rem .75rem .75rem;
+      flex-wrap: nowrap !important;   // Bootstrap .flex-wrap is !important
+      > .fitem:first-child { flex: 1 1 auto; }
+      #id_savevalues { width: 100%; padding-inline: .5rem; font-size: .9375rem; white-space: nowrap; }
+      #id_cancel { padding-inline: .5rem; }
+    }
+  }
+}
+
+// ── Preferences ─────────────────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  body.path-mod-feedback * { transition: none !important; animation: none !important; }
+}
+
+@media (forced-colors: active) {
+  body.path-mod-feedback #region-main form.feedback_form {
+    label.form-check-inline:has(input:checked) { border-color: Highlight; outline: 3px solid Highlight; }
+    .fitem.feedback-item-label { border: 2px solid CanvasText; }
+  }
+}

@@ -1,0 +1,109 @@
+{{!
+    ChronoLMS Tests & Assessments: all quizzes across the student's courses.
+
+    @template theme_chronolms/assessments/page
+    @copyright 2026 Chronosphere Academy
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+<div class="as">
+
+    <header class="as-head">
+        <div>
+            <h1 class="as-title">Tests &amp; Assessments</h1>
+            <p class="as-sub">
+                {{#todocount}}{{todocount}} to do{{#urgentcount}}, {{urgentcount}} due within 3 days{{/urgentcount}}.{{/todocount}}
+                {{^todocount}}Nothing waiting for you right now.{{/todocount}}
+            </p>
+        </div>
+    </header>
+
+    <section class="as-stats" aria-label="Summary">
+        <div class="as-stat">
+            <span class="as-stat-ico is-amber">{{{iconflag}}}</span>
+            <span class="as-stat-txt"><b>{{todocount}}</b><small>To do</small></span>
+        </div>
+        <div class="as-stat">
+            <span class="as-stat-ico is-green">{{{iconcheck}}}</span>
+            <span class="as-stat-txt"><b>{{donecount}}</b><small>Completed</small></span>
+        </div>
+        <div class="as-stat">
+            <span class="as-stat-ico is-blue">{{{iconclock}}}</span>
+            <span class="as-stat-txt"><b>{{othercount}}</b><small>Upcoming or missed</small></span>
+        </div>
+        <div class="as-stat">
+            <span class="as-stat-ico is-violet">{{{icontrophy}}}</span>
+            <span class="as-stat-txt"><b>{{#hasaverage}}{{average}}%{{/hasaverage}}{{^hasaverage}}None yet{{/hasaverage}}</b><small>Average score</small></span>
+        </div>
+    </section>
+
+    {{#hasrows}}
+    <div class="as-body">
+        <section class="as-list-wrap" aria-label="Your tests">
+            <div class="as-filters" role="group" aria-label="Filter tests">
+                <button type="button" class="as-pill" data-as-group="" aria-pressed="true">All <span>{{total}}</span></button>
+                <button type="button" class="as-pill" data-as-group="todo" aria-pressed="false">To do <span>{{todocount}}</span></button>
+                <button type="button" class="as-pill" data-as-group="done" aria-pressed="false">Completed <span>{{donecount}}</span></button>
+                <button type="button" class="as-pill" data-as-group="other" aria-pressed="false">Upcoming or missed <span>{{othercount}}</span></button>
+            </div>
+
+            <ul class="as-list" id="as-list">
+                {{#rows}}
+                <li class="as-row is-{{status}}{{#urgent}} is-urgent{{/urgent}}" data-group="{{group}}">
+                    <span class="as-row-ico">{{#is_done}}{{{iconcheck}}}{{/is_done}}{{^is_done}}{{{iconfile}}}{{/is_done}}</span>
+
+                    <div class="as-row-main">
+                        <h2 class="as-row-title"><a href="{{url}}">{{name}}</a></h2>
+                        <p class="as-row-course">{{course}}</p>
+                        <p class="as-row-meta">
+                            {{#minutes}}<span>{{{iconclock}}} {{minutes}} min</span>{{/minutes}}
+                            <span>{{#attempts}}Attempts used: {{attemptsused}} of {{attempts}}{{/attempts}}{{^attempts}}Unlimited attempts{{/attempts}}</span>
+                            {{#when}}<span class="as-when">{{when}}</span>{{/when}}
+                        </p>
+                    </div>
+
+                    <div class="as-row-side">
+                        {{#haspct}}
+                        <div class="as-score{{#pass}} is-pass{{/pass}}" aria-label="Score {{pct}} percent"><b>{{pct}}%</b><small>Best</small></div>
+                        {{/haspct}}
+                        {{^haspct}}<span class="as-status is-{{status}}">{{statuslabel}}</span>{{/haspct}}
+                        <a href="{{url}}" class="as-btn{{#is_primary}} as-btn-primary{{/is_primary}}">{{action}} {{{iconarrow}}}</a>
+                    </div>
+                </li>
+                {{/rows}}
+            </ul>
+            <p class="as-empty" id="as-empty" hidden>No tests in this group.</p>
+        </section>
+
+        <aside class="as-aside">
+            <section class="as-card">
+                <h2 class="as-card-title">Next up</h2>
+                {{#nextdue}}
+                <p class="as-next-name">{{name}}</p>
+                <p class="as-next-course">{{course}}</p>
+                <p class="as-next-when{{#urgent}} is-urgent{{/urgent}}">{{when}}</p>
+                <a href="{{url}}" class="as-btn as-btn-primary">{{action}} {{{iconarrow}}}</a>
+                {{/nextdue}}
+                {{^nextdue}}<p class="as-muted">You are all caught up.</p>{{/nextdue}}
+            </section>
+            <section class="as-card">
+                <h2 class="as-card-title">Best result</h2>
+                {{#best}}
+                <div class="as-best">
+                    <div class="as-ring" style="--pct: {{pct}}" role="img" aria-label="{{pct}} percent"><span>{{pct}}%</span></div>
+                    <div><p class="as-next-name">{{name}}</p><p class="as-next-course">{{course}}</p></div>
+                </div>
+                {{/best}}
+                {{^best}}<p class="as-muted">Finish a test to see your best score here.</p>{{/best}}
+            </section>
+        </aside>
+    </div>
+    {{/hasrows}}
+
+    {{^hasrows}}
+    <section class="as-card as-blank">
+        <h2 class="as-card-title">No tests yet</h2>
+        <p class="as-muted">Tests and quizzes from your courses will appear here.</p>
+        <a href="{{mycoursesurl}}" class="as-btn as-btn-primary">Go to my courses {{{iconarrow}}}</a>
+    </section>
+    {{/hasrows}}
+</div>

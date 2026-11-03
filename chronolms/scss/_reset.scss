@@ -1,0 +1,73 @@
+// =============================================================================
+// ChronoLMS Reset & Base
+// Overrides Boost/Degrade defaults to establish our design baseline.
+// =============================================================================
+
+// Import Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+// Apply base font globally
+body {
+  font-family: $font-ui;
+  font-size: $text-base;
+  color: $clr-text-700;
+  background-color: $clr-surface;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Remove Boost default navbar when we're authenticated (we use sidebar instead)
+body.chronolms-authenticated {
+  #nav-drawer,
+  .navbar.fixed-top {
+    display: none !important;
+  }
+
+  #page {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+}
+
+// Reset headings to use our font
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-ui;
+  font-weight: $fw-semi;
+  color: $clr-text-900;
+  line-height: 1.3;
+}
+
+// Links
+a {
+  color: $clr-blue-600;
+  text-decoration: none;
+  transition: $transition-fast;
+
+  &:hover {
+    color: $clr-blue-500;
+    text-decoration: none;
+  }
+}
+
+// Remove Boost card shadows that clash with our design
+.card {
+  border: 1px solid $clr-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+}
+
+// Smooth scrollbars
+* {
+  scrollbar-width: thin;
+  scrollbar-color: $clr-border transparent;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: $clr-border; border-radius: $radius-full; }
+::-webkit-scrollbar-thumb:hover { background: darken($clr-border, 15%); }
+
+// Moodle block cleanup
+.block { border: none; box-shadow: none; }
+.block .card-body { padding: 0; }

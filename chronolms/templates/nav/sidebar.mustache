@@ -1,0 +1,150 @@
+{{!
+    Sidebar navigation template for ChronoLMS theme.
+
+    @template theme_chronolms/nav/sidebar
+    @copyright 2026 Chronosphere Academy
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+    Context variables:
+      - navitems: array of {id, label, url, icon, active}
+      - userfullname: string
+      - usergrade: string
+      - useravatar: HTML
+      - userprofileurl: string
+      - sitename: string
+      - wwwroot: string
+}}
+<aside class="chronolms-sidebar{{#collapsed}} collapsed{{/collapsed}}" id="chronolms-sidebar" role="navigation" aria-label="{{sitename}} navigation">
+    <div class="sidebar-resizer" id="sidebar-resizer" title="Drag to resize sidebar (Double-click to reset)" aria-hidden="true"></div>
+
+    {{! Header: logo, and the button that collapses/expands the sidebar (the logo becomes it when collapsed) }}
+    <div class="sidebar-head">
+        <a href="{{wwwroot}}" class="sidebar-logo" aria-label="{{sitename}} home">
+            {{#logowhiteurl}}
+            <img src="{{{logowhiteurl}}}" alt="{{sitename}}" class="sidebar-logo-img sidebar-logo-full" />
+            {{/logowhiteurl}}
+            {{#logomarkurl}}
+            <img src="{{{logomarkurl}}}" alt="{{sitename}}" class="sidebar-logo-img sidebar-logo-mark" />
+            {{/logomarkurl}}
+            {{^logowhiteurl}}
+            <div class="sidebar-logo-text">
+                <span class="logo-name">ChronoLMS</span>
+                <span class="logo-tagline">Learn · Build · Grow</span>
+            </div>
+            {{/logowhiteurl}}
+        </a>
+        <button type="button" class="sidebar-collapse-btn" id="sidebar-collapse-btn" aria-label="Collapse sidebar" aria-expanded="true" aria-controls="chronolms-sidebar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+    </div>
+
+    {{#has_codinglab_tree}}
+    {{! Tab switcher between Programs and Site Menu }}
+    <div class="sidebar-mode-toggle" id="sidebar-mode-toggle">
+        <button type="button" class="mode-btn {{#is_codinglab_page}}active{{/is_codinglab_page}}" id="sidebar-tab-programs" data-tab="programs" aria-pressed="{{#is_codinglab_page}}true{{/is_codinglab_page}}{{^is_codinglab_page}}false{{/is_codinglab_page}}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span>Programs</span>
+        </button>
+        <button type="button" class="mode-btn {{^is_codinglab_page}}active{{/is_codinglab_page}}" id="sidebar-tab-menu" data-tab="menu" aria-pressed="{{^is_codinglab_page}}true{{/is_codinglab_page}}{{^is_codinglab_page}}false{{/is_codinglab_page}}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            <span>Menu</span>
+        </button>
+    </div>
+
+    {{! CodingLab Program Navigator Tree matching Attachment 1 }}
+    <div class="sidebar-codinglab-pane {{^is_codinglab_page}}d-none{{/is_codinglab_page}}" id="sidebar-codinglab-pane" aria-label="CodingLab Programs Navigator">
+        <div class="codinglab-tree" id="codinglab-tree">
+            {{#codinglab_tree.levels}}
+            <div class="codinglab-level-card {{#is_expanded}}expanded{{/is_expanded}}" data-level="{{level_index}}">
+                <button type="button" class="codinglab-level-header" aria-expanded="{{#is_expanded}}true{{/is_expanded}}{{^is_expanded}}false{{/is_expanded}}">
+                    <span class="level-arrow">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                    </span>
+                    <span class="level-title-text">{{{level_title}}}</span>
+                </button>
+                <ul class="codinglab-programs-list" {{^is_expanded}}style="display: none;"{{/is_expanded}}>
+                    {{#programs}}
+                    <li class="codinglab-program-item {{#is_current}}active{{/is_current}} {{#is_completed}}completed{{/is_completed}}">
+                        <a href="{{url}}" title="{{{name}}}">
+                            <span class="program-radio-dot" aria-hidden="true">
+                                <span class="dot-inner"></span>
+                            </span>
+                            <span class="program-badge-vpl" aria-hidden="true">&lt;/&gt;</span>
+                            <span class="program-name">{{{name}}}</span>
+                        </a>
+                    </li>
+                    {{/programs}}
+                </ul>
+            </div>
+            {{/codinglab_tree.levels}}
+        </div>
+    </div>
+    {{/has_codinglab_tree}}
+
+    {{! Navigation list }}
+    <nav class="sidebar-nav {{#has_codinglab_tree}}{{#is_codinglab_page}}d-none{{/is_codinglab_page}}{{/has_codinglab_tree}}" id="sidebar-main-nav" aria-label="Main menu">
+        <ul>
+            {{#navitems}}
+            <li class="sidebar-nav-item {{#active}}active{{/active}} {{#class}}{{class}}{{/class}}" data-navid="{{id}}" data-tooltip="{{label}}">
+                <a href="{{url}}" {{#active}}aria-current="page"{{/active}} aria-label="{{label}}">
+                    <span class="nav-icon">
+                        {{! Icon SVGs by id }}
+                        {{#dashboard}}
+                        <svg width="20" height="20" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                        {{/dashboard}}
+                        {{#courses}}
+                        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        {{/courses}}
+                        {{#path}}
+                        <svg width="20" height="20" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                        {{/path}}
+                        {{#tests}}
+                        <svg width="20" height="20" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        {{/tests}}
+                        {{#code}}
+                        <svg width="20" height="20" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        {{/code}}
+                        {{#progress}}
+                        <svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                        {{/progress}}
+                        {{#certificate}}
+                        <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+                        {{/certificate}}
+                        {{#calendar}}
+                        <svg width="20" height="20" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        {{/calendar}}
+                        {{#help}}
+                        <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        {{/help}}
+                        {{#admin}}
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        {{/admin}}
+                        {{! Fallback generic icon ONLY if none matched }}
+                        {{^dashboard}}{{^courses}}{{^path}}{{^tests}}{{^code}}{{^progress}}{{^certificate}}{{^calendar}}{{^help}}{{^admin}}
+                        <svg width="20" height="20" viewBox="0 0 24 24" class="nav-icon-fallback" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/></svg>
+                        {{/admin}}{{/help}}{{/calendar}}{{/certificate}}{{/progress}}{{/code}}{{/tests}}{{/path}}{{/courses}}{{/dashboard}}
+                    </span>
+                    <span class="nav-label">{{label}}</span>
+                </a>
+            </li>
+            {{/navitems}}
+        </ul>
+    </nav>
+
+    {{! User strip and logout at bottom }}
+    <div class="sidebar-user-footer">
+        <a href="{{userprofileurl}}" class="sidebar-user" aria-label="Your profile — {{userfullname}}">
+            <div class="user-avatar">{{{useravatar}}}</div>
+            <div class="user-info">
+                <div class="user-name">{{userfullname}}</div>
+                <div class="user-grade">{{usergrade}}</div>
+            </div>
+        </a>
+        {{#logouturl}}
+        <a href="{{logouturl}}" class="sidebar-logout-btn" title="Log Out" aria-label="Log Out">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </a>
+        {{/logouturl}}
+    </div>
+
+</aside>

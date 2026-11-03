@@ -1,0 +1,91 @@
+// =============================================================================
+// ChronoLMS Button System
+// =============================================================================
+
+// Base button reset
+.btn {
+  font-family: $font-ui;
+  font-size: $text-sm;
+  font-weight: $fw-semi;
+  line-height: 1;
+  border: none;
+  cursor: pointer;
+  border-radius: $radius-md;
+  padding: 10px $sp-5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $sp-2;
+  transition: $transition-fast;
+  text-decoration: none;
+  white-space: nowrap;
+  outline: none;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba($clr-blue-600,.3);
+  }
+}
+
+// Primary (blue)
+.btn-primary {
+  background: $grad-blue;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba($clr-blue-600,.35);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba($clr-blue-600,.45);
+    color: #fff;
+  }
+  &:active { transform: translateY(0); }
+}
+
+// Success (green)
+.btn-success {
+  background: $grad-green;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(#00897b,.3);
+
+  &:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(#00897b,.4); color: #fff; }
+}
+
+// Outline
+.btn-outline {
+  background: transparent;
+  color: $clr-blue-600;
+  border: 1.5px solid $clr-blue-600;
+
+  &:hover { background: rgba($clr-blue-600,.06); color: $clr-blue-600; }
+}
+
+// Ghost / subtle
+.btn-ghost {
+  background: rgba($clr-blue-600,.07);
+  color: $clr-blue-600;
+
+  &:hover { background: rgba($clr-blue-600,.13); }
+}
+
+// Sizes
+.btn-sm  { font-size: $text-xs;  padding: 7px $sp-3; }
+.btn-lg  { font-size: $text-md;  padding: 13px $sp-6; border-radius: $radius-lg; }
+.btn-xl  { font-size: $text-lg;  padding: 15px $sp-8; border-radius: $radius-lg; }
+.btn-full { width: 100%; }
+
+// Icon button
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: $radius-md;
+  background: rgba($clr-blue-600,.07);
+  color: $clr-blue-600;
+
+  svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+  &:hover { background: rgba($clr-blue-600,.14); }
+}
+
+// Code action buttons (Run, Check, Submit)
+.btn-run    { background: $grad-green;  color: #fff; }
+.btn-check  { background: $grad-orange; color: #fff; }
+.btn-submit { background: $grad-blue;   color: #fff; }

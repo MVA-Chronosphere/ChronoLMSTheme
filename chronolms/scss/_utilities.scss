@@ -1,0 +1,103 @@
+// =============================================================================
+// ChronoLMS Utilities
+// =============================================================================
+
+// ── Display ──────────────────────────────────────────────────────────────────
+.d-flex        { display: flex; }
+.d-grid        { display: grid; }
+.d-none        { display: none; }
+.d-block       { display: block; }
+.align-center  { align-items: center; }
+.justify-between { justify-content: space-between; }
+.flex-1        { flex: 1; }
+.gap-2         { gap: $sp-2; }
+.gap-3         { gap: $sp-3; }
+.gap-4         { gap: $sp-4; }
+
+// ── Text helpers ──────────────────────────────────────────────────────────────
+.text-muted    { color: $clr-text-400; }
+.text-sm       { font-size: $text-sm; }
+.text-xs       { font-size: $text-xs; }
+.fw-bold       { font-weight: $fw-bold; }
+.fw-semi       { font-weight: $fw-semi; }
+.text-truncate { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+// ── Spacing ───────────────────────────────────────────────────────────────────
+.mb-0 { margin-bottom: 0; }
+.mb-2 { margin-bottom: $sp-2; }
+.mb-3 { margin-bottom: $sp-3; }
+.mb-4 { margin-bottom: $sp-4; }
+.mb-5 { margin-bottom: $sp-5; }
+.mt-3 { margin-top: $sp-3; }
+.mt-4 { margin-top: $sp-4; }
+.mt-5 { margin-top: $sp-5; }
+
+// ── Section title ─────────────────────────────────────────────────────────────
+.section-title {
+  font-size: $text-xl;
+  font-weight: $fw-semi;
+  color: $clr-text-900;
+  margin: 0 0 $sp-4;
+  padding-bottom: $sp-3;
+  border-bottom: 2px solid $clr-border-light;
+}
+
+// ── Empty state ──────────────────────────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $sp-10;
+  color: $clr-text-400;
+  text-align: center;
+
+  .empty-icon { font-size: 3rem; margin-bottom: $sp-4; opacity: .5; }
+  .empty-title { font-size: $text-lg; font-weight: $fw-semi; color: $clr-text-700; margin-bottom: $sp-2; }
+  .empty-text  { font-size: $text-sm; }
+}
+
+// ── Skeleton loader ───────────────────────────────────────────────────────────
+.skeleton {
+  background: linear-gradient(90deg, $clr-border 25%, $clr-border-light 37%, $clr-border 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.6s infinite ease;
+  border-radius: $radius-md;
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+// ── Tooltip ──────────────────────────────────────────────────────────────────
+[data-tooltip] {
+  position: relative;
+
+  &::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: $clr-text-900;
+    color: #fff;
+    font-size: $text-xs;
+    padding: 4px 10px;
+    border-radius: $radius-sm;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: $z-toast;
+  }
+
+  &:hover::after { opacity: 1; }
+}
+
+// ── Scroll-reveal animation ───────────────────────────────────────────────────
+.reveal {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}

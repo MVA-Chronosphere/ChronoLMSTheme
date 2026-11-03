@@ -1,0 +1,28 @@
+{{!
+    ChronoLMS Coding Lab activity header (VPL and NextBlocks).
+
+    @template theme_chronolms/coding_lab/header
+    @copyright 2026 Chronosphere Academy
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+<header class="lab-hero">
+    <nav class="lab-crumbs" aria-label="Where you are">
+        <a href="{{labsurl}}">Coding Lab</a>
+        <span aria-hidden="true">/</span>
+        <a href="{{courseurl}}">{{coursename}}</a>
+    </nav>
+    <div class="lab-hero-row">
+        <div class="lab-hero-text">
+            <span class="lab-kicker">{{{iconcode}}} {{kind}}{{#hasposition}} &middot; Problem {{position}} of {{total}}{{/hasposition}}</span>
+            <h1 class="lab-hero-title">{{title}}</h1>
+        </div>
+        {{#hasposition}}
+        <div class="lab-pn" role="group" aria-label="Move between problems">
+            {{#prev}}<a class="lab-pn-btn" href="{{url}}" rel="prev"><span class="lab-pn-flip">{{{iconarrow}}}</span><span><small>Previous</small>{{name}}</span></a>{{/prev}}
+            {{^prev}}<span class="lab-pn-btn is-off"><span class="lab-pn-flip">{{{iconarrow}}}</span><span><small>Previous</small>None</span></span>{{/prev}}
+            {{#next}}<a class="lab-pn-btn is-next" href="{{url}}" rel="next"><span><small>Next</small>{{name}}</span>{{{iconarrow}}}</a>{{/next}}
+            {{^next}}<span class="lab-pn-btn is-next is-off"><span><small>Next</small>None</span>{{{iconarrow}}}</span>{{/next}}
+        </div>
+        {{/hasposition}}
+    </div>
+</header>

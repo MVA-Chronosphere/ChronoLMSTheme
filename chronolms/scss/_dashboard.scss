@@ -1,0 +1,481 @@
+// =============================================================================
+// ChronoLMS Student Dashboard
+//
+// One column of "what to do" (continue, daily challenge, courses, class goal,
+// badges, practice) beside one column of "how am I doing" (level, streak,
+// leaderboard, overall progress). Markup: templates/dashboard/page.mustache.
+// =============================================================================
+
+$dash-amber:      #ef6c00;
+$dash-amber-700:  #b45309;
+$dash-amber-50:   #fff4e5;
+$dash-amber-100:  #ffe3bf;
+$dash-green:      #0b8a4a;
+$dash-green-700:  #0b6b3a;
+$dash-green-50:   #e6f6ed;
+$dash-green-100:  #c8ecd7;
+$dash-violet:     #6a3fd6;
+$dash-violet-700: #4c2aa8;
+$dash-violet-50:  #f0ebfd;
+$dash-blue-50:    #eaf2fc;
+
+.dash {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: $sp-5;
+  align-items: start;
+}
+
+.dash-main,
+.dash-aside {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-5;
+  min-width: 0;
+}
+
+.dash-card {
+  background: $clr-card;
+  border: 1px solid $clr-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xs;
+  padding: $sp-5;
+}
+
+.dash-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $sp-3;
+  margin-bottom: $sp-4;
+}
+.dash-card-head-center { align-items: center; }
+.dash-card-title { margin: 0; font-size: $text-md; font-weight: $fw-semi; color: $clr-text-900; }
+.dash-sub { font-size: $text-sm; color: $clr-text-400; }
+.dash-empty { margin: 0; font-size: $text-sm; color: $clr-text-400; }
+
+.dash-link {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-1;
+  font-size: $text-sm;
+  font-weight: $fw-semi;
+  color: $clr-blue-600;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+
+.dash-bar {
+  height: 8px;
+  background: $clr-border-light;
+  border-radius: $radius-full;
+  overflow: hidden;
+
+  > i {
+    display: block;
+    height: 100%;
+    border-radius: $radius-full;
+    background: $clr-blue-600;
+    transition: width .6s cubic-bezier(.2, .8, .2, 1);
+  }
+  &.dash-bar-sm { height: 6px; }
+  &.dash-bar-lg { height: 12px; }
+}
+
+.dash-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-2;
+  min-height: 44px;
+  padding: 0 $sp-5;
+  border: 0;
+  border-radius: 12px;
+  font-size: $text-base;
+  font-weight: $fw-semi;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: $transition-fast;
+}
+.dash-btn-white { background: #fff; color: $clr-blue-600; &:hover { background: $dash-blue-50; color: $clr-blue-600; } }
+.dash-btn-amber { background: $dash-amber; color: #fff; &:hover { background: darken($dash-amber, 6%); color: #fff; } }
+.dash-btn-done  { background: $dash-green; color: #fff; }
+
+// ── Hero ─────────────────────────────────────────────────────────────────────
+.dash-hero {
+  position: relative;
+  overflow: hidden;
+  padding: $sp-6 28px;
+  color: #fff;
+  border: 0;
+  background: $grad-banner;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: -60px;
+    top: -80px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .07);
+    pointer-events: none;
+  }
+}
+.dash-hero-greet { font-size: $text-base; opacity: .92; }
+.dash-hero-title { margin: 4px 0 2px; font-size: $text-2xl; font-weight: $fw-bold; color: #fff; letter-spacing: -.01em; }
+.dash-hero-next { display: flex; align-items: center; gap: $sp-2; font-size: $text-base; opacity: .92; }
+.dash-hero-row { position: relative; z-index: 1; display: flex; align-items: center; gap: $sp-4; margin-top: $sp-5; }
+.dash-hero-pct { font-weight: $fw-bold; }
+.dash-hero .dash-bar { flex: 1; height: 10px; background: rgba(255, 255, 255, .25); > i { background: #fff; } }
+
+// ── Daily challenge ──────────────────────────────────────────────────────────
+.dash-daily {
+  display: flex;
+  align-items: center;
+  gap: $sp-5;
+  background: $dash-amber-50;
+  border-color: $dash-amber-100;
+
+  &.is-solved { background: $dash-green-50; border-color: $dash-green-100; .dash-daily-ico { background: $dash-green; } .dash-daily-meta, .dash-daily-hint { color: $dash-green-700; } }
+
+  .dash-btn { margin-left: auto; flex-shrink: 0; }
+}
+.dash-daily-ico {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: $radius-lg;
+  background: $dash-amber;
+  color: #fff;
+  font-size: 28px;
+}
+.dash-daily-body { min-width: 0; }
+.dash-daily-meta { display: flex; flex-wrap: wrap; gap: $sp-3; font-size: $text-xs; font-weight: $fw-semi; letter-spacing: .05em; text-transform: uppercase; color: $dash-amber-700; }
+.dash-daily-title { margin: 2px 0; font-size: $text-lg; font-weight: $fw-bold; color: $clr-text-900; }
+.dash-daily-hint { font-size: $text-sm; color: $dash-amber-700; }
+
+// ── Courses ──────────────────────────────────────────────────────────────────
+.dash-courses { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: $sp-4; }
+.dash-course {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid $clr-border;
+  border-radius: 14px;
+  color: inherit;
+  text-decoration: none;
+  transition: $transition-fast;
+  &:hover { border-color: $clr-blue-400; box-shadow: $shadow-sm; transform: translateY(-2px); color: inherit; }
+}
+.dash-course-band {
+  height: 72px;
+  display: flex;
+  align-items: flex-end;
+  padding: $sp-3 $sp-4;
+  background-size: cover;
+  background-position: center;
+  &.band-violet { background-color: $dash-violet-50; color: $dash-violet; }
+  &.band-green  { background-color: $dash-green-50;  color: $dash-green; }
+  &.band-blue   { background-color: $dash-blue-50;   color: $clr-blue-600; }
+}
+.dash-course-code { font-size: $text-xl; font-weight: $fw-bold; letter-spacing: .04em; }
+.dash-course-body { display: flex; flex-direction: column; gap: $sp-2; padding: $sp-3 $sp-4 $sp-4; flex: 1; }
+.dash-course-name { font-size: $text-base; font-weight: $fw-semi; color: $clr-text-900; line-height: 1.3; }
+.dash-course-foot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; font-size: $text-sm; color: $clr-text-400; }
+
+// ── Class goal ───────────────────────────────────────────────────────────────
+.dash-goal { background: $dash-green-50; border-color: $dash-green-100; .dash-bar { background: #fff; > i { background: $dash-green; } } }
+.dash-goal-top { display: flex; align-items: center; gap: $sp-4; margin-bottom: $sp-4; }
+.dash-goal-ico { display: grid; place-items: center; width: 48px; height: 48px; flex-shrink: 0; border-radius: $radius-lg; background: $dash-green; color: #fff; font-size: 24px; }
+.dash-goal-title { font-weight: $fw-bold; color: $clr-text-900; }
+.dash-goal-sub { font-size: $text-sm; color: $dash-green-700; }
+.dash-goal-count { margin-left: auto; font-size: $text-xl; font-weight: $fw-bold; color: $dash-green-700; white-space: nowrap; }
+
+// ── Badges ───────────────────────────────────────────────────────────────────
+.dash-badges { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: $sp-3 $sp-2; text-align: center; }
+.dash-badge { font-size: $text-xs; font-weight: $fw-semi; line-height: 1.3; color: $clr-text-700; span { display: block; } }
+.dash-medal {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 6px;
+  border-radius: 50%;
+  background: $dash-amber-50;
+  border: 3px solid $dash-amber;
+  color: $dash-amber;
+  font-size: 24px;
+}
+.dash-badge.is-locked { color: $clr-text-400; .dash-medal { background: $clr-surface; border: 2px dashed #c3cde0; color: #9aa9c4; } }
+.dash-nextbadge { display: flex; align-items: center; gap: $sp-3; margin-top: $sp-4; padding: $sp-3; background: $clr-surface; border-radius: $radius-md; }
+.dash-medal-sm { width: 40px; height: 40px; margin: 0; font-size: 18px; background: #fff; border: 2px dashed $dash-violet; color: $dash-violet; flex-shrink: 0; }
+.dash-nextbadge-body { flex: 1; min-width: 0; .dash-bar { margin-top: 6px; > i { background: $dash-violet; } } }
+.dash-nextbadge-title { font-size: $text-sm; font-weight: $fw-semi; color: $clr-text-900; }
+
+// ── Practice + Today ─────────────────────────────────────────────────────────
+.dash-duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: $sp-5; }
+.dash-labs { display: flex; flex-direction: column; gap: $sp-3; }
+.dash-lab {
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+  padding: $sp-4;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  text-decoration: none;
+  &:hover { border-color: currentColor; }
+  &.dash-lab-blue  { background: $dash-blue-50;  color: $clr-blue-600; .dash-lab-ico { background: $clr-blue-600; } }
+  &.dash-lab-green { background: $dash-green-50; color: $dash-green;   .dash-lab-ico { background: $dash-green; } }
+}
+.dash-lab-ico { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px; color: #fff; font-size: 22px; }
+.dash-lab-text { display: flex; flex-direction: column; min-width: 0; b { color: $clr-text-900; font-size: $text-base; } span { font-size: $text-sm; } }
+.dash-lab-go { margin-left: auto; font-size: 18px; }
+
+.dash-tasks { list-style: none; margin: 0; padding: 0; li { display: flex; align-items: center; gap: $sp-3; padding: $sp-2 0; font-size: $text-base; } }
+.dash-task-ico { display: grid; place-items: center; width: 32px; height: 32px; flex-shrink: 0; border-radius: $radius-md; background: $dash-blue-50; color: $clr-blue-600; }
+.dash-task-name { flex: 1; min-width: 0; color: $clr-text-900; small { display: block; font-size: $text-xs; color: $clr-text-400; } }
+.dash-task-time { font-size: $text-sm; font-weight: $fw-semi; color: $clr-text-400; }
+
+// ── Level ────────────────────────────────────────────────────────────────────
+.dash-profile { text-align: center; padding-top: $sp-6; }
+.dash-avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  margin: 0 auto $sp-3;
+  border-radius: 50%;
+  background: $dash-green-50;
+  border: 4px solid $dash-green;
+  box-shadow: 0 0 0 4px $dash-green-100;
+  color: $dash-green-700;
+  font-size: $text-2xl;
+  font-weight: $fw-bold;
+}
+.dash-avatar-lvl { position: absolute; right: -6px; bottom: -6px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: $clr-blue-600; border: 3px solid #fff; color: #fff; font-size: $text-sm; font-weight: $fw-bold; }
+.dash-profile-name { font-size: $text-lg; font-weight: $fw-bold; color: $clr-text-900; }
+.dash-title-pill { display: inline-block; margin-top: 4px; padding: 3px 10px; border-radius: $radius-full; background: $dash-violet-50; color: $dash-violet-700; font-size: $text-xs; font-weight: $fw-semi; }
+.dash-lvl { margin-top: $sp-5; padding: $sp-4; text-align: left; background: $dash-blue-50; border-radius: 14px; .dash-bar { margin: $sp-2 0; height: 10px; background: #fff; } }
+.dash-lvl-row { display: flex; justify-content: space-between; font-size: $text-sm; font-weight: $fw-semi; color: $clr-blue-600; }
+.dash-earn { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: $sp-3 0 0; padding: 0; list-style: none; li { padding: 4px 9px; border-radius: $radius-full; background: $clr-surface; font-size: $text-xs; font-weight: $fw-semi; color: $clr-text-400; } }
+
+// ── Streak ───────────────────────────────────────────────────────────────────
+.dash-streak { background: $dash-amber-50; border-color: $dash-amber-100; }
+.dash-streak-top { display: flex; align-items: center; gap: $sp-4; color: $dash-amber; .clms-icon { font-size: 42px; } }
+.dash-streak-n { font-size: 28px; font-weight: $fw-bold; line-height: 1; color: $dash-amber; }
+.dash-streak-l { font-size: $text-sm; font-weight: $fw-semi; color: $dash-amber-700; }
+.dash-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: $sp-4; text-align: center; font-size: $text-xs; font-weight: $fw-semi; color: $dash-amber-700; }
+.dash-day {
+  i {
+    display: grid;
+    place-items: center;
+    height: 30px;
+    margin-bottom: 4px;
+    border: 2px solid $dash-amber-100;
+    border-radius: $radius-md;
+    background: #fff;
+    color: #fff;
+    font-style: normal;
+  }
+  &.is-done i { background: $dash-amber; border-color: $dash-amber; }
+  &.is-today i { border: 2px dashed $dash-amber; }
+  &.is-today.is-done i { border-style: solid; }
+  &.is-future { opacity: .55; }
+}
+.dash-streak-msg { margin-top: $sp-3; font-size: $text-sm; color: $dash-amber-700; }
+
+// ── Leaderboard ──────────────────────────────────────────────────────────────
+.dash-tabs {
+  display: inline-flex;
+  padding: 3px;
+  background: $clr-surface;
+  border-radius: $radius-md;
+
+  button {
+    min-height: 32px;
+    padding: 0 $sp-3;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    font-size: $text-xs;
+    font-weight: $fw-semi;
+    color: $clr-text-400;
+    cursor: pointer;
+    &[aria-selected="true"] { background: #fff; color: $clr-text-900; box-shadow: 0 1px 3px rgba(10, 26, 62, .12); }
+  }
+}
+.dash-lb-meta { display: flex; justify-content: space-between; margin-bottom: $sp-2; font-size: $text-xs; color: $clr-text-400; }
+.dash-lb {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li { display: flex; align-items: center; gap: $sp-3; padding: 9px $sp-2; border-radius: $radius-md; font-size: $text-base; }
+  li + li { border-top: 1px solid $clr-border-light; }
+  .dash-lb-gap { justify-content: center; padding: 2px; border: 0; color: $clr-text-400; }
+  .dash-lb-name { flex: 1; min-width: 0; color: $clr-text-900; font-weight: $fw-medium; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dash-lb-pts { font-weight: $fw-bold; color: $clr-text-900; font-variant-numeric: tabular-nums; }
+  .is-me { background: $dash-blue-50; border-top-color: transparent; .dash-lb-name, .dash-lb-pts { color: $clr-blue-600; font-weight: $fw-bold; } .dash-rk { background: $clr-blue-600; color: #fff; } }
+}
+.dash-rk {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: $clr-surface;
+  font-size: $text-xs;
+  font-weight: $fw-bold;
+  color: $clr-text-400;
+  &.r1 { background: #fff1c2; color: #a16207; }
+  &.r2 { background: #e8edf5; color: #475569; }
+  &.r3 { background: #fbe3d0; color: #9a4a12; }
+}
+.dash-lb-next { display: flex; align-items: center; gap: 6px; margin-top: $sp-3; font-size: $text-sm; font-weight: $fw-semi; color: $clr-blue-600; }
+
+// ── Overall progress ─────────────────────────────────────────────────────────
+.dash-overall { display: flex; align-items: center; gap: $sp-5; }
+.dash-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: conic-gradient($clr-blue-600 calc(var(--pct, 0) * 1%), $clr-border-light 0);
+
+  &::before { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: #fff; }
+  span { position: relative; font-size: $text-md; font-weight: $fw-bold; color: $clr-text-900; }
+}
+.dash-stats { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: $sp-2; li { display: flex; align-items: center; gap: $sp-2; font-size: $text-sm; color: $clr-text-700; b { color: $clr-text-900; } } }
+.dash-stat-ico { display: grid; place-items: center; width: 26px; height: 26px; border-radius: $radius-sm; font-size: 14px;
+  &.blue   { background: $dash-blue-50;   color: $clr-blue-600; }
+  &.green  { background: $dash-green-50;  color: $dash-green; }
+  &.violet { background: $dash-violet-50; color: $dash-violet; }
+}
+
+// ── Responsive ───────────────────────────────────────────────────────────────
+@media (max-width: 1180px) {
+  .dash { grid-template-columns: minmax(0, 1fr); }
+  .dash-aside { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+}
+
+@media (max-width: 700px) {
+  .dash-aside, .dash-duo { grid-template-columns: minmax(0, 1fr); }
+  .dash-daily { flex-wrap: wrap; .dash-btn { margin-left: 0; width: 100%; justify-content: center; } }
+  .dash-hero { padding: $sp-5; }
+  .dash-hero-title { font-size: $text-xl; }
+  .dash-hero-row { flex-wrap: wrap; .dash-btn { width: 100%; justify-content: center; } }
+  .dash-badges { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dash * { transition: none !important; animation: none !important; }
+}
+
+.dash-lb-rank { margin-top: $sp-3; font-size: $text-sm; font-weight: $fw-semi; color: $clr-text-700; }
+
+// =============================================================================
+// Celebrations: "+XP" toast, level-up and badge pop-ups (javascript/app.js initCelebrations)
+// =============================================================================
+.clms-xp-toast {
+  position: fixed;
+  top: calc(#{$topbar-height} + 16px);
+  right: 24px;
+  z-index: 10050;
+  padding: 10px 18px;
+  border-radius: $radius-full;
+  background: $clr-blue-600;
+  color: #fff;
+  font-size: $text-md;
+  font-weight: $fw-bold;
+  box-shadow: 0 10px 28px rgba(21, 101, 192, .35);
+  animation: clms-toast 3.2s ease forwards;
+}
+@keyframes clms-toast {
+  0%   { opacity: 0; transform: translateY(-14px) scale(.9); }
+  10%  { opacity: 1; transform: translateY(0) scale(1.06); }
+  16%  { transform: scale(1); }
+  82%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+.clms-celebrate {
+  position: fixed;
+  inset: 0;
+  z-index: 10060;
+  display: grid;
+  place-items: center;
+  background: rgba(7, 19, 46, .55);
+  overflow: hidden;
+  animation: clms-fade .25s ease;
+}
+@keyframes clms-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.clms-celebrate-card {
+  position: relative;
+  z-index: 1;
+  width: min(360px, calc(100vw - 32px));
+  padding: 28px 28px 24px;
+  border-radius: $radius-xl;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(7, 19, 46, .35);
+  animation: clms-pop .55s cubic-bezier(.2, 1.4, .4, 1);
+}
+@keyframes clms-pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+
+.clms-celebrate-medal {
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 40px;
+  font-weight: $fw-bold;
+  animation: clms-medal .9s cubic-bezier(.2, .9, .3, 1.2);
+  .clms-icon { width: 44px; height: 44px; }
+}
+.clms-celebrate-level { background: #e6f1fb; color: $clr-blue-600; border: 4px solid #378ADD; }
+.clms-celebrate-badge { background: #fff4e5; color: #b45309; border: 4px solid #EF9F27; }
+@keyframes clms-medal { from { transform: rotateY(180deg) scale(.3); } to { transform: none; } }
+
+.clms-celebrate-title { margin: 0 0 6px; font-size: $text-xl; font-weight: $fw-bold; color: $clr-text-900; }
+.clms-celebrate-text { margin: 0 0 18px; font-size: $text-base; line-height: 1.5; color: $clr-text-700; }
+.clms-celebrate-btn {
+  min-height: 44px;
+  padding: 0 $sp-6;
+  border: 0;
+  border-radius: 12px;
+  background: $clr-blue-600;
+  color: #fff;
+  font-size: $text-base;
+  font-weight: $fw-semi;
+  cursor: pointer;
+  &:hover { background: $clr-blue-500; }
+  &:focus-visible { outline: 3px solid $clr-blue-400; outline-offset: 2px; }
+}
+
+.clms-confetti {
+  position: absolute;
+  top: -14px;
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+  pointer-events: none;
+  animation: clms-fall linear forwards;
+}
+@keyframes clms-fall { to { transform: translateY(105vh) rotate(720deg); opacity: .3; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .clms-xp-toast, .clms-celebrate, .clms-celebrate-card, .clms-celebrate-medal { animation: none; }
+  .clms-xp-toast { animation: clms-toast-calm 3.2s steps(1) forwards; }
+  @keyframes clms-toast-calm { 0% { opacity: 1; } 100% { opacity: 0; } }
+}

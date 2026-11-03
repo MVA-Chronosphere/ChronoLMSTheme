@@ -1,0 +1,73 @@
+// =============================================================================
+// ChronoLMS — Line icons (replace the old emoji)
+//
+// Icons come from \theme_chronolms\icons: 24px grid, 2px stroke, the same
+// family as the sidebar icons. They are 1em and drawn in currentColor, so each
+// container's existing font-size still sets the size; the colours below match
+// the tinted tile or card each icon sits on.
+// =============================================================================
+
+.clms-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  vertical-align: -0.125em;
+  // Line style for icons drawn from a <symbol> sprite (inline icons set these as attributes).
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+// Dashboard / Progress stat tiles
+.stat-icon,
+.stat-icon-wrap {
+  &.blue   { color: #1565c0; }
+  &.green  { color: #0b6b3a; }
+  &.purple { color: #6a3fd6; }
+  &.orange { color: #c25e00; }
+}
+
+.streak-icon { color: #ef6c00; }
+
+// Coding arena cards
+.arena-launch-card {
+  &.arena-python .arena-icon-wrap { color: #2563eb; }
+  &.arena-blocks .arena-icon-wrap { color: #059669; }
+}
+
+// Milestone badges (locked ones are already greyed by the theme)
+.milestone-badge-item {
+  .badge-emoji { color: #6b7fa3; }
+  &.badge-unlocked .badge-emoji { color: #b45309; }
+
+  .badge-lock-tiny {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    color: #6b7fa3;
+    font-size: 9px;
+  }
+}
+
+.next-milestone-box .next-icon { color: #b45309; }
+
+// Learning path
+.track-pill-item .pill-icon,
+.track-badge .track-icon { color: #2563eb; }
+
+// Locks and empty states
+.lock-icon,
+.restricted-icon-wrap { color: #6b7fa3; }
+
+.empty-icon .clms-icon { stroke-width: 1.5; }
+
+// Chatbot avatars: icon only, slightly smaller than the old emoji glyph
+.bot-avatar .clms-icon { font-size: 20px; }
+.bot-bubble-avatar .clms-icon { font-size: 16px; }

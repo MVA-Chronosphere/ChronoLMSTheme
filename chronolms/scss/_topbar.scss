@@ -1,0 +1,340 @@
+// =============================================================================
+// ChronoLMS Topbar
+// =============================================================================
+
+.chronolms-topbar {
+  display: flex;
+  align-items: center;
+  gap: $sp-4;
+  padding: 0 $sp-6;
+  height: $topbar-height;
+
+  // ── Search bar ─────────────────────────────────────────────────────────────
+  .topbar-search {
+    flex: 1;
+    max-width: 480px;
+    position: relative;
+
+    input[type="search"], input[type="text"] {
+      width: 100%;
+      height: 40px;
+      padding: 0 $sp-4 0 40px;
+      border: 1.5px solid $clr-border;
+      border-radius: $radius-full;
+      background: $clr-surface;
+      font-family: $font-ui;
+      font-size: $text-sm;
+      color: $clr-text-700;
+      outline: none;
+      transition: $transition-fast;
+
+      &::placeholder { color: $clr-text-200; }
+
+      &:focus {
+        border-color: $clr-blue-400;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba($clr-blue-600,.1);
+      }
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 0;
+      bottom: 0;                     // the icon box is as tall as the field, so it is centred on it
+      width: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;                // no text baseline or line-height to push the icon off centre
+      color: $clr-text-400;
+      pointer-events: none;
+
+      svg {
+        display: block;              // inline SVGs sit on the text baseline
+        width: 16px; height: 16px;
+        stroke: currentColor; fill: none;
+        stroke-width: 2; stroke-linecap: round;
+      }
+    }
+  }
+
+  // ── Spacer ─────────────────────────────────────────────────────────────────
+  .topbar-spacer { flex: 1; }
+
+  // ── Action icons ───────────────────────────────────────────────────────────
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: $sp-2;
+
+    .topbar-icon-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: $radius-full;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: $clr-text-400;
+      position: relative;
+      transition: $transition-fast;
+      text-decoration: none;
+
+      svg {
+        width: 20px; height: 20px;
+        stroke: currentColor; fill: none;
+        stroke-width: 1.75; stroke-linecap: round;
+      }
+
+      &:hover {
+        background: rgba($clr-blue-600,.07);
+        color: $clr-blue-600;
+      }
+
+      // Site Administration button for Admins
+      &.topbar-admin-btn:hover {
+        background: rgba(37, 99, 235, 0.08);
+        color: #2563eb;
+      }
+
+      // Quick Log Out button
+      &.topbar-logout-btn:hover {
+        background: rgba(239, 68, 68, 0.12);
+        color: #ef4444;
+      }
+
+      // Notification badge
+      .badge {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 8px;
+        height: 8px;
+        background: $clr-danger;
+        border-radius: $radius-full;
+        border: 2px solid #fff;
+      }
+    }
+  }
+
+  // ── User section & Moodle native user menu ──────────────────────────────────
+  .topbar-user-section {
+    display: flex;
+    align-items: center;
+
+    .topbar-usermenu-container {
+      .usermenu {
+        margin: 0;
+
+        .dropdown-toggle {
+          display: flex;
+          align-items: center;
+          gap: $sp-2;
+          padding: 4px 10px 4px 4px;
+          border-radius: $radius-full;
+          cursor: pointer;
+          transition: $transition-fast;
+          text-decoration: none;
+          color: $clr-text-900;
+          border: 1px solid transparent;
+
+          &:hover, &[aria-expanded="true"] {
+            background: rgba($clr-blue-600, 0.06);
+            border-color: rgba($clr-blue-600, 0.12);
+          }
+
+          &::after {
+            margin-left: 4px;
+            vertical-align: 0.15em;
+            color: $clr-text-400;
+          }
+
+          .userbutton {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+
+          .avatars, .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: $radius-full;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: $grad-blue;
+            margin: 0 !important;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              margin: 0 !important;
+            }
+          }
+
+          .usertext {
+            font-size: $text-sm;
+            font-weight: $fw-semi;
+            color: $clr-text-900;
+          }
+        }
+
+        .dropdown-menu {
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+          padding: 6px;
+          min-width: 210px;
+          margin-top: 8px;
+          animation: topbarFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+          .dropdown-item {
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.15s ease;
+
+            &:hover, &:focus {
+              background: #f1f5f9;
+              color: #2563eb;
+            }
+
+            // Role switch or admin links
+            &[href*="switchrole"], &[href*="admin"] {
+              font-weight: 600;
+              color: #1e40af;
+            }
+
+            // Log out link
+            &[href*="logout"] {
+              color: #dc2626;
+              &:hover {
+                background: #fef2f2;
+                color: #b91c1c;
+              }
+            }
+          }
+
+          .dropdown-divider {
+            margin: 6px 0;
+            border-top: 1px solid #f1f5f9;
+          }
+        }
+      }
+    }
+  }
+
+  // ── Fallback User avatar pill ───────────────────────────────────────────────
+  .topbar-user {
+    display: flex;
+    align-items: center;
+    gap: $sp-2;
+    padding: $sp-1 $sp-3 $sp-1 $sp-1;
+    border-radius: $radius-full;
+    cursor: pointer;
+    transition: $transition-fast;
+    text-decoration: none;
+
+    &:hover { background: rgba($clr-blue-600,.06); }
+
+    .user-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: $radius-full;
+      background: $grad-blue;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: $text-sm;
+      font-weight: $fw-bold;
+      color: #fff;
+      overflow: hidden;
+      flex-shrink: 0;
+
+      img { width: 100%; height: 100%; object-fit: cover; }
+    }
+
+    .user-meta {
+      .user-name {
+        font-size: $text-sm;
+        font-weight: $fw-semi;
+        color: $clr-text-900;
+        line-height: 1.1;
+      }
+      .user-grade {
+        font-size: $text-xs;
+        color: $clr-text-400;
+      }
+    }
+  }
+}
+
+@keyframes topbarFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+// ── Responsive top bar ───────────────────────────────────────────────────────
+// Without these the bar kept its desktop widths and ran off the right edge on phones.
+@media (max-width: 900px) {
+  .chronolms-app .chronolms-topbar {
+    gap: $sp-3;
+    padding: 0 $sp-4;
+
+    .topbar-search { flex: 1 1 auto; min-width: 0; max-width: 360px; input { min-width: 0; width: 100%; } }
+    .topbar-spacer { display: none; }
+    .topbar-actions { margin-left: auto; }
+    // the name beside the avatar: the avatar alone opens the same menu
+    .topbar-usermenu-container .usertext { display: none; }
+  }
+}
+
+@media (max-width: 640px) {
+  .chronolms-app .chronolms-topbar {
+    gap: $sp-2;
+    padding: 0 $sp-3;
+
+    .topbar-actions { gap: 2px; }
+    // Log out is also in the user menu; admin settings are in the sidebar
+    .topbar-logout-btn, .topbar-admin-btn { display: none; }
+    .topbar-editswitch-container { flex-shrink: 0; }
+  }
+}
+
+// Unread counts on the bell and messages
+.topbar-badge {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border: 2px solid #fff;
+  border-radius: $radius-full;
+  background: #d6336c;
+  color: #fff;
+  font-size: 10px;
+  font-weight: $fw-bold;
+  line-height: 14px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.chronolms-topbar {
+  .topbar-icon-btn:focus-visible,
+  .sidebar-toggle-btn:focus-visible {
+    outline: 3px solid $clr-blue-600;
+    outline-offset: 2px;
+  }
+}

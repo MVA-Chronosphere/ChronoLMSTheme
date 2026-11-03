@@ -1,0 +1,365 @@
+// =============================================================================
+// ChronoLMS Learning Path
+//
+// Track tabs, a hero with an "up next" card, then the stage roadmap beside a
+// shelf of the track's badges. Markup: templates/learningpath/page.mustache.
+// Desktop first; phone and tablet get their own pass later.
+// =============================================================================
+
+$lp-green:      #0b8a4a;
+$lp-green-50:   #e6f6ed;
+$lp-green-100:  #c8ecd7;
+$lp-green-700:  #0b6b3a;
+$lp-amber:      #ef6c00;
+$lp-amber-50:   #fff4e5;
+$lp-amber-100:  #ffe3bf;
+$lp-blue-50:    #eaf2fc;
+
+.chronolms-learningpath-page { padding: $sp-5 0 $sp-8; }
+
+.lp {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-5;
+  max-width: 1180px;
+  margin: 0 auto;
+
+  .clms-icon { flex-shrink: 0; }
+}
+
+// ── Track tabs ───────────────────────────────────────────────────────────────
+.lp-tracks {
+  display: flex;
+  gap: $sp-2;
+  padding: 6px;
+  background: $clr-card;
+  border: 1px solid $clr-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xs;
+  overflow-x: auto;
+}
+.lp-track {
+  display: flex;
+  flex: 1 0 auto;
+  align-items: center;
+  gap: $sp-3;
+  min-height: 52px;
+  padding: 0 $sp-4;
+  border-radius: $radius-md;
+  color: $clr-text-700;
+  text-decoration: none;
+  transition: background .15s ease, color .15s ease;
+
+  &:hover { background: $clr-surface; color: $clr-text-900; text-decoration: none; }
+  &:focus-visible { outline: 3px solid $clr-blue-400; outline-offset: 1px; }
+
+  &.is-active {
+    background: $clr-blue-600;
+    color: #fff;
+    .lp-track-ico { background: rgba(255, 255, 255, .18); color: #fff; }
+    .lp-track-grade { color: rgba(255, 255, 255, .85); }
+  }
+}
+.lp-track-ico {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-md;
+  background: $lp-blue-50;
+  color: $clr-blue-600;
+  font-size: 17px;
+}
+.lp-track-txt { display: flex; flex-direction: column; line-height: 1.25; white-space: nowrap; }
+.lp-track-name { font-size: $text-base; font-weight: $fw-semi; }
+.lp-track-grade { font-size: $text-xs; color: $clr-text-400; }
+
+// ── Hero ─────────────────────────────────────────────────────────────────────
+.lp-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: $sp-6;
+  padding: $sp-6 28px;
+  color: #fff;
+  background: $grad-banner;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-md;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: -70px;
+    top: -90px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .06);
+    pointer-events: none;
+  }
+}
+.lp-hero-main, .lp-next { position: relative; z-index: 1; min-width: 0; }
+
+.lp-hero-tags { display: flex; flex-wrap: wrap; gap: $sp-2; }
+.lp-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: $radius-full;
+  background: rgba(255, 255, 255, .16);
+  font-size: $text-sm;
+  font-weight: $fw-semi;
+}
+.lp-title { margin: $sp-3 0 $sp-2; font-size: $text-3xl; font-weight: $fw-bold; letter-spacing: -.015em; color: #fff; }
+.lp-desc { max-width: 60ch; margin: 0; font-size: $text-base; line-height: 1.6; color: rgba(255, 255, 255, .92); }
+
+.lp-stats { display: flex; align-items: center; gap: $sp-6; margin-top: $sp-6; }
+.lp-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: conic-gradient(#fff calc(var(--pct, 0) * 1%), rgba(255, 255, 255, .25) 0);
+
+  &::before { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: #1560bd; }
+  span { position: relative; font-size: $text-lg; font-weight: $fw-bold; }
+}
+.lp-stat-list {
+  display: flex;
+  gap: $sp-6;
+  margin: 0;
+
+  > div { display: flex; flex-direction: column-reverse; gap: 2px; }
+  dt { font-size: $text-sm; font-weight: $fw-medium; color: rgba(255, 255, 255, .85); }
+  dd { margin: 0; font-size: $text-lg; font-weight: $fw-bold; }
+}
+
+.lp-next {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $sp-2;
+  padding: $sp-5;
+  border-radius: $radius-lg;
+  background: rgba(255, 255, 255, .13);
+  border: 1px solid rgba(255, 255, 255, .22);
+}
+.lp-next-label { font-size: $text-sm; font-weight: $fw-semi; letter-spacing: .02em; color: rgba(255, 255, 255, .88); }
+.lp-next-title { margin: 0; font-size: $text-xl; font-weight: $fw-bold; line-height: 1.3; color: #fff; }
+.lp-next-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $sp-3;
+  margin: 0;
+  font-size: $text-sm;
+  color: rgba(255, 255, 255, .9);
+  span { display: inline-flex; align-items: center; gap: 6px; }
+}
+.lp-next-bar {
+  align-self: stretch;
+  height: 8px;
+  margin: $sp-2 0 $sp-3;
+  border-radius: $radius-full;
+  background: rgba(255, 255, 255, .25);
+  overflow: hidden;
+  i { display: block; height: 100%; border-radius: inherit; background: #fff; }
+}
+
+// ── Buttons ──────────────────────────────────────────────────────────────────
+.lp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $sp-2;
+  min-height: 44px;
+  padding: 0 $sp-5;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  font-size: $text-base;
+  font-weight: $fw-semi;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+
+  &:hover { text-decoration: none; transform: translateY(-1px); }
+  &:focus-visible { outline: 3px solid $clr-blue-400; outline-offset: 2px; }
+}
+.lp-btn-light   { background: #fff; color: $clr-blue-600; &:hover { background: $lp-blue-50; color: $clr-blue-600; } }
+.lp-btn-primary { background: $lp-amber; color: #fff; &:hover { background: darken($lp-amber, 6%); color: #fff; } }
+.lp-btn-done    { background: $lp-green-50; color: $lp-green; border-color: $lp-green-100; &:hover { background: $lp-green-100; color: $lp-green; } }
+.lp-btn-ghost   { background: #fff; color: $clr-text-700; border-color: $clr-border; &:hover { border-color: $clr-blue-400; color: $clr-blue-600; } }
+
+// ── Body: roadmap + badge shelf ──────────────────────────────────────────────
+.lp-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: $sp-6;
+  align-items: start;
+}
+.lp-section-title { margin: 0 0 $sp-4; font-size: $text-lg; font-weight: $fw-bold; color: $clr-text-900; }
+
+.lp-stages { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.lp-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: $sp-4;
+  padding-bottom: $sp-4;
+
+  // the line that joins one stage to the next
+  &:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 21px;
+    top: 44px;
+    bottom: 0;
+    width: 2px;
+    background: $clr-border;
+  }
+  &.is-done:not(:last-child)::before { background: $lp-green; }
+}
+.lp-node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid $clr-border;
+  color: $clr-text-400;
+  font-size: $text-md;
+  font-weight: $fw-bold;
+  .clms-icon { font-size: 20px; stroke-width: 3; }
+
+  .is-done & { background: $lp-green; border-color: $lp-green; color: #fff; }
+  .is-current & { background: $clr-blue-600; border-color: $clr-blue-600; color: #fff; box-shadow: 0 0 0 5px rgba(21, 101, 192, .16); }
+}
+
+.lp-card {
+  min-width: 0;
+  padding: $sp-5;
+  background: $clr-card;
+  border: 1px solid $clr-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xs;
+
+  .is-current & { border: 2px solid $clr-blue-600; padding: calc(#{$sp-5} - 1px); box-shadow: $shadow-sm; }
+  .is-upcoming & { background: #fbfcfe; }
+}
+.lp-card-head { display: flex; align-items: center; justify-content: space-between; gap: $sp-3; }
+.lp-stage-tag { font-size: $text-xs; font-weight: $fw-bold; letter-spacing: .07em; text-transform: uppercase; color: $clr-text-400; }
+.lp-status {
+  padding: 3px 10px;
+  border-radius: $radius-full;
+  background: $clr-surface;
+  font-size: $text-xs;
+  font-weight: $fw-bold;
+  color: $clr-text-700;
+
+  .is-done & { background: $lp-green-50; color: $lp-green-700; }
+  .is-current & { background: $lp-blue-50; color: $clr-blue-600; }
+}
+
+.lp-stage-title { margin: $sp-2 0 4px; font-size: $text-xl; font-weight: $fw-bold; color: $clr-text-900; }
+.lp-stage-desc { margin: 0; font-size: $text-base; line-height: 1.55; color: $clr-text-700; }
+
+.lp-skills { display: flex; flex-wrap: wrap; gap: 6px; margin: $sp-4 0 0; padding: 0; list-style: none; }
+.lp-skills li {
+  padding: 4px 11px;
+  border-radius: $radius-full;
+  background: $clr-surface;
+  font-size: $text-sm;
+  font-weight: $fw-medium;
+  color: $clr-text-700;
+}
+
+.lp-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $sp-4;
+  margin-top: $sp-4;
+  padding-top: $sp-4;
+  border-top: 1px solid $clr-border-light;
+}
+.lp-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $sp-2 $sp-4;
+  font-size: $text-sm;
+  color: $clr-text-700;
+
+  span { display: inline-flex; align-items: center; gap: 6px; }
+}
+.lp-reward { color: $clr-text-400; &.is-earned { color: $lp-green; font-weight: $fw-semi; } }
+
+.lp-action { display: flex; align-items: center; gap: $sp-4; flex-shrink: 0; }
+.lp-pct {
+  display: flex;
+  align-items: center;
+  gap: $sp-2;
+  font-size: $text-sm;
+  font-weight: $fw-bold;
+  color: $clr-text-900;
+}
+.lp-pct-bar {
+  width: 84px;
+  height: 8px;
+  border-radius: $radius-full;
+  background: $clr-border-light;
+  overflow: hidden;
+  i { display: block; height: 100%; border-radius: inherit; background: $clr-blue-600; }
+  .is-done & i { background: $lp-green; }
+}
+
+// ── Badge shelf ──────────────────────────────────────────────────────────────
+.lp-rewards {
+  position: sticky;
+  top: calc(#{$topbar-height} + #{$sp-5});
+  padding: $sp-5;
+  background: $clr-card;
+  border: 1px solid $clr-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xs;
+
+  .lp-section-title { margin-bottom: 2px; }
+}
+.lp-rew-sub { margin: 0 0 $sp-4; font-size: $text-sm; color: $clr-text-400; }
+.lp-badges { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: $sp-2; }
+.lp-badge {
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+  padding: $sp-2 $sp-3 $sp-2 $sp-2;
+  border-radius: $radius-md;
+  background: $clr-surface;
+  color: $clr-text-400;
+
+  &.is-earned { background: $lp-amber-50; color: $clr-text-900; .lp-badge-ico { background: $lp-amber; color: #fff; } small { color: #b45309; } }
+}
+.lp-badge-ico {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px dashed $clr-border;
+  color: $clr-text-400;
+  font-size: 18px;
+  .is-earned & { border: 0; }
+}
+.lp-badge-txt { display: flex; flex-direction: column; line-height: 1.3; b { font-size: $text-base; font-weight: $fw-semi; } small { font-size: $text-xs; } }
+
+@media (max-width: 1180px) {
+  .lp-hero { grid-template-columns: minmax(0, 1fr); }
+  .lp-body { grid-template-columns: minmax(0, 1fr); }
+  .lp-rewards { position: static; }
+}

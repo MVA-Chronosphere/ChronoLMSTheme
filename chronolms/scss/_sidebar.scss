@@ -1,0 +1,914 @@
+// =============================================================================
+// ChronoLMS Sidebar Navigation
+// The primary left-side navigation panel.
+// =============================================================================
+
+.chronolms-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: $sidebar-width;
+  min-width: 180px;
+  max-width: 600px;
+  height: 100vh;
+  background: $grad-sidebar;
+  z-index: $z-sidebar;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.25s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+  box-shadow: 4px 0 24px rgba(7,19,46,.35);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  // Drag resizer handle on right edge
+  .sidebar-resizer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 7px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 100;
+    background: transparent;
+    transition: background 0.15s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 2px;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 28px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.18);
+      opacity: 0;                      // the grip only shows when the edge is hovered
+      transition: all 0.15s ease;
+    }
+
+    &:hover,
+    &.is-resizing {
+      background: rgba(37, 99, 235, 0.45);
+
+      &::after {
+        opacity: 1;
+        background: #38bdf8;
+        height: 44px;
+        box-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+      }
+    }
+  }
+
+  // ── Header: logo + collapse button ─────────────────────────────────────────
+  .sidebar-head {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .07);
+    padding-right: $sp-3;
+  }
+
+  // The button that collapses / expands the sidebar. Open: a menu icon beside the logo.
+  .sidebar-collapse-btn {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: $radius-md;
+    background: transparent;
+    color: rgba(255, 255, 255, .7);
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+
+    &:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+  }
+
+  // ── Logo area ──────────────────────────────────────────────────────────────
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    padding: $sp-4 $sp-4;
+    flex-shrink: 0;
+    text-decoration: none;
+    min-height: 64px;
+
+    .sidebar-logo-full {
+      height: 32px;
+      max-width: 175px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+      transition: opacity 0.2s ease;
+    }
+
+    .sidebar-logo-mark {
+      height: 26px;
+      width: auto;
+      object-fit: contain;
+      display: none;
+    }
+
+    .sidebar-logo-text {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+
+      .logo-name {
+        font-size: $text-lg;
+        font-weight: $fw-bold;
+        color: $clr-text-inv;
+        line-height: 1.1;
+        white-space: nowrap;
+      }
+      .logo-tagline {
+        font-size: $text-xs;
+        color: rgba(255,255,255,.45);
+        white-space: nowrap;
+        letter-spacing: 0.04em;
+      }
+    }
+  }
+
+  // ── Nav list ───────────────────────────────────────────────────────────────
+  .sidebar-nav {
+    flex: 1;
+    padding: $sp-4 $sp-3;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+  }
+
+  // ── Nav item ───────────────────────────────────────────────────────────────
+  .sidebar-nav-item {
+    position: relative;
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: $sp-3;
+      padding: 10px $sp-3;
+      border-radius: $radius-md;
+      color: rgba(255, 255, 255, 0.82);
+      text-decoration: none;
+      font-size: $text-sm;
+      font-weight: $fw-medium;
+      white-space: nowrap;
+      transition: $transition-fast;
+      position: relative;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+
+        .nav-icon svg {
+          stroke: #ffffff !important;
+          opacity: 1 !important;
+          transform: scale(1.05);
+        }
+      }
+    }
+
+    // Active state
+    &.active a {
+      background: linear-gradient(90deg, rgba(37, 99, 235, 0.28) 0%, rgba(37, 99, 235, 0.12) 100%);
+      color: #ffffff;
+      font-weight: $fw-semi;
+      box-shadow: inset 3px 0 0 #00d4ff;
+
+      .nav-icon svg {
+        stroke: #ffffff !important;
+        opacity: 1 !important;
+        filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.7));
+      }
+    }
+
+    // Chatbot trigger special style
+    &.chatbot-trigger a {
+      margin-top: $sp-2;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: $sp-4;
+    }
+
+    .nav-icon {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      svg {
+        width: 19px;
+        height: 19px;
+        opacity: 0.95 !important;
+        stroke: #ffffff !important;
+        color: #ffffff !important;
+        fill: none;
+        stroke-width: 1.85;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: all 0.2s ease;
+      }
+
+      // Hide any secondary or fallback duplicate SVG
+      svg:not(:first-child) {
+        display: none !important;
+      }
+
+      .nav-icon-fallback {
+        display: none !important;
+      }
+    }
+
+    .nav-label {
+      transition: opacity 0.2s;
+    }
+  }
+
+  // ── User footer strip at bottom ───────────────────────────────────────────────
+  .sidebar-user-footer {
+    padding: $sp-3 $sp-4;
+    border-top: 1px solid rgba(255,255,255,.07);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $sp-2;
+    flex-shrink: 0;
+
+    .sidebar-user {
+      display: flex;
+      align-items: center;
+      gap: $sp-3;
+      flex: 1;
+      min-width: 0;
+      text-decoration: none;
+      padding: 0;
+      border-top: none;
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 0.85;
+      }
+
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: $radius-full;
+        background: $clr-blue-600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: $text-sm;
+        font-weight: $fw-bold;
+        color: #fff;
+        flex-shrink: 0;
+        overflow: hidden;
+
+        img { width: 100%; height: 100%; object-fit: cover; }
+      }
+
+      .user-info {
+        overflow: hidden;
+
+        .user-name {
+          font-size: $text-sm;
+          font-weight: $fw-semi;
+          color: rgba(255,255,255,.9);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .user-grade {
+          font-size: $text-xs;
+          color: rgba(255,255,255,.45);
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .sidebar-logout-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+      text-decoration: none;
+
+      svg {
+        stroke: currentColor;
+      }
+
+      &:hover {
+        background: rgba(239, 68, 68, 0.18);
+        color: #ef4444;
+        border-color: rgba(239, 68, 68, 0.35);
+      }
+    }
+  }
+
+  // ── Collapsed state ────────────────────────────────────────────────────────
+  &.collapsed {
+    width: $sidebar-collapsed-width !important;
+    min-width: $sidebar-collapsed-width !important;
+    max-width: $sidebar-collapsed-width !important;
+
+    .sidebar-resizer {
+      display: none;
+    }
+
+    // Collapsed: the head is just the logo mark. On hover or keyboard focus the menu button covers it, so a
+    // click anywhere on the logo expands the sidebar.
+    .sidebar-head {
+      padding-right: 0;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+    .sidebar-collapse-btn {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      background: $clr-navy-900;
+      color: #7cc4ff;
+      opacity: 0;
+      transition: opacity .15s ease;
+    }
+    .sidebar-head:hover .sidebar-collapse-btn,
+    .sidebar-collapse-btn:focus-visible { opacity: 1; }
+
+    .sidebar-logo {
+      justify-content: center;
+      padding: 18px 0;
+
+      .sidebar-logo-full {
+        display: none !important;
+      }
+      .sidebar-logo-mark {
+        display: block !important;
+        width: 36px;
+        height: 36px;
+        object-fit: contain;
+        margin: 0 auto;
+        transition: transform 0.2s ease;
+      }
+
+      &:hover .sidebar-logo-mark {
+        transform: scale(1.08);
+      }
+    }
+
+    .sidebar-logo-text,
+    .nav-label,
+    .user-info,
+    .sidebar-mode-toggle,
+    .sidebar-codinglab-pane {
+      display: none !important;
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      overflow: hidden;
+    }
+
+    .sidebar-nav {
+      overflow-x: visible;
+
+      ul {
+        gap: 6px;
+        align-items: center;
+        padding: 4px 0;
+      }
+
+      .sidebar-nav-item {
+        width: 46px;
+        margin: 0 auto;
+        position: relative;
+
+        a {
+          width: 46px;
+          height: 46px;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 12px;
+          border: 1px solid transparent;
+          box-shadow: none !important;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+          .nav-icon {
+            width: 22px;
+            height: 22px;
+            margin: 0;
+
+            svg {
+              width: 20px;
+              height: 20px;
+              opacity: 0.92 !important;
+              stroke: #ffffff !important;
+              color: #ffffff !important;
+              transition: transform 0.2s ease, opacity 0.2s ease;
+            }
+          }
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.06);
+
+            .nav-icon svg {
+              opacity: 1 !important;
+              transform: scale(1.1);
+            }
+          }
+        }
+
+        &.active a {
+          background: linear-gradient(135deg, rgba(37, 99, 235, 0.35) 0%, rgba(0, 212, 255, 0.2) 100%);
+          border-color: rgba(0, 212, 255, 0.55);
+          box-shadow: 0 0 16px rgba(0, 212, 255, 0.25) !important;
+
+          .nav-icon svg {
+            opacity: 1 !important;
+            filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.85));
+          }
+        }
+
+        // Floating tooltip on hover in collapsed mode (position fixed escapes any clipping)
+        &:hover::after {
+          content: attr(data-tooltip);
+          position: fixed;
+          left: 78px;
+          // The generic tooltip (scss/_utilities.scss) places it above and centred; on a fixed element that
+          // put it off the top of the screen. Reset so it sits beside the icon, level with it.
+          top: auto;
+          bottom: auto;
+          transform: none;
+          margin-top: -36px;
+          background: #0f172a;
+          color: #ffffff;
+          padding: 6px 14px;
+          border-radius: 8px;
+          font-size: 0.8rem;
+          font-weight: 600;
+          white-space: nowrap;
+          pointer-events: none;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          z-index: 9999;
+          letter-spacing: 0.01em;
+        }
+      }
+    }
+
+    .sidebar-user-footer {
+      padding: 16px 0;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+
+      .sidebar-user {
+        justify-content: center;
+        flex: none;
+        padding: 0;
+
+        .user-avatar {
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          border: 2px solid rgba(255, 255, 255, 0.2);
+          transition: transform 0.2s ease, border-color 0.2s ease;
+
+          &:hover {
+            transform: scale(1.08);
+            border-color: #00d4ff;
+          }
+        }
+      }
+
+      .sidebar-logout-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+
+        svg {
+          width: 18px;
+          height: 18px;
+          stroke: #ffffff;
+        }
+
+        &:hover {
+          background: rgba(239, 68, 68, 0.25);
+          border-color: rgba(239, 68, 68, 0.5);
+          color: #ef4444;
+
+          svg {
+            stroke: #ef4444;
+          }
+        }
+      }
+    }
+  }
+}
+
+// ── Sidebar toggle button (topbar) ────────────────────────────────────────────
+.sidebar-toggle-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $clr-text-400;
+  transition: $transition-fast;
+  flex-shrink: 0;
+
+  &:hover {
+    background: rgba($clr-blue-600, .08);
+    color: $clr-blue-600;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+}
+
+// ── Mobile overlay ────────────────────────────────────────────────────────────
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: $z-sidebar - 1;
+  opacity: 0;
+  transition: opacity 0.25s;
+
+  &.visible { opacity: 1; }
+}
+
+// Tablet and phone: the sidebar is a drawer over the page (opened from the menu button),
+// so pages keep the full width. Matches DRAWER_QUERY in javascript/app.js.
+@media (max-width: 1024px) {
+  .chronolms-sidebar {
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1), width 0.3s, visibility 0s linear 0.3s;
+    z-index: 10001;                 // above the floating chat button (z-index 9999) while open
+
+    &.open {
+      transform: translateX(0);
+      visibility: visible;
+      width: min(85vw, 320px);
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1), width 0.3s, visibility 0s;
+      box-shadow: $shadow-xl;
+    }
+
+    .sidebar-resizer {
+      display: none !important;
+    }
+  }
+  .sidebar-overlay { display: block; z-index: 10000; pointer-events: none; &.visible { pointer-events: auto; } }
+}
+
+body.is-resizing-sidebar {
+  cursor: col-resize !important;
+  user-select: none !important;
+
+  .chronolms-sidebar,
+  .chronolms-content-wrapper {
+    transition: none !important;
+  }
+
+  iframe,
+  .ace_editor {
+    pointer-events: none !important;
+  }
+}
+
+// ── CodingLab Programs Navigator (Attachment 1) ──────────────────────────────
+.sidebar-mode-toggle {
+  display: flex;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 3px;
+  margin: 10px 14px 14px 14px;
+  gap: 4px;
+
+  .mode-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    border-radius: 7px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+    }
+
+    &:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    &.active {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+    }
+  }
+}
+
+.sidebar-codinglab-pane {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 10px 16px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+  }
+
+  &.d-none {
+    display: none !important;
+  }
+
+  .codinglab-tree {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  // Level card accordion — strictly matches Attachment 1
+  .codinglab-level-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    transition: all 0.2s ease;
+
+    .codinglab-level-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: #f8fafc;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 14px;
+      transition: background 0.15s ease;
+
+      .level-arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #1e293b;
+        transition: transform 0.2s ease;
+
+        svg {
+          width: 13px;
+          height: 13px;
+          stroke: #0f172a;
+        }
+      }
+
+      .level-title-text {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      &:hover {
+        background: #f1f5f9;
+      }
+    }
+
+    &.expanded {
+      .codinglab-level-header {
+        border-bottom: 1px solid #f1f5f9;
+
+        .level-arrow {
+          transform: rotate(0deg);
+        }
+      }
+    }
+
+    &:not(.expanded) {
+      .codinglab-level-header .level-arrow {
+        transform: rotate(-90deg);
+      }
+    }
+
+    // Program list under each level
+    .codinglab-programs-list {
+      list-style: none;
+      padding: 8px 10px 12px 10px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .codinglab-program-item {
+        margin: 0;
+
+        a {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 8px 10px;
+          border-radius: 8px;
+          text-decoration: none;
+          color: #334155;
+          font-size: 13px;
+          font-weight: 500;
+          transition: all 0.15s ease;
+          line-height: 1.3;
+
+          .program-radio-dot {
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            border: 1.5px solid #94a3b8;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+
+            .dot-inner {
+              width: 5px;
+              height: 5px;
+              border-radius: 50%;
+              background: transparent;
+            }
+          }
+
+          .program-badge-vpl {
+            background: #e2e8f0;
+            color: #475569;
+            font-size: 9px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 3px 6px;
+            border-radius: 12px;
+            letter-spacing: -0.02em;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .program-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          &:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+
+            .program-radio-dot {
+              border-color: #2563eb;
+            }
+          }
+        }
+
+        &.completed a {
+          .program-radio-dot {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.15);
+
+            .dot-inner {
+              background: #10b981;
+            }
+          }
+        }
+
+        &.active a {
+          background: rgba(37, 99, 235, 0.08);
+          color: #2563eb;
+          font-weight: 600;
+
+          .program-radio-dot {
+            border-color: #2563eb;
+            background: rgba(37, 99, 235, 0.15);
+
+            .dot-inner {
+              background: #2563eb;
+            }
+          }
+
+          .program-badge-vpl {
+            background: #2563eb;
+            color: #ffffff;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+// Keyboard focus: a clear ring on the dark sidebar and its controls.
+.chronolms-sidebar {
+  a:focus-visible,
+  button:focus-visible {
+    outline: 0;
+    background: rgba(124, 196, 255, .16);   // keep the text light on a dark highlight
+    color: #fff;
+    box-shadow: inset 0 0 0 2px #7cc4ff;
+    border-radius: $radius-md;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chronolms-sidebar, .sidebar-overlay { transition: none !important; }
+}
+
+// The generic [data-tooltip] hover label (scss/_utilities.scss) belongs to the collapsed icon rail only.
+// With the sidebar open the label is already on screen, and the generic one floats above the item where
+// the sidebar's overflow clips it.
+.chronolms-sidebar:not(.collapsed) .sidebar-nav-item[data-tooltip]::after { display: none; }
+
+// Desktop: the menu button lives in the sidebar. The top-bar one is only for the tablet/phone drawer.
+@media (min-width: 1025px) {
+  .sidebar-toggle-btn { display: none; }
+}
+@media (max-width: 1024px) {
+  .chronolms-sidebar .sidebar-collapse-btn { display: none; }
+}

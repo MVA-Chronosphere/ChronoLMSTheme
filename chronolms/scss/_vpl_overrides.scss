@@ -1,0 +1,838 @@
+// =============================================================================
+// ChronoLMS — Modern VPL (Virtual Programming Lab) Visual Styling
+// Clean VS Code studio aesthetic scoped strictly to #vplide presentation.
+// =============================================================================
+
+// Hide course admin secondary navigation on VPL pages
+#page-mod-vpl-index .secondary-navigation,
+#page-mod-vpl-view .secondary-navigation {
+  display: none !important;
+}
+
+body.path-mod-vpl {
+
+  // Clean Navigation Tabs (Description, Submissions list, Similarity, Test activity)
+  .nav.nav-tabs:not(.more-nav),
+  .nav-tabs.mb-3:not(.more-nav) {
+    border-bottom: none !important;
+    background: #f1f5f9;
+    padding: 6px;
+    border-radius: 12px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 20px;
+
+    .nav-item {
+      margin: 0;
+    }
+
+    .nav-link {
+      border: none !important;
+      border-radius: 8px !important;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #475569 !important;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      background: transparent !important;
+      text-decoration: none;
+
+      i.fa, .icon {
+        font-size: 0.95rem;
+        color: #64748b;
+        margin: 0;
+      }
+
+      &:hover {
+        background: rgba(37, 99, 235, 0.08) !important;
+        color: #2563eb !important;
+
+        i.fa, .icon {
+          color: #2563eb !important;
+        }
+      }
+
+      &.active {
+        background: #2563eb !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+
+        i.fa, .icon {
+          color: #ffffff !important;
+        }
+      }
+    }
+  }
+
+  // Activity cards and description on view.php
+  .box.generalbox {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  // Preformatted code preview in description/submission
+  pre.vpl_codefilecontent,
+  .vpl_codefilecontent pre,
+  .vpl_evaluate.cases {
+    background: #0f172a !important;
+    color: #e2e8f0 !important;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13.5px;
+    line-height: 1.6;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    overflow-x: auto;
+  }
+
+  // ── Executive Modern Styling for #vplide (VS Code Studio Look) ───────────────
+  #vplide {
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.12), 0 1px 3px rgba(15, 23, 42, 0.06);
+    border: 1px solid #1e293b;
+
+    // Top Toolbar
+    #vpl_menu.vpl_ide_menu {
+      background: #0f172a !important;
+      border: none !important;
+      border-bottom: 1px solid #1e293b !important;
+      border-radius: 10px 10px 0 0 !important;
+      padding: 7px 12px !important;
+      display: flex !important;
+      align-items: center !important;
+      flex-wrap: wrap !important;
+      gap: 3px !important;
+
+      .ui-controlgroup {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 2px !important;
+        margin: 0 4px !important;
+      }
+
+      .ui-button {
+        background: rgba(255, 255, 255, 0.07) !important;
+        color: #cbd5e1 !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border-radius: 6px !important;
+        padding: 5px 10px !important;
+        margin: 0 1px !important;
+        font-size: 12.5px !important;
+        transition: all 0.15s ease !important;
+        text-shadow: none !important;
+        box-shadow: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        height: 32px !important;
+
+        i.fa {
+          color: #cbd5e1 !important;
+          font-size: 13px !important;
+        }
+
+        &:hover:not(.ui-state-disabled):not(.ui-button-disabled) {
+          background: rgba(255, 255, 255, 0.16) !important;
+          color: #ffffff !important;
+          border-color: rgba(255, 255, 255, 0.25) !important;
+
+          i.fa {
+            color: #ffffff !important;
+          }
+        }
+
+        &.ui-state-disabled,
+        &.ui-button-disabled {
+          opacity: 0.3 !important;
+          cursor: not-allowed !important;
+        }
+      }
+
+      // Standout Primary Actions
+      #vpl_ide_run {
+        background: #059669 !important;
+        border-color: #047857 !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        box-shadow: 0 2px 6px rgba(5, 150, 105, 0.35) !important;
+
+        i.fa {
+          color: #ffffff !important;
+        }
+
+        &:hover {
+          background: #10b981 !important;
+        }
+      }
+
+      #vpl_ide_evaluate {
+        background: #2563eb !important;
+        border-color: #1d4ed8 !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35) !important;
+
+        i.fa {
+          color: #ffffff !important;
+        }
+
+        .vpl_bt_extrahtml {
+          background: rgba(255, 255, 255, 0.25) !important;
+          color: #ffffff !important;
+          font-size: 11px !important;
+          font-weight: 700 !important;
+          padding: 1px 6px !important;
+          border-radius: 9999px !important;
+          margin-left: 4px !important;
+        }
+
+        &:hover {
+          background: #3b82f6 !important;
+        }
+      }
+
+      #vpl_ide_debug {
+        background: #d97706 !important;
+        border-color: #b45309 !important;
+        color: #ffffff !important;
+
+        i.fa {
+          color: #ffffff !important;
+        }
+
+        &:hover {
+          background: #f59e0b !important;
+        }
+      }
+
+      #vpl_ide_save:not(.ui-state-disabled):not(.ui-button-disabled) {
+        background: #4f46e5 !important;
+        border-color: #4338ca !important;
+        color: #ffffff !important;
+
+        i.fa {
+          color: #ffffff !important;
+        }
+
+        &:hover {
+          background: #6366f1 !important;
+        }
+      }
+    }
+
+    // ── Resizable Work Area Layout (Coding Area & Description Split) ──────────
+    #vpl_tr {
+      display: flex !important;
+      flex-direction: row !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+      background: #0f172a !important;
+      position: relative !important;
+    }
+
+    // Left pane: File Tabs & Code Editor (Dynamic split percentage)
+    #vpl_tabs {
+      width: var(--vpl-editor-split, 50%) !important;
+      max-width: 85% !important;
+      min-width: 200px !important;
+      flex: 0 0 var(--vpl-editor-split, 50%) !important;
+      box-sizing: border-box !important;
+      background: #0f172a !important;
+      border: none !important;
+      border-right: none !important;
+      display: flex !important;
+      flex-direction: column !important;
+      position: relative !important;
+
+      #vpl_tabs_scroll {
+        background: #0f172a !important;
+        border-bottom: 1px solid #1e293b !important;
+        padding: 4px 8px 0 8px !important;
+      }
+
+      ul#vpl_tabs_ul {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: flex-end !important;
+        gap: 3px !important;
+
+        li {
+          background: #1e293b !important;
+          border: 1px solid #334155 !important;
+          border-bottom: none !important;
+          border-radius: 6px 6px 0 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          transition: all 0.15s ease !important;
+
+          a {
+            color: #94a3b8 !important;
+            font-size: 12.5px !important;
+            font-weight: 500 !important;
+            padding: 6px 12px !important;
+            font-family: 'JetBrains Mono', 'Consolas', monospace !important;
+            text-decoration: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+          }
+
+          .vpl_ide_charicon {
+            font-size: 11px !important;
+            color: #38bdf8 !important;
+            margin-left: 4px !important;
+          }
+
+          .vpl_ide_closeicon {
+            opacity: 0.6 !important;
+            transition: opacity 0.15s ease, color 0.15s ease !important;
+
+            &:hover {
+              opacity: 1 !important;
+              color: #ef4444 !important;
+            }
+          }
+
+          &:hover {
+            background: #273548 !important;
+
+            a {
+              color: #f1f5f9 !important;
+            }
+          }
+
+          &.ui-tabs-active,
+          &.ui-state-active {
+            background: #ffffff !important;
+            border-color: #cbd5e1 !important;
+            border-top: 2px solid #2563eb !important;
+
+            a {
+              color: #0f172a !important;
+              font-weight: 600 !important;
+            }
+
+            .vpl_ide_charicon {
+              color: #2563eb !important;
+            }
+          }
+        }
+      }
+    }
+
+    // Ace Editor Typography & Styling
+    .ace_editor {
+      font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace !important;
+      font-size: 14px !important;
+      line-height: 1.65 !important;
+      width: 100% !important;
+
+      .ace_gutter {
+        background: #f8fafc !important;
+        border-right: 1px solid #e2e8f0 !important;
+        color: #94a3b8 !important;
+      }
+
+      .ace_gutter-active-line {
+        background: #e2e8f0 !important;
+        color: #0f172a !important;
+      }
+
+      .ace_cursor {
+        border-left: 2px solid #2563eb !important;
+      }
+
+      .ace_marker-layer .ace_active-line {
+        background: rgba(37, 99, 235, 0.04) !important;
+      }
+
+      .ace_marker-layer .ace_selection {
+        background: rgba(37, 99, 235, 0.15) !important;
+      }
+    }
+
+    // Draggable Splitter Handle between Editor and Description
+    #vpl_splitter.vpl-ide-splitter {
+      width: 7px !important;
+      min-width: 7px !important;
+      max-width: 7px !important;
+      flex: 0 0 7px !important;
+      background: #1e293b !important;
+      cursor: col-resize !important;
+      position: relative !important;
+      z-index: 20 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: background 0.15s ease !important;
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 32px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.25);
+        transition: background 0.15s ease, height 0.15s ease;
+      }
+
+      &:hover,
+      &.is-resizing {
+        background: #2563eb !important;
+
+        &::after {
+          background: #ffffff !important;
+          height: 48px !important;
+        }
+      }
+    }
+
+    // Right pane: Clean Description Card & Test Results (Attachment 2)
+    #vpl_results {
+      width: calc(100% - var(--vpl-editor-split, 50%) - 7px) !important;
+      max-width: 85% !important;
+      min-width: 200px !important;
+      flex: 1 1 0% !important;
+      box-sizing: border-box !important;
+      background: #f8fafc !important;
+      border-left: 1px solid #e2e8f0 !important;
+      padding: 16px !important;
+      overflow-y: auto !important;
+      display: block !important;
+
+      #vpl_results_accordion {
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+
+        // Secondary Tabs (Proposed grade, Comments, Execution)
+        // Hidden when collapsed so there is ZERO wasted empty space above Description
+        .vpl_ide_accordion_t_grade,
+        .vpl_ide_accordion_t_comments,
+        .vpl_ide_accordion_t_execution,
+        .ui-accordion-header:not(.vpl_ide_accordion_t_description) {
+          order: 3 !important;
+
+          &.ui-accordion-header-collapsed,
+          &:not(.ui-state-active) {
+            display: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            height: 0 !important;
+            min-height: 0 !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+          }
+
+          &.ui-state-active {
+            display: flex !important;
+            align-items: center !important;
+            background: #0f172a !important;
+            color: #ffffff !important;
+            border: 1px solid #0f172a !important;
+            border-radius: 8px !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            padding: 8px 14px !important;
+            margin-top: 10px !important;
+            cursor: pointer !important;
+
+            .ui-icon {
+              filter: brightness(0) invert(1);
+            }
+          }
+        }
+
+        // Secondary Content panels
+        .ui-accordion-content:not(.vpl_ide_accordion_c_description) {
+          order: 4 !important;
+        }
+
+        // Prominent Description Header Banner — strictly matches Attachment 2 (at very top)
+        .vpl_ide_accordion_t_description {
+          order: 1 !important;
+          background: #2563eb !important;
+          color: #ffffff !important;
+          border: none !important;
+          border-radius: 10px 10px 0 0 !important;
+          font-size: 14.5px !important;
+          font-weight: 700 !important;
+          letter-spacing: 0.02em !important;
+          padding: 12px 18px !important;
+          margin: 0 !important;
+          text-align: center !important;
+          text-shadow: none !important;
+          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25) !important;
+          cursor: pointer !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          gap: 8px !important;
+
+          .ui-accordion-header-icon {
+            display: none !important;
+          }
+
+          &:hover {
+            background: #1d4ed8 !important;
+          }
+        }
+
+        // Prominent Description Content Card — strictly matches Attachment 2
+        .vpl_ide_accordion_c_description {
+          order: 2 !important;
+          background: #ffffff !important;
+          color: #1e293b !important;
+          border: 1px solid #e2e8f0 !important;
+          border-top: none !important;
+          border-radius: 0 0 12px 12px !important;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+          font-size: 14px !important;
+          line-height: 1.7 !important;
+          padding: 22px 24px !important;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04) !important;
+          min-height: 240px !important;
+          display: block !important;
+
+          p {
+            margin-bottom: 14px !important;
+            color: #1e293b !important;
+            font-size: 14px !important;
+            line-height: 1.7 !important;
+          }
+
+          strong {
+            color: #0f172a !important;
+            font-weight: 700 !important;
+          }
+
+          code {
+            background: #f1f5f9 !important;
+            color: #d946ef !important;
+            padding: 2px 6px !important;
+            border-radius: 4px !important;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace !important;
+            font-size: 13px !important;
+          }
+        }
+
+        .ui-accordion-content:not(.vpl_ide_accordion_c_description) {
+          background: #ffffff !important;
+          color: #1e293b !important;
+          border: 1px solid #e2e8f0 !important;
+          border-radius: 8px !important;
+          font-family: 'JetBrains Mono', 'Consolas', monospace !important;
+          font-size: 13px !important;
+          padding: 12px !important;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
+
+          pre {
+            background: #0f172a !important;
+            color: #e2e8f0 !important;
+            padding: 10px 14px !important;
+            border-radius: 6px !important;
+            font-size: 12px !important;
+            line-height: 1.5 !important;
+          }
+        }
+      }
+    }
+
+    // Bottom Status Bar
+    #vpl_ide_statusbar {
+      background: #0f172a !important;
+      border: none !important;
+      border-top: 1px solid #1e293b !important;
+      border-radius: 0 0 10px 10px !important;
+      color: #94a3b8 !important;
+      font-size: 12px !important;
+      padding: 6px 14px !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+
+      span {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+      }
+
+      .vpl_ide_statusbar_filename {
+        color: #f8fafc !important;
+        font-weight: 600 !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        padding: 2px 8px !important;
+        border-radius: 4px !important;
+        font-family: 'JetBrains Mono', 'Consolas', monospace !important;
+        font-size: 11.5px !important;
+      }
+
+      .vpl_ide_statusbar_position,
+      .vpl_ide_statusbar_language {
+        color: #cbd5e1 !important;
+        font-family: 'JetBrains Mono', 'Consolas', monospace !important;
+        font-size: 11.5px !important;
+      }
+
+      a {
+        color: #94a3b8 !important;
+        transition: color 0.15s ease !important;
+
+        i.fa {
+          color: #94a3b8 !important;
+        }
+
+        &:hover {
+          color: #38bdf8 !important;
+
+          i.fa {
+            color: #38bdf8 !important;
+          }
+        }
+      }
+    }
+  }
+
+  // VPL Floating Modals (VNC / Terminal / Execution Dialogs)
+  .ui-dialog.vpl_ide {
+    border-radius: 12px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35) !important;
+    border: 1px solid #334155 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+
+    .ui-dialog-titlebar {
+      background: #1e293b !important;
+      color: #f1f5f9 !important;
+      border: none !important;
+      border-bottom: 1px solid #334155 !important;
+      border-radius: 12px 12px 0 0 !important;
+      padding: 10px 16px !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+
+      .ui-dialog-titlebar-close {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-radius: 6px !important;
+        color: #ffffff !important;
+        width: 26px !important;
+        height: 26px !important;
+        right: 12px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        cursor: pointer !important;
+
+        .ui-icon {
+          filter: brightness(0) invert(1) !important;
+        }
+
+        &:hover {
+          background: rgba(239, 68, 68, 0.8) !important;
+          border-color: #ef4444 !important;
+        }
+      }
+    }
+  }
+
+  // Submission view & Grade tables
+  .generaltable {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+
+    thead th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid #e2e8f0;
+      padding: 12px 16px;
+    }
+
+    tbody td {
+      padding: 12px 16px;
+      vertical-align: middle;
+      border-bottom: 1px solid #f1f5f9;
+    }
+  }
+
+  // ── Modern Filter Toolbar for VPL Activity List (/mod/vpl/index.php) ───────
+  .vpl-filters-bar {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 12px !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 12px 18px !important;
+    border-radius: 12px !important;
+    margin: 8px 0 24px 0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+
+    .urlselect {
+      display: inline-flex !important;
+      margin: 0 !important;
+      vertical-align: middle !important;
+    }
+  }
+
+  .urlselect {
+    display: inline-flex !important;
+    vertical-align: middle !important;
+    margin: 4px 10px 16px 0 !important;
+
+    form {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      margin: 0 !important;
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      padding: 6px 14px !important;
+      border-radius: 10px !important;
+      transition: all 0.2s ease !important;
+
+      &:hover,
+      &:focus-within {
+        border-color: #cbd5e1 !important;
+        background: #ffffff !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+      }
+
+      label {
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        color: #475569 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.06em !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+      }
+
+      select.form-select.urlselect,
+      select.form-select {
+        border: none !important;
+        background-color: transparent !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        color: #0f172a !important;
+        padding: 2px 24px 2px 4px !important;
+        height: auto !important;
+        box-shadow: none !important;
+        cursor: pointer !important;
+
+        &:focus {
+          outline: none !important;
+          box-shadow: none !important;
+        }
+      }
+    }
+  }
+
+  .vpl-filters-bar {
+    width: 100% !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    padding: 12px 18px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-bottom: 22px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+
+    .urlselect {
+      margin: 0 !important;
+
+      form {
+        background: #ffffff !important;
+      }
+    }
+  }
+
+  // ── Modern Index Page Layout ──────────────────────────────────────────────
+  h2 {
+    font-size: 1.6rem !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    margin-bottom: 16px !important;
+  }
+
+  .table-responsive {
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+    margin-top: 8px !important;
+    background: #ffffff !important;
+
+    table.generaltable {
+      margin: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+
+      th {
+        background: #f8fafc !important;
+        color: #475569 !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.06em !important;
+        border-bottom: 2px solid #e2e8f0 !important;
+        padding: 14px 18px !important;
+      }
+
+      td {
+        padding: 14px 18px !important;
+        font-size: 13.5px !important;
+        color: #1e293b !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        vertical-align: middle !important;
+
+        a {
+          color: #2563eb !important;
+          font-weight: 600 !important;
+          text-decoration: none !important;
+
+          &:hover {
+            color: #1d4ed8 !important;
+            text-decoration: underline !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+body.is-resizing-vpl {
+  cursor: col-resize !important;
+  user-select: none !important;
+
+  .ace_editor,
+  #vpl_results {
+    pointer-events: none !important;
+    user-select: none !important;
+  }
+}

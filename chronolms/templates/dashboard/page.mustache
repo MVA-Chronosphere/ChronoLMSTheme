@@ -1,0 +1,287 @@
+{{!
+    ChronoLMS Student Dashboard — main page template.
+
+    @template theme_chronolms/dashboard/page
+    @copyright 2026 Chronosphere Academy
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+    Context (built in layout/dashboard.php):
+      - greeting, userfirstname, userinitials, userfullshort
+      - hasupnext, upnext (coursename, pct, nextname, remainingtext, url, btnlabel)
+      - level (level, title, points, cap, pct, remaining, ismax, nextlevel, nexttitle)
+      - weekdays (label, done, today, future), donetoday, streak, streakone
+      - hasclass, class (classname, weekresets, week and all boards, goal)
+        - each board has rows (rank, name, pointsfmt, isme, iscrown, rankclass, gapbefore) and next
+        - goal has total, goal, pct, mine, endsday
+      - hascourses, coursecards (url, fullname, courseimage, coursecode, pct, btnlabel, band)
+      - overallpct, coursesinprogress, coursescompleted, totalcourses
+      - milestonebadges (name, icon as svg, desc, unlocked, pct), unlockedcount, totalbadgescount, nextbadge
+      - hastasks, taskitems (name, coursename, timeformat)
+      - mycoursesurl, calendarurl, wwwroot
+}}
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="clms-i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+    <symbol id="clms-i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+    <symbol id="clms-i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+    <symbol id="clms-i-terminal" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></symbol>
+    <symbol id="clms-i-puzzle" viewBox="0 0 24 24"><path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"/></symbol>
+    <symbol id="clms-i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+    <symbol id="clms-i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="clms-i-crown" viewBox="0 0 24 24"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M5 20h14"/></symbol>
+    <symbol id="clms-i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+    <symbol id="clms-i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="clms-i-checkc" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+    <symbol id="clms-i-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+    <symbol id="clms-i-clip" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol>
+</svg>
+
+<div class="dash">
+
+    <div class="dash-main">
+
+        {{! ── Hero: where to pick up ─────────────────────────────────────── }}
+        <section class="dash-card dash-hero reveal" aria-label="Continue learning">
+            {{#hasupnext}}
+            {{#upnext}}
+            <div class="dash-hero-greet">{{greeting}}, {{userfirstname}}. Pick up where you left off.</div>
+            <h1 class="dash-hero-title">{{coursename}}</h1>
+            <div class="dash-hero-next">
+                <svg class="clms-icon"><use href="#clms-i-book"/></svg>
+                <span>Next: {{nextname}} · {{remainingtext}}</span>
+            </div>
+            <div class="dash-hero-row">
+                <div class="dash-bar" role="progressbar" aria-valuenow="{{pct}}" aria-valuemin="0" aria-valuemax="100" aria-label="Course progress"><i style="width:{{pct}}%"></i></div>
+                <span class="dash-hero-pct">{{pct}}%</span>
+                <a class="dash-btn dash-btn-white" href="{{url}}">{{btnlabel}} <svg class="clms-icon"><use href="#clms-i-arrow"/></svg></a>
+            </div>
+            {{/upnext}}
+            {{/hasupnext}}
+            {{^hasupnext}}
+            <div class="dash-hero-greet">{{greeting}}, {{userfirstname}}.</div>
+            <h1 class="dash-hero-title">Ready to learn something new?</h1>
+            <div class="dash-hero-row">
+                <a class="dash-btn dash-btn-white" href="{{mycoursesurl}}">Browse your courses <svg class="clms-icon"><use href="#clms-i-arrow"/></svg></a>
+            </div>
+            {{/hasupnext}}
+        </section>
+
+        {{! ── Courses ────────────────────────────────────────────────────── }}
+        <section class="dash-card reveal" aria-label="Your courses">
+            <div class="dash-card-head">
+                <h2 class="dash-card-title">Your courses</h2>
+                <a href="{{mycoursesurl}}" class="dash-link">See all {{totalcourses}} <svg class="clms-icon"><use href="#clms-i-arrow"/></svg></a>
+            </div>
+            {{#hascourses}}
+            <div class="dash-courses">
+                {{#coursecards}}
+                <a class="dash-course" href="{{url}}">
+                    <div class="dash-course-band band-{{band}}" {{#courseimage}}style="background-image:url('{{courseimage}}')"{{/courseimage}}>
+                        {{^courseimage}}<span class="dash-course-code">{{coursecode}}</span>{{/courseimage}}
+                    </div>
+                    <div class="dash-course-body">
+                        <div class="dash-course-name">{{fullname}}</div>
+                        <div class="dash-bar dash-bar-sm" role="progressbar" aria-valuenow="{{pct}}" aria-valuemin="0" aria-valuemax="100" aria-label="{{fullname}} progress"><i style="width:{{pct}}%"></i></div>
+                        <div class="dash-course-foot"><span>{{pct}}% complete</span><span class="dash-link">{{btnlabel}}</span></div>
+                    </div>
+                </a>
+                {{/coursecards}}
+            </div>
+            {{/hascourses}}
+            {{^hascourses}}
+            <p class="dash-empty">You are not enrolled in any courses yet. Ask your teacher to add you.</p>
+            {{/hascourses}}
+        </section>
+
+        {{! ── Class goal ─────────────────────────────────────────────────── }}
+        {{#hasclass}}
+        {{#class}}
+        {{#goal}}
+        <section class="dash-card dash-goal reveal" aria-label="Class challenge">
+            <div class="dash-goal-top">
+                <div class="dash-goal-ico"><svg class="clms-icon"><use href="#clms-i-users"/></svg></div>
+                <div class="dash-goal-text">
+                    <div class="dash-goal-title">{{classname}}: finish {{goal}} activities together this week</div>
+                    <div class="dash-goal-sub">You've finished {{mine}} · ends {{endsday}}</div>
+                </div>
+                <div class="dash-goal-count">{{total}} / {{goal}}</div>
+            </div>
+            <div class="dash-bar dash-bar-lg" role="progressbar" aria-valuenow="{{pct}}" aria-valuemin="0" aria-valuemax="100" aria-label="Class goal progress"><i style="width:{{pct}}%"></i></div>
+        </section>
+        {{/goal}}
+        {{/class}}
+        {{/hasclass}}
+
+        {{! ── Badges ─────────────────────────────────────────────────────── }}
+        <section class="dash-card reveal" aria-label="Badges">
+            <div class="dash-card-head">
+                <h2 class="dash-card-title">Badges</h2>
+                <span class="dash-sub">{{unlockedcount}} of {{totalbadgescount}} earned</span>
+            </div>
+            <div class="dash-badges">
+                {{#milestonebadges}}
+                <div class="dash-badge {{^unlocked}}is-locked{{/unlocked}}" title="{{name}}: {{desc}} ({{pct}}%)">
+                    <div class="dash-medal">{{{icon}}}</div>
+                    <span>{{name}}</span>
+                </div>
+                {{/milestonebadges}}
+            </div>
+            {{#nextbadge}}
+            <div class="dash-nextbadge">
+                <div class="dash-medal dash-medal-sm">{{{icon}}}</div>
+                <div class="dash-nextbadge-body">
+                    <div class="dash-nextbadge-title">Next: {{name}}</div>
+                    <div class="dash-sub">{{desc}}</div>
+                    <div class="dash-bar dash-bar-sm" role="progressbar" aria-valuenow="{{pct}}" aria-valuemin="0" aria-valuemax="100" aria-label="{{name}} progress"><i style="width:{{pct}}%"></i></div>
+                </div>
+            </div>
+            {{/nextbadge}}
+        </section>
+
+        {{! ── Practice + Today ───────────────────────────────────────────── }}
+        <div class="dash-duo">
+            {{#haspractice}}
+            <section class="dash-card reveal" aria-label="Practice">
+                <div class="dash-card-head"><h2 class="dash-card-title">Practice</h2></div>
+                <div class="dash-labs">
+                    {{#practicecode}}
+                    <a href="{{url}}" class="dash-lab dash-lab-blue">
+                        <span class="dash-lab-ico"><svg class="clms-icon"><use href="#clms-i-terminal"/></svg></span>
+                        <span class="dash-lab-text"><b>Code Lab</b><span>{{name}} &middot; {{coursename}}</span></span>
+                        <svg class="clms-icon dash-lab-go"><use href="#clms-i-arrow"/></svg>
+                    </a>
+                    {{/practicecode}}
+                    {{#practiceblocks}}
+                    <a href="{{url}}" class="dash-lab dash-lab-green">
+                        <span class="dash-lab-ico"><svg class="clms-icon"><use href="#clms-i-puzzle"/></svg></span>
+                        <span class="dash-lab-text"><b>NextBlocks Studio</b><span>{{name}} &middot; {{coursename}}</span></span>
+                        <svg class="clms-icon dash-lab-go"><use href="#clms-i-arrow"/></svg>
+                    </a>
+                    {{/practiceblocks}}
+                </div>
+            </section>
+            {{/haspractice}}
+            <section class="dash-card reveal" aria-label="Today">
+                <div class="dash-card-head">
+                    <h2 class="dash-card-title">Today</h2>
+                    <a href="{{calendarurl}}" class="dash-link">Calendar</a>
+                </div>
+                {{#hastasks}}
+                <ul class="dash-tasks">
+                    {{#taskitems}}
+                    <li>
+                        <span class="dash-task-ico"><svg class="clms-icon"><use href="#clms-i-clip"/></svg></span>
+                        <span class="dash-task-name">{{name}}{{#coursename}}<small>{{coursename}}</small>{{/coursename}}</span>
+                        <span class="dash-task-time">{{timeformat}}</span>
+                    </li>
+                    {{/taskitems}}
+                </ul>
+                {{/hastasks}}
+                {{^hastasks}}
+                <p class="dash-empty">Nothing due this week.</p>
+                {{/hastasks}}
+            </section>
+        </div>
+    </div>
+
+    <aside class="dash-aside" aria-label="Your progress">
+
+        {{! ── Level ──────────────────────────────────────────────────────── }}
+        <section class="dash-card dash-profile reveal" aria-label="Your level">
+            {{#level}}
+            <div class="dash-avatar" aria-hidden="true">{{userinitials}}<span class="dash-avatar-lvl">{{level}}</span></div>
+            <div class="dash-profile-name">{{userfullshort}}</div>
+            <span class="dash-title-pill">{{title}}</span>
+            <div class="dash-lvl">
+                <div class="dash-lvl-row"><span>Level {{level}}</span><span>{{points}}{{^ismax}} / {{cap}}{{/ismax}} pts</span></div>
+                <div class="dash-bar" role="progressbar" aria-valuenow="{{pct}}" aria-valuemin="0" aria-valuemax="100" aria-label="Level progress"><i style="width:{{pct}}%"></i></div>
+                <div class="dash-sub">
+                    {{#ismax}}You've reached the top level.{{/ismax}}
+                    {{^ismax}}{{remaining}} points to Level {{nextlevel}} · {{nexttitle}}{{/ismax}}
+                </div>
+            </div>
+            {{/level}}
+            <ul class="dash-earn">
+                <li>+20 each activity</li>
+                <li>+5 each active day</li>
+            </ul>
+        </section>
+
+        {{! ── Streak ─────────────────────────────────────────────────────── }}
+        <section class="dash-card dash-streak reveal" aria-label="Streak">
+            <div class="dash-streak-top">
+                <svg class="clms-icon"><use href="#clms-i-flame"/></svg>
+                <div>
+                    <div class="dash-streak-n">{{streak}} {{#streakone}}day{{/streakone}}{{^streakone}}days{{/streakone}}</div>
+                    <div class="dash-streak-l">Your learning streak</div>
+                </div>
+            </div>
+            <div class="dash-week" role="list">
+                {{#weekdays}}
+                <div class="dash-day {{#done}}is-done{{/done}} {{#today}}is-today{{/today}} {{#future}}is-future{{/future}}" role="listitem">
+                    <i>{{#done}}<svg class="clms-icon"><use href="#clms-i-check"/></svg>{{/done}}</i>{{label}}
+                </div>
+                {{/weekdays}}
+            </div>
+            <div class="dash-streak-msg">
+                {{#donetoday}}Today is done. See you tomorrow.{{/donetoday}}
+                {{^donetoday}}Finish an activity today to keep it going.{{/donetoday}}
+            </div>
+        </section>
+
+        {{! ── Leaderboard ────────────────────────────────────────────────── }}
+        {{#hasclass}}
+        {{#class}}
+        <section class="dash-card reveal" aria-label="Class leaderboard" data-lb>
+            <div class="dash-card-head dash-card-head-center">
+                <h2 class="dash-card-title">{{classname}}</h2>
+                <div class="dash-tabs" role="tablist">
+                    <button type="button" role="tab" aria-selected="true" data-lb-tab="week">This week</button>
+                    <button type="button" role="tab" aria-selected="false" data-lb-tab="all">All time</button>
+                </div>
+            </div>
+            <div data-lb-panel="week">
+                <div class="dash-lb-meta"><span>{{weekresets}}</span><span>Points</span></div>
+                <ol class="dash-lb">
+                    {{#week}}{{#rows}}
+                    {{#gapbefore}}<li class="dash-lb-gap" aria-hidden="true">···</li>{{/gapbefore}}
+                    <li {{#isme}}class="is-me"{{/isme}}>
+                        <span class="dash-rk {{rankclass}}">{{#iscrown}}<svg class="clms-icon"><use href="#clms-i-crown"/></svg>{{/iscrown}}{{^iscrown}}{{rank}}{{/iscrown}}</span>
+                        <span class="dash-lb-name">{{#isme}}You{{/isme}}{{^isme}}{{name}}{{/isme}}</span>
+                        <span class="dash-lb-pts">{{pointsfmt}}</span>
+                    </li>
+                    {{/rows}}{{/week}}
+                </ol>
+                {{#week}}{{#ranktext}}<div class="dash-lb-rank">{{ranktext}}</div>{{/ranktext}}{{#next}}<div class="dash-lb-next"><svg class="clms-icon"><use href="#clms-i-up"/></svg>{{next}}</div>{{/next}}{{/week}}
+            </div>
+            <div data-lb-panel="all" hidden>
+                <div class="dash-lb-meta"><span>Since you joined</span><span>Points</span></div>
+                <ol class="dash-lb">
+                    {{#all}}{{#rows}}
+                    {{#gapbefore}}<li class="dash-lb-gap" aria-hidden="true">···</li>{{/gapbefore}}
+                    <li {{#isme}}class="is-me"{{/isme}}>
+                        <span class="dash-rk {{rankclass}}">{{#iscrown}}<svg class="clms-icon"><use href="#clms-i-crown"/></svg>{{/iscrown}}{{^iscrown}}{{rank}}{{/iscrown}}</span>
+                        <span class="dash-lb-name">{{#isme}}You{{/isme}}{{^isme}}{{name}}{{/isme}}</span>
+                        <span class="dash-lb-pts">{{pointsfmt}}</span>
+                    </li>
+                    {{/rows}}{{/all}}
+                </ol>
+                {{#all}}{{#ranktext}}<div class="dash-lb-rank">{{ranktext}}</div>{{/ranktext}}{{#next}}<div class="dash-lb-next"><svg class="clms-icon"><use href="#clms-i-up"/></svg>{{next}}</div>{{/next}}{{/all}}
+            </div>
+        </section>
+        {{/class}}
+        {{/hasclass}}
+
+        {{! ── Overall progress ───────────────────────────────────────────── }}
+        <section class="dash-card reveal" aria-label="Overall progress">
+            <div class="dash-overall">
+                <div class="dash-ring" style="--pct:{{overallpct}}"><span>{{overallpct}}%</span></div>
+                <ul class="dash-stats">
+                    <li><span class="dash-stat-ico blue"><svg class="clms-icon"><use href="#clms-i-book"/></svg></span><b>{{coursesinprogress}}</b> in progress</li>
+                    <li><span class="dash-stat-ico green"><svg class="clms-icon"><use href="#clms-i-checkc"/></svg></span><b>{{coursescompleted}}</b> completed</li>
+                    <li><span class="dash-stat-ico violet"><svg class="clms-icon"><use href="#clms-i-layers"/></svg></span><b>{{totalcourses}}</b> total</li>
+                </ul>
+            </div>
+        </section>
+    </aside>
+</div>

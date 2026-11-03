@@ -1,0 +1,334 @@
+// =============================================================================
+// ChronoLMS Login Page Styles
+// Sleek glassmorphism card centered on cosmic gradient background.
+// =============================================================================
+
+body.chronolms-login {
+  background: radial-gradient(circle at 18% 18%, rgba(0, 212, 255, 0.14), transparent 45%),
+              radial-gradient(circle at 82% 82%, rgba(123, 31, 162, 0.2), transparent 45%),
+              linear-gradient(180deg, #07132e 0%, #0a1a3e 100%);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #1e293b;
+  overflow-x: hidden;
+
+  // Background glow orbs
+  .login-bg-glow {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(100px);
+    z-index: 1;
+    opacity: 0.7;
+
+    &.glow-1 {
+      width: 500px;
+      height: 500px;
+      top: -150px;
+      right: -100px;
+      background: rgba(0, 212, 255, 0.18);
+    }
+    &.glow-2 {
+      width: 450px;
+      height: 450px;
+      bottom: -150px;
+      left: -100px;
+      background: rgba(106, 27, 154, 0.22);
+    }
+  }
+
+  .chronolms-login-page {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .login-card-wrap {
+    width: 100%;
+    max-width: 470px;
+    margin: 0 auto;
+  }
+
+  .login-card {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 24px;
+    padding: 44px 36px 36px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    // Hide top smaller duplicate logo
+    > .login-logo:not(#loginlogo),
+    .login-logo-img {
+      display: none !important;
+    }
+
+    // Main official logo
+    .login-logo,
+    #loginlogo {
+      text-align: center;
+      margin-bottom: 24px;
+
+      img,
+      #logoimage {
+        max-width: 280px;
+        height: auto;
+        max-height: 80px;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto;
+      }
+    }
+
+    .loginform {
+      h1.login-heading {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #0a1a3e;
+        text-align: center;
+        letter-spacing: -0.01em;
+        margin-bottom: 20px;
+      }
+
+      h2.login-heading {
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: #64748b;
+        text-align: center;
+        margin: 16px 0 12px;
+      }
+    }
+
+    .login-form,
+    form#login,
+    .loginform {
+      width: 100% !important;
+      max-width: 100% !important;
+
+      .form-group,
+      .login-form-username,
+      .login-form-password,
+      .login-form-submit {
+        margin-bottom: 18px;
+        text-align: left;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
+      }
+
+      label,
+      label[for="username"],
+      label[for="password"] {
+        display: block !important;
+        font-size: 0.85rem !important;
+        font-weight: 600 !important;
+        color: #334155 !important;
+        margin-bottom: 6px !important;
+        text-align: left !important;
+        letter-spacing: 0.01em !important;
+        width: 100% !important;
+      }
+
+      .form-control,
+      .form-control-lg,
+      input#username,
+      input#password,
+      input[type="text"],
+      input[type="password"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+        display: block !important;
+        box-sizing: border-box !important;
+        height: 48px !important;
+        border-radius: 10px !important;
+        border: 1.5px solid #cbd5e1 !important;
+        background: #ffffff !important;
+        font-size: 0.95rem !important;
+        padding: 0 16px !important;
+        color: #0f172a !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+        transition: all 0.2s ease !important;
+
+        &::placeholder {
+          color: #94a3b8 !important;
+          font-size: 0.92rem !important;
+        }
+
+        &:focus {
+          background: #ffffff !important;
+          border-color: #2563eb !important;
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+          outline: none !important;
+        }
+      }
+
+      #loginbtn,
+      button[type="submit"]#loginbtn {
+        height: 48px !important;
+        border-radius: 10px !important;
+        background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%) !important;
+        border: none !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        letter-spacing: 0.02em !important;
+        width: 100% !important;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3) !important;
+        transition: all 0.2s ease !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        &:hover {
+          background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%) !important;
+          box-shadow: 0 6px 20px rgba(37, 99, 235, 0.42) !important;
+          transform: translateY(-1px) !important;
+          color: #ffffff !important;
+        }
+
+        &:active {
+          transform: translateY(0) !important;
+        }
+      }
+
+      .login-form-forgotpassword {
+        text-align: right;
+        margin-top: 10px;
+
+        a {
+          font-size: 0.88rem;
+          color: #1565c0;
+          font-weight: 500;
+          text-decoration: none;
+          transition: color 0.2s ease;
+
+          &:hover {
+            color: #00b4d8;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    .login-divider {
+      height: 1px;
+      background: #e2e8f0;
+      margin: 22px 0 18px;
+      position: relative;
+    }
+
+    #guestlogin {
+      #loginguestbtn {
+        width: 100%;
+        height: 44px;
+        border-radius: 12px;
+        background: #f1f5f9;
+        color: #334155;
+        border: 1px solid #cbd5e1;
+        font-weight: 600;
+        font-size: 0.92rem;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: #e2e8f0;
+          color: #0f172a;
+          border-color: #94a3b8;
+          transform: translateY(-1px);
+        }
+      }
+    }
+
+    .btn[data-modal="alert"] {
+      width: 100%;
+      height: 38px;
+      border-radius: 10px;
+      background: transparent;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+      font-size: 0.84rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #f8fafc;
+        color: #1e293b;
+        border-color: #cbd5e1;
+      }
+    }
+
+    .login-card-footer {
+      text-align: center;
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid #f1f5f9;
+
+      .back-home-link {
+        font-size: 0.88rem;
+        color: #64748b;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 500;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: #1565c0;
+        }
+      }
+    }
+  }
+}
+
+// Global high-specificity overrides to guarantee full-width inputs matching buttons and card
+#page-login-index {
+  .login-card {
+    .login-form,
+    form#login,
+    #login {
+      width: 100% !important;
+
+      .login-form-username,
+      .login-form-password,
+      .login-form-submit {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
+      }
+
+      input#username,
+      input#password,
+      #username,
+      #password,
+      .form-control,
+      .form-control-lg {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
+        box-sizing: border-box !important;
+      }
+
+      #loginbtn,
+      button[type="submit"] {
+        width: 100% !important;
+        display: block !important;
+        box-sizing: border-box !important;
+      }
+    }
+  }
+}
+

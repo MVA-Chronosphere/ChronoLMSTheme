@@ -1,0 +1,100 @@
+{{!
+    ChronoLMS My Courses page template.
+
+    @template theme_chronolms/courses/page
+    @copyright 2026 Chronosphere Academy
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+    Context (built in layout/mycourses.php):
+      - hascourses, courses (id, fullname, courseimage, coursecode, pct, done, total, status, iscomplete, url, band)
+      - hasothers, othercourses (id, fullname, courseimage, coursecode, band)
+      - counts (all, inprogress, notstarted, complete)
+      - dashboardurl
+}}
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="mc-i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="mc-i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+    <symbol id="mc-i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="mc-i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="mc-i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+</svg>
+
+<div class="mc">
+
+    <header class="mc-head">
+        <div>
+            <h1 class="mc-title">My courses</h1>
+            <p class="mc-sub">Everything you are learning, in one place.</p>
+        </div>
+        <label class="mc-search">
+            <svg class="clms-icon" aria-hidden="true"><use href="#mc-i-search"/></svg>
+            <span class="visually-hidden">Search your courses</span>
+            <input type="search" id="mc-search" placeholder="Search your courses" autocomplete="off">
+        </label>
+    </header>
+
+    {{#hascourses}}
+    <div class="mc-filters" role="group" aria-label="Filter courses by progress">
+        <button type="button" class="mc-pill" data-mc-status="" aria-pressed="true">All <span>{{counts.all}}</span></button>
+        <button type="button" class="mc-pill" data-mc-status="inprogress" aria-pressed="false">In progress <span>{{counts.inprogress}}</span></button>
+        <button type="button" class="mc-pill" data-mc-status="notstarted" aria-pressed="false">Not started <span>{{counts.notstarted}}</span></button>
+        <button type="button" class="mc-pill" data-mc-status="complete" aria-pressed="false">Completed <span>{{counts.complete}}</span></button>
+    </div>
+
+    <div class="mc-grid" id="courses-grid">
+        {{#courses}}
+        <article class="mc-card" data-status="{{status}}" data-title="{{fullname}}">
+            <a class="mc-card-link" href="{{url}}" aria-label="{{fullname}}, {{pct}}% complete">
+                <div class="mc-band band-{{band}}" {{#courseimage}}style="background-image:url('{{courseimage}}')"{{/courseimage}}>
+                    {{^courseimage}}<span class="mc-code">{{coursecode}}</span>{{/courseimage}}
+                    {{#iscomplete}}<span class="mc-chip mc-chip-done"><svg class="clms-icon" aria-hidden="true"><use href="#mc-i-check"/></svg>Completed</span>{{/iscomplete}}
+                </div>
+                <div class="mc-body">
+                    <h2 class="mc-name">{{fullname}}</h2>
+                    <div class="mc-progress">
+                        <div class="mc-progress-row"><span>{{done}} of {{total}} activities</span><b>{{pct}}%</b></div>
+                        <div class="dash-bar dash-bar-sm {{#iscomplete}}is-complete{{/iscomplete}}" role="progressbar" aria-valuenow="{{pct}}" aria-valuemin="0" aria-valuemax="100" aria-label="{{fullname}} progress"><i style="width:{{pct}}%"></i></div>
+                    </div>
+                    <span class="mc-cta {{#pct}}is-resume{{/pct}}">
+                        {{#iscomplete}}Review course{{/iscomplete}}
+                        {{^iscomplete}}{{#pct}}Continue{{/pct}}{{^pct}}Start course{{/pct}}{{/iscomplete}}
+                        <svg class="clms-icon" aria-hidden="true"><use href="#mc-i-arrow"/></svg>
+                    </span>
+                </div>
+            </a>
+        </article>
+        {{/courses}}
+    </div>
+
+    <p class="mc-empty" id="mc-empty" hidden>No courses match. Try another search or filter.</p>
+    {{/hascourses}}
+
+    {{^hascourses}}
+    <div class="mc-blank">
+        <div class="mc-blank-ico"><svg class="clms-icon" aria-hidden="true"><use href="#mc-i-book"/></svg></div>
+        <h2>Start your first course</h2>
+        <p>Your teacher adds you to courses. Once you are in, they show up here with your progress.</p>
+        <a class="dash-btn dash-btn-white mc-blank-btn" href="{{dashboardurl}}">Back to dashboard</a>
+    </div>
+    {{/hascourses}}
+
+    {{#hasothers}}
+    <section class="mc-others" aria-label="Other courses">
+        <h2 class="mc-others-title">Other courses <span>Ask your teacher to join</span></h2>
+        <div class="mc-grid">
+            {{#othercourses}}
+            <article class="mc-card is-locked">
+                <div class="mc-band band-grey">
+                    <span class="mc-code">{{coursecode}}</span>
+                    <span class="mc-chip"><svg class="clms-icon" aria-hidden="true"><use href="#mc-i-lock"/></svg>Not enrolled</span>
+                </div>
+                <div class="mc-body">
+                    <h2 class="mc-name">{{fullname}}</h2>
+                </div>
+            </article>
+            {{/othercourses}}
+        </div>
+    </section>
+    {{/hasothers}}
+</div>

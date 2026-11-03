@@ -1,0 +1,608 @@
+// =============================================================================
+// ChronoLMS Progress & Analytics Page
+// =============================================================================
+
+.chronolms-progress {
+
+  .progress-page-header {
+    margin-bottom: $sp-5;
+
+    h1 { font-size: $text-2xl; font-weight: $fw-bold; margin: 0 0 4px; }
+    p  { font-size: $text-sm; color: $clr-text-400; margin: 0; }
+
+    .date-filter {
+      display: flex;
+      gap: $sp-2;
+      margin-top: $sp-3;
+
+      .filter-btn {
+        padding: 6px $sp-4;
+        border: 1.5px solid $clr-border;
+        border-radius: $radius-full;
+        background: #fff;
+        font-size: $text-xs;
+        font-weight: $fw-medium;
+        color: $clr-text-400;
+        cursor: pointer;
+        transition: $transition-fast;
+
+        &.active {
+          background: $clr-blue-600;
+          border-color: $clr-blue-600;
+          color: #fff;
+        }
+        &:hover:not(.active) { border-color: $clr-blue-400; color: $clr-blue-600; }
+      }
+    }
+  }
+
+  // ── Analytics cards grid ─────────────────────────────────────────────────────
+  .analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $sp-5;
+
+    @media (max-width: 1280px) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 1000px) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 640px)  { grid-template-columns: 1fr; }
+  }
+
+  // ── Stat card (top-level metrics) ────────────────────────────────────────────
+  .stat-card {
+    background: $clr-card;
+    border-radius: $radius-lg;
+    border: 1px solid $clr-border-light;
+    padding: $sp-5;
+    display: flex;
+    align-items: center;
+    gap: $sp-4;
+    box-shadow: $shadow-sm;
+
+    .stat-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: $radius-lg;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: $text-2xl;
+      flex-shrink: 0;
+
+      &.blue   { background: rgba($clr-blue-600,.1); }
+      &.green  { background: rgba($clr-success,.1); }
+      &.orange { background: rgba($clr-warning,.1); }
+    }
+
+    .stat-data {
+      .stat-value { font-size: $text-2xl; font-weight: $fw-bold; color: $clr-text-900; line-height: 1; }
+      .stat-label { font-size: $text-xs; color: $clr-text-400; margin-top: 4px; }
+      .stat-change {
+        font-size: $text-xs;
+        margin-top: 2px;
+
+        &.up   { color: $clr-success; }
+        &.down { color: $clr-danger; }
+      }
+    }
+  }
+
+  // ── Chart card ──────────────────────────────────────────────────────────────
+  .chart-card {
+    background: $clr-card;
+    border-radius: $radius-lg;
+    border: 1px solid $clr-border-light;
+    padding: $sp-5;
+    box-shadow: $shadow-sm;
+
+    .chart-title {
+      font-size: $text-md;
+      font-weight: $fw-semi;
+      color: $clr-text-900;
+      margin: 0 0 $sp-4;
+    }
+
+    canvas { width: 100% !important; }
+  }
+
+  // ── Score list (quiz subjects) ───────────────────────────────────────────────
+  .score-list {
+    display: flex;
+    flex-direction: column;
+    gap: $sp-3;
+
+    .score-item {
+      display: flex;
+      align-items: center;
+      gap: $sp-3;
+
+      .score-subject { font-size: $text-sm; color: $clr-text-700; min-width: 80px; }
+
+      .score-bar-wrap {
+        flex: 1;
+        height: 8px;
+        background: $clr-border;
+        border-radius: $radius-full;
+        overflow: hidden;
+
+        .score-bar-fill {
+          height: 100%;
+          border-radius: $radius-full;
+          background: $grad-blue;
+          transition: width 1s cubic-bezier(.4,0,.2,1);
+
+          &.python   { background: linear-gradient(90deg, #ffd43b, #ff8f00); }
+          &.webdev   { background: linear-gradient(90deg, #5c6bc0, #3949ab); }
+          &.ai       { background: linear-gradient(90deg, #26c6da, #00838f); }
+          &.data     { background: linear-gradient(90deg, #66bb6a, #2e7d32); }
+          &.robotics { background: linear-gradient(90deg, #ab47bc, #6a1b9a); }
+        }
+      }
+
+      .score-pct { font-size: $text-sm; font-weight: $fw-semi; color: $clr-text-900; min-width: 36px; text-align: right; }
+    }
+  }
+
+  // ── Coding performance circles ────────────────────────────────────────────────
+  .coding-perf-row {
+    display: flex;
+    gap: $sp-4;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    .perf-circle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: $sp-2;
+
+      .circle-wrap {
+        width: 80px;
+        height: 80px;
+        position: relative;
+
+        svg { transform: rotate(-90deg); }
+        .circle-bg   { fill: none; stroke: $clr-border; stroke-width: 8; }
+        .circle-fill { fill: none; stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1.2s; }
+
+        .circle-label {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+
+          .pct  { font-size: $text-lg; font-weight: $fw-bold; color: $clr-text-900; line-height: 1; }
+        }
+      }
+
+      .perf-name { font-size: $text-xs; color: $clr-text-400; text-align: center; font-weight: $fw-medium; }
+    }
+  }
+
+  // ── Staff banner ─────────────────────────────────────────────────────────────
+  .staff-analytics-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $sp-4;
+    background: linear-gradient(135deg, rgba($clr-blue-600, 0.08), rgba($clr-cyan-400, 0.08));
+    border: 1px solid rgba($clr-blue-600, 0.25);
+    border-radius: $radius-xl;
+    padding: $sp-4 $sp-5;
+    margin-bottom: $sp-6;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .banner-content {
+      display: flex;
+      align-items: center;
+      gap: $sp-3;
+
+      .banner-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: $radius-lg;
+        background: $clr-blue-600;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .banner-title {
+        font-size: $text-sm;
+        font-weight: $fw-bold;
+        color: $clr-text-900;
+      }
+
+      .banner-sub {
+        font-size: $text-xs;
+        color: $clr-text-400;
+        margin-top: 2px;
+      }
+    }
+
+    .banner-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: $sp-2;
+      background: $clr-blue-600;
+      color: #fff !important;
+      font-size: $text-xs;
+      font-weight: $fw-semi;
+      padding: 9px $sp-4;
+      border-radius: $radius-lg;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: $transition-fast;
+
+      &:hover {
+        background: #0d47a1;
+        transform: translateY(-1px);
+        box-shadow: $shadow-sm;
+      }
+    }
+  }
+
+  // ── Dual-column grid ─────────────────────────────────────────────────────────
+  .progress-details-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: $sp-6;
+    margin-top: $sp-6;
+
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: $sp-5;
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: $sp-1;
+
+      .section-tag {
+        font-size: $text-xs;
+        font-weight: $fw-semi;
+        padding: 3px 10px;
+        border-radius: $radius-full;
+        background: rgba($clr-blue-600, 0.1);
+        color: $clr-blue-600;
+      }
+    }
+
+    .section-title {
+      font-size: $text-lg;
+      font-weight: $fw-bold;
+      color: $clr-text-900;
+      margin: 0;
+    }
+  }
+
+  // ── Course progress cards ────────────────────────────────────────────────────
+  .course-progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: $sp-4;
+  }
+
+  .course-progress-card {
+    background: $clr-card;
+    border: 1px solid $clr-border-light;
+    border-radius: $radius-xl;
+    padding: $sp-5;
+    box-shadow: $shadow-sm;
+    transition: $transition-fast;
+
+    &:hover {
+      box-shadow: $shadow-md;
+      border-color: rgba($clr-blue-600, 0.2);
+    }
+
+    .card-top-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: $sp-3;
+      margin-bottom: $sp-3;
+
+      .course-name-block {
+        .course-tag {
+          font-size: 10px;
+          font-weight: $fw-bold;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          padding: 2px 8px;
+          border-radius: $radius-full;
+          display: inline-block;
+          margin-bottom: 4px;
+
+          &.blue   { background: rgba($clr-blue-600, 0.1); color: $clr-blue-600; }
+          &.indigo { background: rgba(#4f46e5, 0.1); color: #4f46e5; }
+          &.cyan   { background: rgba($clr-cyan-400, 0.15); color: #0e7490; }
+          &.green  { background: rgba($clr-success, 0.1); color: $clr-success; }
+        }
+
+        .course-fullname {
+          font-size: $text-md;
+          font-weight: $fw-semi;
+          color: $clr-text-900;
+          margin: 0;
+        }
+      }
+
+      .course-pct-badge {
+        font-size: $text-lg;
+        font-weight: $fw-bold;
+        color: $clr-blue-600;
+      }
+    }
+
+    .progress-bar-wrap {
+      height: 8px;
+      background: $clr-border;
+      border-radius: $radius-full;
+      overflow: hidden;
+      margin-bottom: $sp-3;
+
+      .progress-bar-fill {
+        height: 100%;
+        border-radius: $radius-full;
+        transition: width 1s ease-in-out;
+
+        &.blue   { background: $grad-blue; }
+        &.indigo { background: linear-gradient(90deg, #4f46e5, #7c3aed); }
+        &.cyan   { background: linear-gradient(90deg, #06b6d4, #0284c7); }
+        &.green  { background: linear-gradient(90deg, #10b981, #059669); }
+      }
+    }
+
+    .card-meta-row {
+      display: flex;
+      gap: $sp-4;
+      font-size: $text-xs;
+      color: $clr-text-400;
+      margin-bottom: $sp-4;
+
+      .meta-label { margin-right: 4px; }
+      .meta-value { font-weight: $fw-semi; color: $clr-text-700; }
+    }
+
+    .card-actions-row {
+      display: flex;
+      gap: $sp-3;
+
+      .btn-progress-resume {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: $clr-blue-600;
+        color: #fff !important;
+        font-size: $text-xs;
+        font-weight: $fw-semi;
+        padding: 8px $sp-4;
+        border-radius: $radius-lg;
+        text-decoration: none;
+        transition: $transition-fast;
+
+        &:hover { background: #0d47a1; }
+      }
+
+      .btn-progress-lab {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba($clr-blue-600, 0.08);
+        color: $clr-blue-600 !important;
+        font-size: $text-xs;
+        font-weight: $fw-semi;
+        padding: 8px $sp-4;
+        border-radius: $radius-lg;
+        text-decoration: none;
+        transition: $transition-fast;
+
+        &:hover { background: rgba($clr-blue-600, 0.16); }
+      }
+    }
+  }
+
+  // ── Competencies card ────────────────────────────────────────────────────────
+  .competencies-card {
+    background: $clr-card;
+    border: 1px solid $clr-border-light;
+    border-radius: $radius-xl;
+    padding: $sp-5;
+    box-shadow: $shadow-sm;
+
+    .section-title {
+      margin-bottom: $sp-4;
+    }
+
+    .score-list {
+      display: flex;
+      flex-direction: column;
+      gap: $sp-4;
+    }
+
+    .score-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 0;
+
+      .score-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .score-subject {
+          font-size: $text-xs;
+          font-weight: $fw-semi;
+          color: $clr-text-700;
+        }
+        .score-tag {
+          font-size: 10px;
+          color: $clr-text-400;
+          background: #f1f5f9;
+          padding: 2px 6px;
+          border-radius: 4px;
+        }
+      }
+
+      .score-bar-wrap {
+        width: 100%;
+        height: 8px;
+        background: #e2e8f0;
+        border-radius: $radius-full;
+        overflow: hidden;
+
+        .score-bar-fill {
+          height: 100%;
+          border-radius: $radius-full;
+          min-width: 4px;
+
+          &.blue   { background: linear-gradient(90deg, #1565c0, #1976d2); }
+          &.cyan   { background: linear-gradient(90deg, #06b6d4, #0284c7); }
+          &.indigo { background: linear-gradient(90deg, #6366f1, #4f46e5); }
+          &.green  { background: linear-gradient(90deg, #10b981, #059669); }
+        }
+      }
+
+      .score-pct {
+        font-size: 11px;
+        font-weight: $fw-bold;
+        color: $clr-text-700;
+        align-self: flex-end;
+      }
+    }
+  }
+
+  .badges-card {
+    background: $clr-card;
+    border: 1px solid $clr-border-light;
+    border-radius: $radius-xl;
+    padding: $sp-5;
+    box-shadow: $shadow-sm;
+
+    .section-title {
+      margin-bottom: $sp-4;
+    }
+  }
+
+  // ── Badge shelf ─────────────────────────────────────────────────────────────
+  .badge-shelf {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $sp-3;
+
+    .badge-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: $sp-1;
+      text-decoration: none;
+
+      &.locked {
+        opacity: 0.45;
+        filter: grayscale(80%);
+      }
+
+      .badge-icon-wrap {
+        width: 52px;
+        height: 52px;
+        border-radius: $radius-full;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        box-shadow: $shadow-sm;
+        background: rgba($clr-blue-600, 0.05);
+        border: 2px solid $clr-border;
+        transition: $transition-fast;
+
+        .badge-img {
+          width: 36px;
+          height: 36px;
+          object-fit: contain;
+        }
+
+        &:hover { transform: scale(1.08); }
+      }
+
+      .badge-name {
+        font-size: 11px;
+        color: $clr-text-700;
+        text-align: center;
+        max-width: 68px;
+        line-height: 1.2;
+      }
+    }
+  }
+
+  // ── Learning Path CTA Card ───────────────────────────────────────────────────
+  .learning-path-cta-card {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: #fff;
+    border-radius: $radius-xl;
+    padding: $sp-5;
+    display: flex;
+    gap: $sp-4;
+    align-items: flex-start;
+    box-shadow: $shadow-md;
+
+    .cta-icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .cta-content {
+      flex: 1;
+
+      .cta-title {
+        font-size: $text-sm;
+        font-weight: $fw-bold;
+        margin-bottom: 4px;
+      }
+
+      .cta-desc {
+        font-size: $text-xs;
+        color: #94a3b8;
+        line-height: 1.4;
+        margin-bottom: $sp-3;
+      }
+
+      .btn-cta-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: $clr-blue-600;
+        color: #fff !important;
+        font-size: 11px;
+        font-weight: $fw-semi;
+        padding: 6px 12px;
+        border-radius: $radius-md;
+        text-decoration: none;
+        transition: $transition-fast;
+
+        &:hover {
+          background: $clr-blue-500;
+        }
+      }
+    }
+  }
+}
+
+
+// Topic Mastery rows: name on the left, count on the right
+.competencies-card .score-item { align-items: stretch !important; }

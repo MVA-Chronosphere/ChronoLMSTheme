@@ -1,0 +1,44 @@
+// =============================================================================
+// ChronoLMS — Master SCSS Preset
+// Import order matters: tokens first, then structural, then components.
+// =============================================================================
+
+// 1. Design tokens (variables)
+@import 'tokens';
+
+// 2. Base reset & global styles
+@import 'reset';
+
+// 3. Layout system
+@import 'layout';
+
+// 4. Navigation components
+@import 'sidebar';
+@import 'topbar';
+
+// 5. Base UI components
+@import 'buttons';
+
+// 6. Page-specific styles
+@import 'dashboard';
+@import 'course_cards';
+@import 'mycourses';
+@import 'course_learning';
+@import 'learningpath';
+@import 'assessments';
+@import 'coding_lab';
+@import 'progress';
+@import 'frontpage';
+@import 'login';
+
+// 7. Global features
+@import 'vpl_overrides';
+@import 'plugin_compat';
+@import 'chatbot';
+@import 'utilities';
+
+// 8. Overrides: keep last so they win the cascade, as in production
+@import 'page_padding';
+@import 'icons';
+@import 'progress_badges';
+@import 'feedback';

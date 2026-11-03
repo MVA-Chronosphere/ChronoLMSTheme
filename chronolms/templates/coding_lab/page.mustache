@@ -1,0 +1,96 @@
+{{!
+    ChronoLMS Coding Lab Page Template
+    Replicating Panel 4: Clean light shell, deep dark IDE card on the left/center,
+    and lesson instructions, test cases, and help on the right.
+
+    @template theme_chronolms/coding_lab/page
+    @copyright 2026 Chronosphere Academy
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+<div class="chrono-codinglab-wrapper" id="chrono-codinglab-root">
+    <!-- Lab Subheader: Title, Subtitle, and Progress Step -->
+    <div class="chrono-lab-top-row">
+        <div class="chrono-lab-title-area">
+            <h1 class="chrono-lab-main-heading">{{#is_nextblocks}}Block Coding Lab{{/is_nextblocks}}{{^is_nextblocks}}Coding Lab{{/is_nextblocks}}</h1>
+            <p class="chrono-lab-subheading">{{#is_nextblocks}}Assemble blocks to build interactive programs and algorithms.{{/is_nextblocks}}{{^is_nextblocks}}Write, test and improve your code.{{/is_nextblocks}}</p>
+        </div>
+        <div class="chrono-lab-step-status">
+            <span class="chrono-step-label">Progress</span>
+            <div class="chrono-step-bar-wrap">
+                <span class="chrono-step-indicator">{{activityname}}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Responsive Tab Switcher for Tablets/Mobile -->
+    <div class="chrono-lab-responsive-tabs d-lg-none">
+        <button type="button" class="chrono-tab-btn active" data-target="chrono-editor-pane">
+            <i class="fa fa-code"></i> {{#is_nextblocks}}Blocks Canvas{{/is_nextblocks}}{{^is_nextblocks}}Code Editor{{/is_nextblocks}}
+        </button>
+        <button type="button" class="chrono-tab-btn" data-target="chrono-instructions-pane">
+            <i class="fa fa-book-open"></i> Instructions & Tests
+        </button>
+    </div>
+
+    <!-- Main Workspace: Split Grid (Left/Center: IDE / Canvas, Right: Instructions & Tests) -->
+    <div class="chrono-codinglab-grid">
+        
+        <!-- Left Column: IDE Dark Card -->
+        <section class="chrono-ide-card-container" id="chrono-editor-pane">
+            <div class="chrono-dark-ide-card">
+                <!-- Top IDE Action Bar -->
+                <div class="chrono-ide-toolbar">
+                    <div class="chrono-ide-meta-left">
+                        <span class="chrono-lang-badge">
+                            <i class="fa {{#is_nextblocks}}fa-cubes text-warning{{/is_nextblocks}}{{^is_nextblocks}}fa-code text-info{{/is_nextblocks}}"></i>
+                            {{#is_nextblocks}}NextBlocks{{/is_nextblocks}}{{^is_nextblocks}}VPL Studio{{/is_nextblocks}}
+                        </span>
+                    </div>
+
+                    <div class="chrono-ide-actions-right">
+                        <button type="button" class="chrono-ide-btn chrono-btn-ide-fullscreen" id="chrono-ide-fs-btn" title="Toggle Fullscreen">
+                            <i class="fa fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Activity Workspace: Wraps VPL CodeMirror / NextBlocks Canvas -->
+                <div class="chrono-ide-workspace-body">
+                    {{{maincontent}}}
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Column: Lesson Instructions, Test Cases & Need Help Card -->
+        <aside class="chrono-instructions-card-container" id="chrono-instructions-pane">
+            
+            <!-- Instructions Card -->
+            <div class="chrono-card chrono-instruction-box">
+                <h3 class="chrono-box-title">Lesson Instructions</h3>
+                <div class="chrono-instruction-text">
+                    {{{activityintro}}}
+                </div>
+            </div>
+
+            <!-- Need Help Box -->
+            <div class="chrono-card chrono-help-box">
+                <div class="chrono-help-header">
+                    <div class="chrono-help-icon">
+                        <i class="fa fa-lightbulb-o"></i>
+                    </div>
+                    <div>
+                        <h4 class="chrono-help-title">Need Help?</h4>
+                        <p class="chrono-help-desc">Ask your doubt in discussion or contact your AI mentor.</p>
+                    </div>
+                </div>
+                <div class="chrono-help-actions">
+                    <a href="{{courseurl}}" class="chrono-btn chrono-btn-secondary chrono-btn-sm w-100">
+                        <i class="fa fa-comments"></i> Go to Discussion
+                    </a>
+                </div>
+            </div>
+
+        </aside>
+
+    </div>
+</div>
